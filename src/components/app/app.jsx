@@ -3,10 +3,12 @@ import AppHeader from "../appHeader/appHeader";
 import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import styles from "./app.module.css";
+import Modal from "../modal/modal";
 
 
 function App(props) {
   const [data, setData] = React.useState([]);
+  const [isModalOpen, setIsModalOpen] = React.useState(true);
 
   React.useEffect(() => {
       fetch(props.url)
@@ -24,6 +26,21 @@ function App(props) {
         });
     }, [props.url]);
 
+    function handleModalOpen() {
+      setIsModalOpen(true);
+    }
+
+    function handleModalClose() {
+      setIsModalOpen(false);
+    }
+    
+    const modal = isModalOpen ? (
+      <Modal onClose={handleModalClose}>
+        <p>Модальное окно</p>
+      </Modal>
+    ) : null;
+
+
   return (
     <>
       <AppHeader />
@@ -31,6 +48,7 @@ function App(props) {
         <BurgerIngredients data={data}/>
         <BurgerConstructor data={data}/>
       </div>
+      {modal}
     </>
   );
 }

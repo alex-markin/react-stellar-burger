@@ -6,7 +6,6 @@ import {
   CurrencyIcon
 
 } from "@ya.praktikum/react-developer-burger-ui-components";
-// import data from "../../utils/data.js";
 import styles from "./burgerConstructorStyles.module.css";
 import PropTypes from 'prop-types';
 import iconPropTypes from '../appHeader/appHeader.js';
