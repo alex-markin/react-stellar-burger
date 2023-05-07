@@ -1,28 +1,25 @@
-import React from "react";
-import ReactDOM from "react-dom";
+
 import styles from "./modal.module.css";
+import PropTypes from 'prop-types';
+
 
 const modalRoot = document.getElementById("react-modals");
 
-class Modal extends React.Component {
-  render() {
-    const { children, onClose } = this.props;
-        
-    return ReactDOM.createPortal(
-            (
-                <>
-                    <div className={styles.overlay}>
-                        <div className={styles.modal}>
-                            { children }
-                            <button className={styles.close} onClick={onClose}></button>
-                        </div>
-                    </div>
-                    
-                </>
-            ), 
-            modalRoot
-        );
-  }
+function Modal({ children, onClose }) {
+
+  return (
+    (
+      <div className={styles.modal}>
+        {children}
+        <button className={styles.close} onClick={onClose}></button>
+      </div>
+    )
+  );
 }
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired
+};
 
 export default Modal;

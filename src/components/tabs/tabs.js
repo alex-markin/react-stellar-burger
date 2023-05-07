@@ -26,13 +26,4 @@ Tabs.propTypes = {
   ).isRequired,
 };
 
-Tab.propTypes = {
-  value: PropTypes.string.isRequired,
-  active: PropTypes.bool,
-  onClick: PropTypes.func,
-};
-
-
-
-
 export default Tabs;

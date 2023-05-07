@@ -12,7 +12,7 @@ import iconPropTypes from '../appHeader/appHeader.js';
 
 // Burger Ingredients component
 
-function BurgerConstructor({data}) {
+function BurgerConstructor({data, handleOrderDetailsOpen}) {
 
     return (
       <section
@@ -80,36 +80,31 @@ function BurgerConstructor({data}) {
             <p className="text text_type_digits-medium">{610}</p>
             <CurrencyIcon type="TIconTypes" />
           </div>
-          <Button type="primary" size="large" htmlType="submit">
+          <Button onClick={handleOrderDetailsOpen} type="primary" size="large" htmlType="submit">
             Оформить заказ
           </Button>
         </div>
       </section>
     );
-  }// добавил проход по массиву для добавления ингредиентов, так как пока нет логики того, как это должно быть на промежуточном этапе
+  }
 
 
-ConstructorElement.propTypes = {
-  type: PropTypes.oneOf(['top', 'bottom']),
-  isLocked: PropTypes.bool,
-  text: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-  extraClass: PropTypes.string,
-  handleClose: PropTypes.func,
-};
+  BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+    handleOrderDetailsOpen: PropTypes.func.isRequired,
+  };
 
 
 CurrencyIcon.propTypes = iconPropTypes;
 DragIcon.propTypes = iconPropTypes;
 
-Button.propTypes = {
-  type: PropTypes.oneOf(['primary', 'secondary']),
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  onClick: PropTypes.func,
-  extraClass: PropTypes.string,
-  htmlType: PropTypes.oneOf(['button', 'submit', 'reset']).isRequired
-};
 
 
 
