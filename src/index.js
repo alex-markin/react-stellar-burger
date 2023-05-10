@@ -9,7 +9,7 @@ const url = "https://norma.nomoreparties.space/api/ingredients";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App url={url}/>
+    <App url={url} />
   </React.StrictMode>,
   document.getElementById("root")
 );
