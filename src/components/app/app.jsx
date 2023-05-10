@@ -19,7 +19,7 @@ function App(props) {
   const [data, setData] = React.useState([]);
   const [isModalOpened, setIsModalOpen] = React.useState(false);
   const [orderDetailsOpened, setOrderDetailsOpened] = React.useState(false);
-  const [ingredientDetailOpened, setIngredientDetailOpened] = React.useState(false);
+  const [ingredientDetailOpened, setIngredientDetailsOpened] = React.useState(false);
   const [selectedIngredient, setSelectedIngredient] = React.useState(null);
 
   // получаем данные с сервера
@@ -54,12 +54,12 @@ function App(props) {
   function handleIngredientDetailsOpen(item) {
     setSelectedIngredient(item);
     setIsModalOpen(true);
-    setIngredientDetailOpened(true);
+    setIngredientDetailsOpened(true);
   }
 
   function handleIngredientDetailsClose() {
     setIsModalOpen(false);
-    setIngredientDetailOpened(false);
+    setIngredientDetailsOpened(false);
   }
 
 
@@ -87,7 +87,7 @@ function App(props) {
     <>
       <AppHeader />
       <div className={styles.contentContainer}>
-        <BurgerIngredients data={data} handleIngredientClick={handleIngredientDetailsOpen} />
+        <BurgerIngredients data={data} handleIngredientDetails={handleIngredientDetailsOpen} />
         <BurgerConstructor data={data} handleOrderDetailsOpen={handleOrderDetailsOpen} />
       </div>
       {modal}

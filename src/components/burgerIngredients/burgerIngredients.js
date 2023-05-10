@@ -5,7 +5,7 @@ import PropTypes, { func } from 'prop-types';
 
 
 // Burger Ingredients component
-function BurgerIngredients({ data, handleIngredientClick }) {
+function BurgerIngredients({ data, handleIngredientDetails }) {
 
   // установка заглавий Табсов
   const tabData = [
@@ -32,7 +32,7 @@ function BurgerIngredients({ data, handleIngredientClick }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientClick(item)}
+                    onClick={() => handleIngredientDetails(item)}
                   />
                 );
               }
@@ -51,7 +51,7 @@ function BurgerIngredients({ data, handleIngredientClick }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientClick(item)}
+                    onClick={() => handleIngredientDetails(item)}
                   />
                 );
               }
@@ -70,7 +70,7 @@ function BurgerIngredients({ data, handleIngredientClick }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientClick(item)}
+                    onClick={() => handleIngredientDetails(item)}
                   />
                 );
               }
