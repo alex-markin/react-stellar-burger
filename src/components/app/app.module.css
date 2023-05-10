@@ -1,7 +1,23 @@
-.app {
+.contentContainer {
   display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #131316;
-  color: #f2f2f3;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #2F2F37; /* Change color here */
 }

@@ -1,0 +1,29 @@
+.container {
+  max-width: 272px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+
+.img {
+  max-width: 240px;
+  object-fit: cover;
+}
+
+.price {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  height: 24px;
+}
+
+.currencyIcon {
+  width: 24px;
+  height: 24px;
+}
+
