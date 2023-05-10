@@ -21,9 +21,9 @@ const AppHeader = () => {
 
         </ul>
       </nav>
-      
+
       <div className={styles.logo}>
-        <Logo  />
+        <Logo />
       </div>
 
       <nav className={styles.account}>

@@ -51,7 +51,7 @@ function App(props) {
   }
 
   // функция открытия модального окна с деталями ингредиента
-  function handleIngredientDetailsOpen (item)  {
+  function handleIngredientDetailsOpen(item) {
     setSelectedIngredient(item);
     setIsModalOpen(true);
     setIngredientDetailOpened(true);
