@@ -1,30 +1,28 @@
 import React from "react";
-import AppHeader from "../appHeader/appHeader";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
+import AppHeader from "../appHeader/app-header";
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from "./app.module.css";
 import Modal from "../modal/modal.jsx";
-import OrderDetails from "../orderDetails/orderDetails.jsx";
-import IngredientDetails from "../ingredientDetails/IngredientDetails";
-import ModalOverlay from "../modalOverlay/modalOverlay";
-import PropTypes from 'prop-types';
-
+import OrderDetails from "../order-details/order-details.jsx";
+import IngredientDetails from "../ingredient-details/Ingredient-details";
+import { useModal } from "../../hooks/use-modal.js";
 
 const orderID = '034536';
+const url = "https://norma.nomoreparties.space/api/ingredients";
 
-
-function App(props) {
+function App() {
 
   // стейты
   const [data, setData] = React.useState([]);
-  const [isModalOpened, setIsModalOpen] = React.useState(false);
-  const [orderDetailsOpened, setOrderDetailsOpened] = React.useState(false);
-  const [ingredientDetailOpened, setIngredientDetailsOpened] = React.useState(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false);
+  const [ingredientDetailOpen, setIngredientDetailsOpen] = React.useState(false);
   const [selectedIngredient, setSelectedIngredient] = React.useState(null);
 
   // получаем данные с сервера
   React.useEffect(() => {
-    fetch(props.url)
+    fetch(url)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -37,66 +35,57 @@ function App(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [props.url]);
+  }, [url]);
 
   // функция открытия модального окна с деталями заказа
   function handleOrderDetailsOpen() {
-    setIsModalOpen(true);
-    setOrderDetailsOpened(true);
+    openModal();
+    setOrderDetailsOpen(true);
   }
 
   function handleOrderDetailsClose() {
-    setIsModalOpen(false);
-    setOrderDetailsOpened(false);
+    openModal();
+    setOrderDetailsOpen(false);
   }
 
   // функция открытия модального окна с деталями ингредиента
   function handleIngredientDetailsOpen(item) {
     setSelectedIngredient(item);
-    setIsModalOpen(true);
-    setIngredientDetailsOpened(true);
+    openModal();
+    setIngredientDetailsOpen(true);
   }
 
   function handleIngredientDetailsClose() {
-    setIsModalOpen(false);
-    setIngredientDetailsOpened(false);
+    closeModal();
+    setIngredientDetailsOpen(false);
   }
 
 
-
-
   // работа модального окна
-  const modal = isModalOpened && orderDetailsOpened ?
+  const modal = isModalOpen && orderDetailsOpen ?
     (
-      <ModalOverlay onClose={handleOrderDetailsClose}>
-        <Modal onClose={handleOrderDetailsClose}>
-          <OrderDetails orderID={orderID} />
-        </Modal>
-      </ModalOverlay>
-    ) : isModalOpened && ingredientDetailOpened ?
+      <Modal onClose={handleOrderDetailsClose}>
+        <OrderDetails orderID={orderID} />
+      </Modal>
+    ) : isModalOpen && ingredientDetailOpen ?
       (
-        <ModalOverlay onClose={handleIngredientDetailsClose}>
-          <Modal onClose={handleIngredientDetailsClose}>
-            <IngredientDetails ingredient={selectedIngredient} />
-          </Modal>
-        </ModalOverlay>
+        <Modal onClose={handleIngredientDetailsClose}>
+          <IngredientDetails ingredient={selectedIngredient} />
+        </Modal>
       ) : null;
 
 
   return (
     <>
       <AppHeader />
-      <div className={styles.contentContainer}>
+      <main className={styles.contentContainer}>
         <BurgerIngredients data={data} handleIngredientDetails={handleIngredientDetailsOpen} />
         <BurgerConstructor data={data} handleOrderDetailsOpen={handleOrderDetailsOpen} />
-      </div>
+      </main>
       {modal}
     </>
   );
 }
 
-App.propTypes = {
-  url: PropTypes.string.isRequired,
-};
 
 export default App;

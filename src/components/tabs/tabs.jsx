@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './tabsStyles.module.css';
+import styles from './tabs.module.css';
 import PropTypes from 'prop-types';
 
 

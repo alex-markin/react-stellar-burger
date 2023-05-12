@@ -1,11 +1,11 @@
 
-import styles from "./orderDetails.module.css";
-import orderAcceptedImage from "../../images/orderAccepted.svg";
+import styles from "./order-details.module.css";
+import orderAcceptedImage from "../../images/order-accepted.svg";
 import PropTypes from 'prop-types';
 
 
 
-function orderDetails({ orderID }) {
+function OrderDetails({ orderID }) {
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
       <h1 className={`${styles.title} text text_type_digits-large mb-8`}>{orderID}</h1>
@@ -17,8 +17,8 @@ function orderDetails({ orderID }) {
   )
 }
 
-orderDetails.propTypes = {
+OrderDetails.propTypes = {
   orderID: PropTypes.string.isRequired,
 };
 
-export default orderDetails;
+export default OrderDetails;
