@@ -1,11 +1,12 @@
-import styles from "./burgerStyles.module.css";
-import Tabs from "../tabs/tabs.js";
-import Ingredient from "../ingredient/ingredient.js";
+import styles from "./burger-ingredients.module.css";
+import Tabs from "../tabs/tabs.jsx";
+import Ingredient from "../ingredient/ingredient.jsx";
 import PropTypes, { func } from 'prop-types';
+import ingredientPropTypes from '../../utils/types.js';
 
 
 // Burger Ingredients component
-function BurgerIngredients({ data, handleIngredientClick }) {
+function BurgerIngredients({ data, handleIngredientDetails }) {
 
   // установка заглавий Табсов
   const tabData = [
@@ -32,7 +33,7 @@ function BurgerIngredients({ data, handleIngredientClick }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientClick(item)}
+                    onClick={() => handleIngredientDetails(item)}
                   />
                 );
               }
@@ -51,7 +52,7 @@ function BurgerIngredients({ data, handleIngredientClick }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientClick(item)}
+                    onClick={() => handleIngredientDetails(item)}
                   />
                 );
               }
@@ -70,7 +71,7 @@ function BurgerIngredients({ data, handleIngredientClick }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientClick(item)}
+                    onClick={() => handleIngredientDetails(item)}
                   />
                 );
               }
@@ -85,16 +86,8 @@ function BurgerIngredients({ data, handleIngredientClick }) {
 
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      type: PropTypes.oneOf(["bun", "sauce", "main"]).isRequired,
-    })
-  ).isRequired,
-  handleIngredientClick: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  handleIngredientDetails: func.isRequired,
 };
 
 

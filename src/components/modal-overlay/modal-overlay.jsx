@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import styles from "./modalOverlay.module.css";
+import styles from "./modal-overlay.module.css";
 import PropTypes from 'prop-types';
 
 
 const modalRoot = document.getElementById("react-modals");
 
-function ModalOverlay({ children, onClose }) {
+function ModalOverlay({ onClose }) {
 
   // закрытие модального окна по нажатию на Esc и по клику на оверлей
   React.useEffect(() => {
     const handleEsc = (event) => {
-      if (event.keyCode === 27) {
+      if (event.key === "Escape") {
         onClose();
       }
     };
@@ -31,18 +31,14 @@ function ModalOverlay({ children, onClose }) {
   }, [onClose]);
 
 
-  return ReactDOM.createPortal(
+  return (
     (
-      <div className={styles.overlay}>
-        {children}
-      </div>
-    ),
-    modalRoot
+      <div className={styles.overlay} />
+    )
   );
 }
 
 ModalOverlay.propTypes = {
-  children: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

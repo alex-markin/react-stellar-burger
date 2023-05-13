@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   ConstructorElement,
@@ -6,9 +5,9 @@ import {
   CurrencyIcon
 
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./burgerConstructorStyles.module.css";
+import styles from "./burger-constructor-styles.module.css";
 import PropTypes from 'prop-types';
-import iconPropTypes from '../appHeader/appHeader.js';
+import iconPropTypes from '../appHeader/app-header.js';
 
 // Burger Ingredients component
 
@@ -40,13 +39,13 @@ function BurgerConstructor({ data, handleOrderDetailsOpen }) {
 
         <ul className={styles.ingredientsCenter}>
           {data.map((item) => {
-            if (item.name !== "bun")
+            if (item.type !== "bun")
               return (
                 <li key={item._id} className={styles.listElement}>
                   <DragIcon type="TIconTypes" />
                   <ConstructorElement
                     isLocked={false}
-                    type="bottom"
+                    type="undefined"
                     text={item.name}
                     price={item.price}
                     thumbnail={item.image}
