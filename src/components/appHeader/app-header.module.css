@@ -3,9 +3,8 @@
   max-width: 1920px;
   height: 80px;
   background-color: rgba(255, 255, 255, 0.13);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   padding: 16px 16.6%;
   box-sizing: border-box;
   margin: 0 auto;
@@ -19,6 +18,7 @@
   height: 100%;
   margin: 0;
   padding: 0;
+  justify-self: start;
 }
 
 
@@ -48,6 +48,7 @@
   composes: nav;
   max-width: 207px;
   margin: 0;
+  justify-self: end;
 
 }
 
@@ -56,4 +57,5 @@
   height: 40px;
   display: flex;
   justify-content: center;
+  justify-self: center;
 }
