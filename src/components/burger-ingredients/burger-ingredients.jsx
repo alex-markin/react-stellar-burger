@@ -1,12 +1,37 @@
-import styles from "./burger-ingredients.module.css";
-import Tabs from "../tabs/tabs.jsx";
-import Ingredient from "../ingredient/ingredient.jsx";
-import PropTypes, { func } from 'prop-types';
-import ingredientPropTypes from '../../utils/types.js';
+import React from "react";
+import styles from "./burger-ingredients.module.css"; // импорт стилей
+import Tabs from "../tabs/tabs.jsx"; // импорт компонента Табс
+import Ingredient from "../ingredient/ingredient.jsx"; // импорт компонента Ингредиент
+import { PropTypes, func } from 'prop-types'; // импорт проптайпсов
+import { DataContext, IngredientContext, TotalPriceContext } from "../../services/app-context.js"; // ипорт контекста
+
 
 
 // Burger Ingredients component
-function BurgerIngredients({ data, handleIngredientDetails }) {
+function BurgerIngredients({ handleIngredientDetails }) {
+
+  // получение данных из контекста
+  const { data } = React.useContext(DataContext);
+  const { currentIngredients, setCurrentIngredients } = React.useContext(IngredientContext);
+  const { setTotalPrice } = React.useContext(TotalPriceContext);
+
+
+  // обработчик выбора ингредиента (временный)
+  const handleIngredientClick = (item) => {
+    if (item.type !== "bun") { // если выбрана начинка
+      setCurrentIngredients({
+        ...currentIngredients,
+        ingredients: [...currentIngredients.ingredients, item] });
+        setTotalPrice({ type: "addIngredient", payload: item.price});
+
+    } else { // если выбрана булка
+      currentIngredients.bun && setTotalPrice({ type: "deleteIngredient", payload: (currentIngredients.bun.price * 2) }); // удаляем стоимость предыдущей булки
+      setCurrentIngredients({
+        ...currentIngredients,
+        bun: item });
+        setTotalPrice({ type: "addIngredient", payload: (item.price * 2)}); // умножаем цену булки на 2
+    }
+  };
 
   // установка заглавий Табсов
   const tabData = [
@@ -33,7 +58,7 @@ function BurgerIngredients({ data, handleIngredientDetails }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientDetails(item)}
+                    onClick={() => handleIngredientClick(item)}
                   />
                 );
               }
@@ -52,7 +77,7 @@ function BurgerIngredients({ data, handleIngredientDetails }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientDetails(item)}
+                    onClick={() => handleIngredientClick(item)}
                   />
                 );
               }
@@ -71,7 +96,7 @@ function BurgerIngredients({ data, handleIngredientDetails }) {
                     image={item.image}
                     name={item.name}
                     price={item.price}
-                    onClick={() => handleIngredientDetails(item)}
+                    onClick={() => handleIngredientClick(item)}
                   />
                 );
               }
@@ -86,7 +111,6 @@ function BurgerIngredients({ data, handleIngredientDetails }) {
 
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes).isRequired,
   handleIngredientDetails: func.isRequired,
 };
 
