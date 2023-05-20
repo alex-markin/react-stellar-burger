@@ -103,10 +103,10 @@ function App() {
     (
       <Modal onClose={handleOrderDetailsClose}>
         {isLoading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <OrderDetails orderNumber={orderNumber} />
-      )}
+          <p>Загрузка...</p>
+        ) : (
+          <OrderDetails orderNumber={orderNumber} />
+        )}
       </Modal>
     ) : isModalOpen && ingredientDetailOpen ?
       (

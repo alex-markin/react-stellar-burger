@@ -23,13 +23,13 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 
   // обработчик удаления ингредиента
   const handleClose = (item) => {
-      setCurrentIngredients({
-        ...currentIngredients,
-        ingredients: currentIngredients.ingredients.filter(
-          (ingredient) => ingredient._id !== item._id
-        ),
-      });
-      setTotalPrice({ type: "deleteIngredient", payload: item.price});
+    setCurrentIngredients({
+      ...currentIngredients,
+      ingredients: currentIngredients.ingredients.filter(
+        (ingredient) => ingredient._id !== item._id
+      ),
+    });
+    setTotalPrice({ type: "deleteIngredient", payload: item.price });
 
   };
 
@@ -40,62 +40,62 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
     >
       <div className={`${styles.ingredients}`}>
 
-      {/* секция с верхней булкой */}
+        {/* секция с верхней булкой */}
         <ul className={`${styles.ingredientsTop}`}>
           {data.map((item) => {
-           return currentIngredients.bun === item
-           ? (
-             <ConstructorElement
-               key={item._id}
-               type="top"
-               isLocked={true}
-               text={`${item.name} (верх)`}
-               price={item.price}
-               thumbnail={item.image}
-             />
-           )
-           : null;
+            return currentIngredients.bun === item
+              ? (
+                <ConstructorElement
+                  key={item._id}
+                  type="top"
+                  isLocked={true}
+                  text={`${item.name} (верх)`}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              )
+              : null;
           })}
 
         </ul>
 
-      {/* секция с ингредиентами */}
+        {/* секция с ингредиентами */}
         <ul className={styles.ingredientsCenter}>
           {data.map((item) => {
             return currentIngredients.ingredients.some((ingredient) => ingredient._id === item._id)
-            ? (
-              <li key={item._id} className={styles.listElement}>
-                <DragIcon type="TIconTypes" />
-                <ConstructorElement
-                  isLocked={false}
-                  type="undefined"
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                  handleClose={() => handleClose(item)}
-                />
-              </li>
-            )
-            : null;
+              ? (
+                <li key={item._id} className={styles.listElement}>
+                  <DragIcon type="TIconTypes" />
+                  <ConstructorElement
+                    isLocked={false}
+                    type="undefined"
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    handleClose={() => handleClose(item)}
+                  />
+                </li>
+              )
+              : null;
           })}
         </ul>
 
-      {/* секция с нижней булкой */}
+        {/* секция с нижней булкой */}
         <ul className={`${styles.ingredientsBottom}`}>
           {data.map((item) => {
             return currentIngredients.bun === item
-            ? (
-              <ConstructorElement
-                key={item._id}
-                type="bottom"
-                isLocked={true}
-                text={`${item.name} (низ)`}
-                price={item.price}
-                thumbnail={item.image}
-              />
-            )
-            : null;
-           })}
+              ? (
+                <ConstructorElement
+                  key={item._id}
+                  type="bottom"
+                  isLocked={true}
+                  text={`${item.name} (низ)`}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              )
+              : null;
+          })}
         </ul>
       </div>
 

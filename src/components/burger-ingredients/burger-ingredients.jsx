@@ -21,15 +21,17 @@ function BurgerIngredients({ handleIngredientDetails }) {
     if (item.type !== "bun") { // если выбрана начинка
       setCurrentIngredients({
         ...currentIngredients,
-        ingredients: [...currentIngredients.ingredients, item] });
-        setTotalPrice({ type: "addIngredient", payload: item.price});
+        ingredients: [...currentIngredients.ingredients, item]
+      });
+      setTotalPrice({ type: "addIngredient", payload: item.price });
 
     } else { // если выбрана булка
       currentIngredients.bun && setTotalPrice({ type: "deleteIngredient", payload: (currentIngredients.bun.price * 2) }); // удаляем стоимость предыдущей булки
       setCurrentIngredients({
         ...currentIngredients,
-        bun: item });
-        setTotalPrice({ type: "addIngredient", payload: (item.price * 2)}); // умножаем цену булки на 2
+        bun: item
+      });
+      setTotalPrice({ type: "addIngredient", payload: (item.price * 2) }); // умножаем цену булки на 2
     }
   };
 
