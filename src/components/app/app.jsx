@@ -10,6 +10,8 @@ import { useModal } from "../../hooks/use-modal.js"; // импорт хука м
 import { DataContext, IngredientContext, TotalPriceContext } from "../../services/app-context.js"; // ипорт контекста
 import { priceReducer } from "../../services/reducers.js"; // импорт редьюсера для подсчёта цены
 import { placeOrder } from "../../utils/place-order.js"; // импорт функции для взаимодействия с сервером для размещения заказа
+import { checkReponse } from "../../utils/check-response.js"; // импорт функции для проверки ответа сервера
+
 
 const orderID = '034536';
 const url = "https://norma.nomoreparties.space/api";
@@ -34,15 +36,16 @@ function App() {
   const [orderNumber, setOrderNumber] = React.useState(""); // номер заказа
   const [isLoading, setIsLoading] = React.useState(false); // стейт загрузки
 
+  // присваиваем значения контекстов
+  const DataContextValue = React.useMemo(() => ({ data, setData }), [data, setData]);
+  const IngredientContextValue = React.useMemo(() => ({ currentIngredients, setCurrentIngredients }), [currentIngredients, setCurrentIngredients]);
+  const TotalPriceContextValue = React.useMemo(() => ({ totalPrice, setTotalPrice }), [totalPrice, setTotalPrice]);
+
+
   // получаем данные с сервера
   React.useEffect(() => {
     fetch(`${url}/ingredients`)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
+      .then(checkReponse)
       .then((data) => {
         setData(data.data);
       })
@@ -61,7 +64,7 @@ function App() {
         })
         .catch((err) => {
           console.log(err);
-          setOrderNumber("")
+          setOrderNumber(`Ошибка заказа: ${err}`)
         })
         .finally(() => {
           setIsLoading(false);
@@ -116,13 +119,14 @@ function App() {
       ) : null;
 
 
+
   return (
     <>
       <AppHeader />
       <main className={styles.contentContainer}>
-        <DataContext.Provider value={{ data, setData }}>
-          <IngredientContext.Provider value={{ currentIngredients, setCurrentIngredients }}>
-            <TotalPriceContext.Provider value={{ totalPrice, setTotalPrice }}>
+        <DataContext.Provider value={DataContextValue}>
+          <IngredientContext.Provider value={IngredientContextValue}>
+            <TotalPriceContext.Provider value={TotalPriceContextValue}>
               <BurgerIngredients handleIngredientDetails={handleIngredientDetailsOpen} />
               <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
             </TotalPriceContext.Provider>

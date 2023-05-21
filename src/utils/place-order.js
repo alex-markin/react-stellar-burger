@@ -1,4 +1,6 @@
 
+import { checkReponse } from "./check-response.js";
+
 export const placeOrder = (url, currentIngredients) => {
   if (currentIngredients.bun && currentIngredients.ingredients.length > 0) {
     const ingredients = currentIngredients.ingredients.map((item) => item._id);
@@ -13,12 +15,7 @@ export const placeOrder = (url, currentIngredients) => {
       },
       body: JSON.stringify(body),
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
+      .then(checkReponse)
       .then((data) => {
         return data.order.number;
       })
