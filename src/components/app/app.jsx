@@ -7,52 +7,42 @@ import Modal from "../modal/modal.jsx"; // импорт компонента м�
 import OrderDetails from "../order-details/order-details.jsx"; // импорт компонента деталей заказа
 import IngredientDetails from "../ingredient-details/Ingredient-details"; // импорт компонента деталей ингредиента
 import { useModal } from "../../hooks/use-modal.js"; // импорт хука модального окна
-import { DataContext, IngredientContext, TotalPriceContext } from "../../services/app-context.js"; // ипорт контекста
-import { priceReducer } from "../../services/reducers.js"; // импорт редьюсера для подсчёта цены
 import { placeOrder } from "../../utils/place-order.js"; // импорт функции для взаимодействия с сервером для размещения заказа
-import { checkReponse } from "../../utils/check-response.js"; // импорт функции для проверки ответа сервера
+import { fetchData } from "../../services/data-slice.js"; // импорт редьюсера для получения данных с сервера
+// import { checkReponse } from "../../utils/check-response.js"; // импорт функции для проверки ответа сервера
+import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
 
 
-const orderID = '034536';
 const url = "https://norma.nomoreparties.space/api";
-const initialState = {
-  totalPrice: 0,
-};
 
 function App() {
 
-
-  // РЕЬЮЕРУ: привет! в брифе не прописано начальное состояние конструктора, так что я предположил, что по-умолчанию он пустой. Нужно покликать на ингридиенты :)
-
+  const dispatch = useDispatch(); // диспатч Redux
 
   // стейты
-  const [data, setData] = React.useState([]); // данные с сервера
+  // const [data, setData] = React.useState([]); // данные с сервера
   const { isModalOpen, openModal, closeModal } = useModal(); // стейт модального окна
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false); // открытие модального окна с деталями заказа
   const [ingredientDetailOpen, setIngredientDetailsOpen] = React.useState(false); // открытие модального окна с деталями ингредиента
   const [selectedIngredient, setSelectedIngredient] = React.useState(null); // выбранный ингредиент для модального окна
-  const [currentIngredients, setCurrentIngredients] = React.useState({ bun: null, ingredients: [] }); // выбранные ингредиенты для конструктора
-  const [totalPrice, setTotalPrice] = React.useReducer(priceReducer, initialState); // общая стоимость заказа
+
+
+  // получение данных из хранилища Redux
+  const data = useSelector((store) => store.data); // данные с сервера
+  const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
+
+
   const [orderNumber, setOrderNumber] = React.useState(""); // номер заказа
   const [isLoading, setIsLoading] = React.useState(false); // стейт загрузки
 
-  // присваиваем значения контекстов
-  const DataContextValue = React.useMemo(() => ({ data, setData }), [data, setData]);
-  const IngredientContextValue = React.useMemo(() => ({ currentIngredients, setCurrentIngredients }), [currentIngredients, setCurrentIngredients]);
-  const TotalPriceContextValue = React.useMemo(() => ({ totalPrice, setTotalPrice }), [totalPrice, setTotalPrice]);
-
-
   // получаем данные с сервера
   React.useEffect(() => {
-    fetch(`${url}/ingredients`)
-      .then(checkReponse)
-      .then((data) => {
-        setData(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // проверка наличия данных в хранилище
+    if (data.data.length === 0) {
+      dispatch(fetchData(url));
+    }
   }, [url]);
+
 
   // функция отправки заказа и получения номера заказа
   function handlePlaceOrder() {
@@ -124,14 +114,10 @@ function App() {
     <>
       <AppHeader />
       <main className={styles.contentContainer}>
-        <DataContext.Provider value={DataContextValue}>
-          <IngredientContext.Provider value={IngredientContextValue}>
-            <TotalPriceContext.Provider value={TotalPriceContextValue}>
+        {/* <DataContext.Provider value={DataContextValue}> */}
               <BurgerIngredients handleIngredientDetails={handleIngredientDetailsOpen} />
               <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
-            </TotalPriceContext.Provider>
-          </IngredientContext.Provider>
-        </DataContext.Provider>
+        {/* </DataContext.Provider> */}
       </main>
       {modal}
     </>

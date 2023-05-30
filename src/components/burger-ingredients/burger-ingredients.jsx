@@ -3,35 +3,31 @@ import styles from "./burger-ingredients.module.css"; // импорт стиле
 import Tabs from "../tabs/tabs.jsx"; // импорт компонента Табс
 import Ingredient from "../ingredient/ingredient.jsx"; // импорт компонента Ингредиент
 import { PropTypes, func } from 'prop-types'; // импорт проптайпсов
-import { DataContext, IngredientContext, TotalPriceContext } from "../../services/app-context.js"; // ипорт контекста
-
-
+import { priceSlice } from "../../services/price-slice.js"; // импорт редьюсера для подсчёта цены
+import { ingredientsSlice } from "../../services/ingredients-slice"; // импорт редьюсера для подсчёта цены
+import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
 
 // Burger Ingredients component
 function BurgerIngredients({ handleIngredientDetails }) {
 
-  // получение данных из контекста
-  const { data } = React.useContext(DataContext);
-  const { currentIngredients, setCurrentIngredients } = React.useContext(IngredientContext);
-  const { setTotalPrice } = React.useContext(TotalPriceContext);
+  const dispatch = useDispatch(); // диспатч Redux
+
+  // получение данных из хранилища Redux
+  const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
+  const { data } = useSelector((store) => store.data); // данные с сервера
 
 
   // обработчик выбора ингредиента (временный)
   const handleIngredientClick = (item) => {
+
     if (item.type !== "bun") { // если выбрана начинка
-      setCurrentIngredients({
-        ...currentIngredients,
-        ingredients: [...currentIngredients.ingredients, item]
-      });
-      setTotalPrice({ type: "addIngredient", payload: item.price });
+      dispatch(ingredientsSlice.actions.addIngredient(item));
+      dispatch(priceSlice.actions.addIngredient(item.price));
 
     } else { // если выбрана булка
-      currentIngredients.bun && setTotalPrice({ type: "deleteIngredient", payload: (currentIngredients.bun.price * 2) }); // удаляем стоимость предыдущей булки
-      setCurrentIngredients({
-        ...currentIngredients,
-        bun: item
-      });
-      setTotalPrice({ type: "addIngredient", payload: (item.price * 2) }); // умножаем цену булки на 2
+      currentIngredients.bun && dispatch(priceSlice.actions.removeIngredient(currentIngredients.bun.price * 2));
+      dispatch(ingredientsSlice.actions.changeBun(item));
+      dispatch(priceSlice.actions.addIngredient(item.price * 2));
     }
   };
 

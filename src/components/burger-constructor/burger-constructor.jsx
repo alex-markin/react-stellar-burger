@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   ConstructorElement,
@@ -9,28 +8,28 @@ import {
 import styles from "./burger-constructor-styles.module.css"; // импорт стилей
 import PropTypes from 'prop-types'; // импорт проптайпсов
 import iconPropTypes from '../appHeader/app-header.js'; // импорт проптайпсов для иконок
-import { DataContext, IngredientContext, TotalPriceContext } from "../../services/app-context.js"; // импорт контекста
+import { priceSlice } from "../../services/price-slice.js"; // импорт редьюсера для подсчёта цены
+import { ingredientsSlice } from "../../services/ingredients-slice"; // импорт редьюсера для подсчёта цены
+import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+
 
 
 // Burger Ingredients component
 
 function BurgerConstructor({ handleOrderDetailsOpen }) {
 
-  // получение данных из контекста
-  const { data } = React.useContext(DataContext);
-  const { currentIngredients, setCurrentIngredients } = React.useContext(IngredientContext);
-  const { totalPrice, setTotalPrice } = React.useContext(TotalPriceContext);
+  const dispatch = useDispatch(); // диспатч Redux
+
+  // получение данных из хранилища Redux
+  const { totalPrice } = useSelector((store) => store.price); // общая стоимость заказа
+  const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
+  const { data } = useSelector((store) => store.data); // данные с сервера
+
 
   // обработчик удаления ингредиента
   const handleClose = (item) => {
-    setCurrentIngredients({
-      ...currentIngredients,
-      ingredients: currentIngredients.ingredients.filter(
-        (ingredient) => ingredient._id !== item._id
-      ),
-    });
-    setTotalPrice({ type: "deleteIngredient", payload: item.price });
-
+    dispatch(ingredientsSlice.actions.removeIngredient(item));
+    dispatch(priceSlice.actions.removeIngredient(item.price));
   };
 
 
@@ -102,7 +101,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
       <div className={`${styles.totalPrice} mt-10`}>
 
         <div className={`${styles.totalPriceText}`}>
-          <p className="text text_type_digits-medium">{totalPrice.totalPrice}</p>
+          <p className="text text_type_digits-medium">{totalPrice}</p>
           <CurrencyIcon type="TIconTypes" />
         </div>
         <Button onClick={handleOrderDetailsOpen} type="primary" size="large" htmlType="submit">
