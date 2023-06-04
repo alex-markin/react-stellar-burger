@@ -1,15 +1,17 @@
-import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tabs.module.css';
 import PropTypes from 'prop-types';
+import { useSelector } from "react-redux";
 
 
-function Tabs({ tabData }) {
-  const [current, setCurrent] = useState(tabData[0]?.value);
+
+function Tabs({ tabData, onTabClick }) {
+  const activeTab = useSelector((store) => store.tabsNavigation.activeTab); // активный таб
+
   return (
     <div className={styles.tabsContainer}>
       {tabData.map((tab) => (
-        <Tab key={tab.value} value={tab.value} active={current === tab.value} onClick={setCurrent}>
+        <Tab key={tab.value} value={tab.value} active={activeTab === tab.value}  onClick={() => onTabClick(tab.value)}>
           {tab.label}
         </Tab>
       ))}
