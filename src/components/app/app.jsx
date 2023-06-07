@@ -1,5 +1,8 @@
 // импорт библиотек
 import React from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 
 // импорт компонентов
 import AppHeader from "../appHeader/app-header"; // импорт компонента хедера
@@ -110,10 +113,10 @@ function App() {
     <>
       <AppHeader />
       <main className={styles.contentContainer}>
-        {/* <DataContext.Provider value={DataContextValue}> */}
-        <BurgerIngredients handleIngredientDetails={handleIngredientDetailsOpen} />
-        <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
-        {/* </DataContext.Provider> */}
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients handleIngredientDetails={handleIngredientDetailsOpen} />
+          <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
+        </DndProvider>
       </main>
       {modal}
     </>

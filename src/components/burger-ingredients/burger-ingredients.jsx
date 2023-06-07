@@ -1,11 +1,22 @@
-import React, { useEffect } from "react";
-import { useRef, useState } from "react"; // импорт хука рефа
-import styles from "./burger-ingredients.module.css"; // импорт стилей
+
+// импорт библиотек
+import { useEffect } from "react";
+import { PropTypes, func } from 'prop-types'; // импорт проптайпсов
+
+// импорт хуков
+import { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+
+// импорт компонентов
 import Tabs from "../tabs/tabs.jsx"; // импорт компонента Табс
 import Ingredient from "../ingredient/ingredient.jsx"; // импорт компонента Ингредиент
-import { PropTypes, func } from 'prop-types'; // импорт проптайпсов
-import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+
+// импорт стилей
+import styles from "./burger-ingredients.module.css"; // импорт стилей
+
+// импорт слайсов и редьюсеров Redux toolkit
 import { tabsNavigationSlice } from "../../services/tabs-navigation-slice.js"; // импорт редьюсера для навигации по табам
+
 
 // Burger Ingredients component
 function BurgerIngredients({ handleIngredientDetails }) {
@@ -62,11 +73,13 @@ function BurgerIngredients({ handleIngredientDetails }) {
     };
   }, [dispatch, tabData]);
 
+
+
   // скролл к заголовку Табса
   const scrollToHeader = (tabValue) => {
     const headerRef = tabValue === "Булки" ? bunRef.current :
-      tabValue === "Соусы" ? sauceRef.current :
-      tabValue === "Начинки" ? mainRef.current : null;
+    tabValue === "Соусы" ? sauceRef.current :
+    tabValue === "Начинки" ? mainRef.current : null;
 
     if (headerRef && containerRef.current) {
       const containerTop = containerRef.current.getBoundingClientRect().top;
@@ -78,24 +91,6 @@ function BurgerIngredients({ handleIngredientDetails }) {
       });
     }
   };
-
-
-
-  // обработчик выбора ингредиента (временный)
-  // const handleIngredientClick = (item) => {
-
-  //   if (item.type !== "bun") { // если выбрана начинка
-  //     dispatch(ingredientsSlice.actions.addIngredient(item));
-  //     dispatch(priceSlice.actions.addIngredient(item.price));
-
-  //   } else { // если выбрана булка
-  //     currentIngredients.bun && dispatch(priceSlice.actions.removeIngredient(currentIngredients.bun.price * 2));
-  //     dispatch(ingredientsSlice.actions.changeBun(item));
-  //     dispatch(priceSlice.actions.addIngredient(item.price * 2));
-  //   }
-  // };
-
-
 
 
   return (
@@ -117,9 +112,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
                 return (
                   <Ingredient
                     key={item._id}
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
+                    item={item}
                     onClick={() => handleIngredientDetails(item)}
                   />
                 );
@@ -140,9 +133,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
                 return (
                   <Ingredient
                     key={item._id}
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
+                    item={item}
                     onClick={() => handleIngredientDetails(item)}
                   />
                 );
@@ -163,9 +154,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
                 return (
                   <Ingredient
                     key={item._id}
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
+                    item={item}
                     onClick={() => handleIngredientDetails(item)}
                   />
                 );

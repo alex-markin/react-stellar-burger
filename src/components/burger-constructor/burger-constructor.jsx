@@ -3,14 +3,23 @@ import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon
+} from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
 
-} from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки
-import styles from "./burger-constructor-styles.module.css"; // импорт стилей
-import PropTypes from 'prop-types'; // импорт проптайпсов
+// импорт стилей
+import styles from "./burger-constructor-styles.module.css";
+import PropTypes from 'prop-types';
 import iconPropTypes from '../appHeader/app-header.js'; // импорт проптайпсов для иконок
-import { priceSlice } from "../../services/price-slice.js"; // импорт редьюсера для подсчёта цены
-import { ingredientsSlice } from "../../services/ingredients-slice"; // импорт редьюсера для подсчёта цены
+
+// импорт слайсов и редьюсеров Redux toolkit
+import { ingredientsSlice } from "../../services/ingredients-slice";
+
+// импорт хуков
 import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { useDrag, useDrop } from 'react-dnd'; // импорт хука для перетаскивания
+
+// импорт компонентов
+import DraggableIngredient from "../draggable-ingredient/draggable-ingredient.jsx";
+
 
 
 
@@ -21,23 +30,48 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
   const dispatch = useDispatch(); // диспатч Redux
 
   // получение данных из хранилища Redux
-  const { totalPrice } = useSelector((store) => store.price); // общая стоимость заказа
+  const totalPrice = useSelector((store) => store.ingredients.totalPrice); // общая стоимость заказа
   const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
   const { data } = useSelector((store) => store.data); // данные с сервера
 
+  const item = { ...currentIngredients.ingredients }; // объект с выбранными ингредиентами
 
   // обработчик удаления ингредиента
   const handleClose = (item) => {
     dispatch(ingredientsSlice.actions.removeIngredient(item));
-    dispatch(priceSlice.actions.removeIngredient(item.price));
   };
 
+  // перетаскивание ингредиентов
+
+
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop(item) {
+      data.map((ingredient, index) => {
+        if (item.type === "bun" && ingredient._id === item._id) {
+          dispatch(ingredientsSlice.actions.changeBun(item));
+        } else if (ingredient._id === item._id ) {
+
+          dispatch(ingredientsSlice.actions.addIngredient(item));
+        }
+      })
+    },
+
+
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  // стили для контейнера ингредиентов
+  const ingredientsContainerStyle = isHover ? `${styles.ingredients} ${styles.ingredientsHover}` : `${styles.ingredients}`;
 
   return (
     <section
       className={`${styles.container} pt-25 pl-4 pr-4`}
     >
-      <div className={`${styles.ingredients}`}>
+      <div className={`${ingredientsContainerStyle}`} ref={dropTarget}>
 
         {/* секция с верхней булкой */}
         <ul className={`${styles.ingredientsTop}`}>
@@ -51,6 +85,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
                   text={`${item.name} (верх)`}
                   price={item.price}
                   thumbnail={item.image}
+
                 />
               )
               : null;
@@ -59,26 +94,15 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
         </ul>
 
         {/* секция с ингредиентами */}
-        <ul className={styles.ingredientsCenter}>
-          {data.map((item) => {
-            return currentIngredients.ingredients.some((ingredient) => ingredient._id === item._id)
+        <ul className={styles.ingredientsCenter} >
+          {currentIngredients.ingredients.map((item, index) => {
+            return item
               ? (
-                <li key={item._id} className={styles.listElement}>
-                  <DragIcon type="TIconTypes" />
-                  <ConstructorElement
-                    isLocked={false}
-                    type="undefined"
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    handleClose={() => handleClose(item)}
-                  />
-                </li>
+                <DraggableIngredient key={item._id} item={item} handleClose={handleClose} index={index} />
               )
               : null;
           })}
         </ul>
-
         {/* секция с нижней булкой */}
         <ul className={`${styles.ingredientsBottom}`}>
           {data.map((item) => {
