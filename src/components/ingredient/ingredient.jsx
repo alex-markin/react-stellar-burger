@@ -23,11 +23,10 @@ function Ingredient({item, onClick}) {
   // получение данных из хранилища Redux
   const { count } = useSelector((store) => store.ingredients);
 
-
    // перетаскивание ингредиентов
    const [{ isDragging }, dragRef] = useDrag({
     type: "ingredient",
-    item: (item),
+    item: ({item, source: "ingredients"}),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

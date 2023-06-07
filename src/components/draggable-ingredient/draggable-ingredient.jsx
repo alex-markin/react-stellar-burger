@@ -9,9 +9,10 @@ import { useDrag } from 'react-dnd'; // импорт хука для перет�
 
 function DraggableIngredient({ item, handleClose, index }) {
 
+
   const [{ isDragging }, dragRef] = useDrag({
     type: "ingredient",
-    item: (item),
+    item: ({item, source: "draggedIngredient"}),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

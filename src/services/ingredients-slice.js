@@ -44,12 +44,19 @@ export const ingredientsSlice = createSlice({
 
     reorderIngredients: (state, action) => {
       const { dragIndex, hoverIndex } = action.payload;
-      const draggedIngredient = state.ingredients[dragIndex];
+      const ingredients = [...state.ingredients]; // Create a new array
 
-      state.ingredients.splice(dragIndex, 1);
-      state.ingredients.splice(hoverIndex, 0, draggedIngredient);
+      const draggedIngredient = ingredients[dragIndex];
+      const updatedIngredients = [...ingredients];
+
+      updatedIngredients.splice(dragIndex, 1);
+      updatedIngredients.splice(hoverIndex, 0, draggedIngredient);
+
+      state.ingredients = updatedIngredients;
+
+    }
 
     },
   }
-});
+);
 

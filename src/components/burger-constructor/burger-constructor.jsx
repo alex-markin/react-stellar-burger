@@ -47,22 +47,38 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: 'ingredient',
-    drop(item) {
-      data.map((ingredient, index) => {
-        if (item.type === "bun" && ingredient._id === item._id) {
+    drop({item, source}) {
+        if (item.type === "bun") {
           dispatch(ingredientsSlice.actions.changeBun(item));
-        } else if (ingredient._id === item._id ) {
-
-          dispatch(ingredientsSlice.actions.addIngredient(item));
         }
-      })
+
+        if ( source === "draggedIngredient") {
+          const ingredients = currentIngredients.ingredients;
+          const draggedIndex = item.index;
+          const hoverIndex = ingredients.length;
+          console.log(draggedIndex, hoverIndex);
+
+
+          if (draggedIndex === hoverIndex) {
+            return;
+          }
+
+          dispatch(ingredientsSlice.actions.reorderIngredients({draggedIndex, hoverIndex} ));
+        }
+
+        if (source === "ingredients") {
+          dispatch(ingredientsSlice.actions.addIngredient(item));
+
+        }
     },
 
 
-    collect: (monitor) => ({
-      isHover: monitor.isOver(),
-    }),
-  });
+  collect: (monitor) => ({
+    isHover: monitor.isOver(),
+
+  }),
+});
+
 
   // стили для контейнера ингредиентов
   const ingredientsContainerStyle = isHover ? `${styles.ingredients} ${styles.ingredientsHover}` : `${styles.ingredients}`;
