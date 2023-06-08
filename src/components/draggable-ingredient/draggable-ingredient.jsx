@@ -1,4 +1,4 @@
-import {  ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
+import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
 import React from 'react';
 import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
 import styles from "./draggable-ingredient.module.css";
@@ -12,7 +12,7 @@ function DraggableIngredient({ item, handleClose, index }) {
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "ingredient",
-    item: ({item, source: "draggedIngredient"}),
+    item: ({ item, index, source: "draggedIngredient" }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

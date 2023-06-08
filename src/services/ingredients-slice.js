@@ -1,13 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import { createSlice } from "@reduxjs/toolkit";
 
 export const ingredientsSlice = createSlice({
-  name: 'ingredients',
+  name: "ingredients",
   initialState: {
     ingredients: [],
+    draggableIngredients: [],
     bun: null,
     count: {},
-    totalPrice: 0
+    totalPrice: 0,
   },
   reducers: {
     addIngredient: (state, action) => {
@@ -15,7 +15,9 @@ export const ingredientsSlice = createSlice({
 
       ingredient.index = state.ingredients.length;
       state.count[ingredient._id] == null && state.ingredients.push(ingredient);
-      state.count[ingredient._id] = state.count[ingredient._id] ? state.count[ingredient._id] + 1 : 1;
+      state.count[ingredient._id] = state.count[ingredient._id]
+        ? state.count[ingredient._id] + 1
+        : 1;
       state.totalPrice += ingredient.price;
     },
 
@@ -23,11 +25,15 @@ export const ingredientsSlice = createSlice({
       const ingredient = { ...action.payload };
 
       if (state.count[ingredient._id] === 1) {
-        state.ingredients = state.ingredients.filter((item) => item._id !== ingredient._id);
+        state.ingredients = state.ingredients.filter(
+          (item) => item._id !== ingredient._id
+        );
         delete state.count[ingredient._id];
         state.totalPrice -= ingredient.price;
       } else {
-        state.count[ingredient._id] = state.count[ingredient._id] ? state.count[ingredient._id] - 1 : 0;
+        state.count[ingredient._id] = state.count[ingredient._id]
+          ? state.count[ingredient._id] - 1
+          : 0;
         state.totalPrice -= ingredient.price;
       }
     },
@@ -43,20 +49,11 @@ export const ingredientsSlice = createSlice({
     },
 
     reorderIngredients: (state, action) => {
-      const { dragIndex, hoverIndex } = action.payload;
-      const ingredients = [...state.ingredients]; // Create a new array
+      const { sourceIndex, targetIndex } = action.payload;
+      const draggedIngredient = state.ingredients[sourceIndex];
 
-      const draggedIngredient = ingredients[dragIndex];
-      const updatedIngredients = [...ingredients];
-
-      updatedIngredients.splice(dragIndex, 1);
-      updatedIngredients.splice(hoverIndex, 0, draggedIngredient);
-
-      state.ingredients = updatedIngredients;
-
-    }
-
+      state.ingredients.splice(sourceIndex, 1);
+      state.ingredients.splice(targetIndex, 0, draggedIngredient);
     },
-  }
-);
-
+  },
+});
