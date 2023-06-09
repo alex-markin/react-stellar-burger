@@ -1,5 +1,7 @@
-
+// импорт стилей
 import styles from "./ingredient-details.module.css";
+
+// импорт библиотек
 import ingredientPropTypes from '../../utils/types.js';
 
 

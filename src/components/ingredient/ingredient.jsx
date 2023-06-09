@@ -11,17 +11,18 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import styles from './ingredient.module.css';
 
 // импорт хуков
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
+// импорт функций useSelector
+import { getCurrentIngredients } from "../../services/store-selectors.js";
 
 
 function Ingredient({item, onClick}) {
 
   // диспатч Redux
-  const dispatch = useDispatch();
 
   // получение данных из хранилища Redux
-  const { count } = useSelector((store) => store.ingredients);
+  const { count } = useSelector(getCurrentIngredients);
 
    // перетаскивание ингредиентов
    const [{ isDragging }, dragRef] = useDrag({
@@ -47,10 +48,14 @@ function Ingredient({item, onClick}) {
 
 }
 
-Counter.propTypes = {
-  count: PropTypes.number.isRequired,
-  size: PropTypes.oneOf(['default', 'small']),
-  extraClass: PropTypes.string,
+Ingredient.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 

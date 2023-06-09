@@ -1,14 +1,12 @@
-
 import { checkReponse } from "../utils/check-response.js";
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export const orderSlice = createSlice({
-  name: 'data',
+  name: "data",
   initialState: {
     order: null,
     loading: false,
-    error: null
+    error: null,
   },
   reducers: {
     fetchOrder: (state) => {
@@ -23,7 +21,7 @@ export const orderSlice = createSlice({
     },
 
     fetchOrderFailure: (state, action) => {
-      state.order = [];
+      state.order = null;
       state.loading = false;
       state.error = action.payload;
     },
@@ -32,17 +30,12 @@ export const orderSlice = createSlice({
       state.order = null;
       state.loading = false;
       state.error = null;
-    }
-
-  }
+    },
+  },
 });
 
-export const {
-  fetchOrder,
-  fetchOrderSuccess,
-  fetchOrderFailure,
-} = orderSlice.actions;
-
+export const { fetchOrder, fetchOrderSuccess, fetchOrderFailure } =
+  orderSlice.actions;
 
 export const placeOrder = (url, currentIngredients) => (dispatch) => {
   if (currentIngredients.bun && currentIngredients.ingredients.length > 0) {

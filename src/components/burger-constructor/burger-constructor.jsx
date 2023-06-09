@@ -4,6 +4,7 @@ import {
   DragIcon,
   CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
+import { v4 as uuidv4 } from 'uuid'; // импорт библиотеки uuid
 
 // импорт стилей
 import styles from "./burger-constructor-styles.module.css";
@@ -15,13 +16,15 @@ import { ingredientsSlice } from "../../services/ingredients-slice";
 
 // импорт хуков
 import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { useCallback } from "react";
 import { useDrag, useDrop } from 'react-dnd'; // импорт хука для перетаскивания
 
 // импорт компонентов
 import DraggableIngredient from "../draggable-ingredient/draggable-ingredient.jsx";
 
 
-
+// импорт функций useSelector
+import { getCurrentIngredients, getData } from "../../services/store-selectors.js";
 
 // Burger Ingredients component
 
@@ -30,53 +33,46 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
   const dispatch = useDispatch(); // диспатч Redux
 
   // получение данных из хранилища Redux
-  const totalPrice = useSelector((store) => store.ingredients.totalPrice); // общая стоимость заказа
-  const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
-  const { data } = useSelector((store) => store.data); // данные с сервера
+  const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
+  const { data } = useSelector(getData); // данные с сервера
 
-  const item = { ...currentIngredients.ingredients }; // объект с выбранными ингредиентами
+  // рассчёт итоговой стоимости заказа
+  const totalPrice = currentIngredients.ingredients.reduce((acc, ingredient) => {
+    return acc + ingredient.price;
+  }, 0) + (currentIngredients.bun ? currentIngredients.bun.price * 2 : 0);
+
+
+  // перетаскивание ингредиентов
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop({ item, source }) {
+
+      if (item.type === "bun") {
+        dispatch(ingredientsSlice.actions.changeBun(item));
+      }
+
+      if (source === "ingredients" && item.type !== "bun") {
+        const uuid = uuidv4(); // генерация уникального id для ингредиента конструктора
+        dispatch(ingredientsSlice.actions.addIngredient({ item, uuid }));
+      }
+    },
+
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
 
   // обработчик удаления ингредиента
   const handleClose = (item) => {
     dispatch(ingredientsSlice.actions.removeIngredient(item));
   };
 
-  // перетаскивание ингредиентов
-
-
-
-  const [{ isHover }, dropTarget] = useDrop({
-    accept: 'ingredient',
-    drop({ item, source }) {
-      if (item.type === "bun") {
-        dispatch(ingredientsSlice.actions.changeBun(item));
-      }
-
-      if (source === "draggedIngredient" && item.type !== "bun") {
-        const sourceIndex = item.index;
-        const targetIndex = currentIngredients.ingredients.findIndex((ingredient) => ingredient === null);
-        console.log(sourceIndex, targetIndex);
-
-        if (sourceIndex === targetIndex) {
-          return;
-        }
-
-
-        dispatch(ingredientsSlice.actions.reorderIngredients({ sourceIndex, targetIndex }));
-      }
-
-      if (source === "ingredients" && item.type !== "bun") {
-        dispatch(ingredientsSlice.actions.addIngredient(item));
-
-      }
-    },
-
-
-    collect: (monitor) => ({
-      isHover: monitor.isOver(),
-
-    }),
-  });
+  // колбэк смены ингредиентов местами
+  const moveCard = useCallback((sourceIndex, hoverIndex) => {
+    dispatch(ingredientsSlice.actions.reorderIngredients({ sourceIndex, hoverIndex }));
+  }, [])
 
 
   // стили для контейнера ингредиентов
@@ -113,7 +109,13 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
           {currentIngredients.ingredients.map((item, index) => {
             return item
               ? (
-                <DraggableIngredient key={item._id} item={item} handleClose={handleClose} index={index} />
+                <DraggableIngredient
+                  key={item.uuid}
+                  uuid={item.uuid}
+                  item={item}
+                  handleClose={handleClose}
+                  index={index}
+                  moveCard={moveCard} />
               )
               : null;
           })}
@@ -159,10 +161,6 @@ BurgerConstructor.propTypes = {
 
 CurrencyIcon.propTypes = iconPropTypes;
 DragIcon.propTypes = iconPropTypes;
-
-
-
-
 
 
 export default BurgerConstructor;

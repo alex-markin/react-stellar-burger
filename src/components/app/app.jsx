@@ -27,6 +27,9 @@ import { orderSlice } from "../../services/order-slice.js"; // импорт ре
 // импорт утилитарных функций
 import { placeOrder } from "../../services/order-slice.js"; // импорт функции для взаимодействия с сервером для размещения заказа
 
+// импорт функций useSelector
+import { getCurrentIngredients, getCurrentOrder, getData, getSelectedIngredient } from "../../services/store-selectors.js";
+
 // адрес сервера
 const url = "https://norma.nomoreparties.space/api";
 
@@ -41,10 +44,10 @@ function App() {
   const [ingredientDetailOpen, setIngredientDetailsOpen] = React.useState(false); // открытие модального окна с деталями ингредиента
 
   // получение данных из хранилища Redux
-  const data = useSelector((store) => store.data); // данные с сервера
-  const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
-  const { selectedIngredient } = useSelector((store) => store.selectedIngredient); // выбранный ингредиент для модального окна
-  const { order } = useSelector((store) => store.order); // заказ
+  const data = useSelector(getData); // данные с сервера
+  const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
+  const { selectedIngredient } = useSelector(getSelectedIngredient); // выбранный ингредиент для модального окна
+  const { order } = useSelector(getCurrentOrder); // заказ
 
   // получаем данные с сервера
   React.useEffect(() => {

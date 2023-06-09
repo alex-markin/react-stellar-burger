@@ -14,7 +14,7 @@
   min-height: 656px;
   max-height: 656px;
   box-sizing: border-box;
-  transition: outline-color 0.2s ease;
+  transition: outline-color 0.3s ease;
 }
 
 .ingredientsHover {

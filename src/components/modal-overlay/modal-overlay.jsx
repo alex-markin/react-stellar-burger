@@ -1,10 +1,10 @@
+// импорт библиотек
 import React from "react";
-import ReactDOM from "react-dom";
-import styles from "./modal-overlay.module.css";
 import PropTypes from 'prop-types';
 
+// импорт стилей
+import styles from "./modal-overlay.module.css";
 
-const modalRoot = document.getElementById("react-modals");
 
 function ModalOverlay({ onClose }) {
 

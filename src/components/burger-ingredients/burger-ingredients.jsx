@@ -18,7 +18,9 @@ import styles from "./burger-ingredients.module.css"; // импорт стиле
 import { tabsNavigationSlice } from "../../services/tabs-navigation-slice.js"; // импорт редьюсера для навигации по табам
 
 
-// Burger Ingredients component
+// импорт функций useSelector
+import { getData } from "../../services/store-selectors.js";
+
 function BurgerIngredients({ handleIngredientDetails }) {
 
   const dispatch = useDispatch(); // диспатч Redux
@@ -30,11 +32,8 @@ function BurgerIngredients({ handleIngredientDetails }) {
     { value: "Начинки", label: "Начинки" },
   ];
 
-  const activeTab = useSelector((store) => store.tabsNavigation.activeTab); // активный таб
-
   // получение данных из хранилища Redux
-  const currentIngredients = useSelector((store) => store.ingredients); // выбранные ингредиенты для конструктора
-  const { data } = useSelector((store) => store.data); // данные с сервера
+  const { data } = useSelector(getData); // данные с сервера
 
 
   // рефы для заголовков Табсов и контейнера
@@ -78,8 +77,8 @@ function BurgerIngredients({ handleIngredientDetails }) {
   // скролл к заголовку Табса
   const scrollToHeader = (tabValue) => {
     const headerRef = tabValue === "Булки" ? bunRef.current :
-    tabValue === "Соусы" ? sauceRef.current :
-    tabValue === "Начинки" ? mainRef.current : null;
+      tabValue === "Соусы" ? sauceRef.current :
+        tabValue === "Начинки" ? mainRef.current : null;
 
     if (headerRef && containerRef.current) {
       const containerTop = containerRef.current.getBoundingClientRect().top;
@@ -96,7 +95,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
   return (
     <section className={`${styles.container} pt-10`}>
       <h1 className={`text text_type_main-large mb-5`}>Соберите бургер</h1>
-      <Tabs tabData={tabData} onTabClick={scrollToHeader}/>
+      <Tabs tabData={tabData} onTabClick={scrollToHeader} />
 
       <div ref={containerRef} className={`${styles.ingredients} `}>
 
