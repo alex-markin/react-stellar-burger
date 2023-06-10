@@ -1,7 +1,11 @@
-
-import styles from "./modal.module.css";
-import PropTypes from 'prop-types';
+// импорт библиотек
 import ReactDOM from "react-dom";
+import PropTypes from 'prop-types';
+
+// импорт стилей
+import styles from "./modal.module.css";
+
+// импорт компонентов
 import ModalOverlay from "../modal-overlay/modal-overlay";
 
 

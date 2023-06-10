@@ -1,44 +1,88 @@
-import React from "react";
 import {
   Button,
   ConstructorElement,
   DragIcon,
   CurrencyIcon
+} from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
+import { v4 as uuidv4 } from 'uuid'; // импорт библиотеки uuid
 
-} from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки
-import styles from "./burger-constructor-styles.module.css"; // импорт стилей
-import PropTypes from 'prop-types'; // импорт проптайпсов
+// импорт стилей
+import styles from "./burger-constructor-styles.module.css";
+import PropTypes from 'prop-types';
 import iconPropTypes from '../appHeader/app-header.js'; // импорт проптайпсов для иконок
-import { DataContext, IngredientContext, TotalPriceContext } from "../../services/app-context.js"; // импорт контекста
 
+// импорт слайсов и редьюсеров Redux toolkit
+import { ingredientsSlice } from "../../services/ingredients-slice";
+
+// импорт хуков
+import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { useCallback } from "react";
+import { useDrag, useDrop } from 'react-dnd'; // импорт хука для перетаскивания
+
+// импорт компонентов
+import DraggableIngredient from "../draggable-ingredient/draggable-ingredient.jsx";
+
+
+// импорт функций useSelector
+import { getCurrentIngredients, getData } from "../../services/store-selectors.js";
 
 // Burger Ingredients component
 
 function BurgerConstructor({ handleOrderDetailsOpen }) {
 
-  // получение данных из контекста
-  const { data } = React.useContext(DataContext);
-  const { currentIngredients, setCurrentIngredients } = React.useContext(IngredientContext);
-  const { totalPrice, setTotalPrice } = React.useContext(TotalPriceContext);
+  const dispatch = useDispatch(); // диспатч Redux
+
+  // получение данных из хранилища Redux
+  const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
+  const { data } = useSelector(getData); // данные с сервера
+
+  // рассчёт итоговой стоимости заказа
+  const totalPrice = currentIngredients.ingredients.reduce((acc, ingredient) => {
+    return acc + ingredient.price;
+  }, 0) + (currentIngredients.bun ? currentIngredients.bun.price * 2 : 0);
+
+
+  // перетаскивание ингредиентов
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop({ item, source }) {
+
+      if (item.type === "bun") {
+        dispatch(ingredientsSlice.actions.changeBun(item));
+      }
+
+      if (source === "ingredients" && item.type !== "bun") {
+        const uuid = uuidv4(); // генерация уникального id для ингредиента конструктора
+        dispatch(ingredientsSlice.actions.addIngredient({ item, uuid }));
+      }
+    },
+
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
 
   // обработчик удаления ингредиента
   const handleClose = (item) => {
-    setCurrentIngredients({
-      ...currentIngredients,
-      ingredients: currentIngredients.ingredients.filter(
-        (ingredient) => ingredient._id !== item._id
-      ),
-    });
-    setTotalPrice({ type: "deleteIngredient", payload: item.price });
-
+    dispatch(ingredientsSlice.actions.removeIngredient(item));
   };
 
+  // колбэк смены ингредиентов местами
+  const moveCard = useCallback((sourceIndex, hoverIndex) => {
+    dispatch(ingredientsSlice.actions.reorderIngredients({ sourceIndex, hoverIndex }));
+  }, [])
+
+
+  // стили для контейнера ингредиентов
+  const ingredientsContainerStyle = isHover ? `${styles.ingredients} ${styles.ingredientsHover}` : `${styles.ingredients}`;
 
   return (
     <section
       className={`${styles.container} pt-25 pl-4 pr-4`}
     >
-      <div className={`${styles.ingredients}`}>
+      <div className={`${ingredientsContainerStyle}`} ref={dropTarget}>
 
         {/* секция с верхней булкой */}
         <ul className={`${styles.ingredientsTop}`}>
@@ -52,6 +96,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
                   text={`${item.name} (верх)`}
                   price={item.price}
                   thumbnail={item.image}
+
                 />
               )
               : null;
@@ -60,26 +105,21 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
         </ul>
 
         {/* секция с ингредиентами */}
-        <ul className={styles.ingredientsCenter}>
-          {data.map((item) => {
-            return currentIngredients.ingredients.some((ingredient) => ingredient._id === item._id)
+        <ul className={styles.ingredientsCenter} >
+          {currentIngredients.ingredients.map((item, index) => {
+            return item
               ? (
-                <li key={item._id} className={styles.listElement}>
-                  <DragIcon type="TIconTypes" />
-                  <ConstructorElement
-                    isLocked={false}
-                    type="undefined"
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    handleClose={() => handleClose(item)}
-                  />
-                </li>
+                <DraggableIngredient
+                  key={item.uuid}
+                  uuid={item.uuid}
+                  item={item}
+                  handleClose={handleClose}
+                  index={index}
+                  moveCard={moveCard} />
               )
               : null;
           })}
         </ul>
-
         {/* секция с нижней булкой */}
         <ul className={`${styles.ingredientsBottom}`}>
           {data.map((item) => {
@@ -102,7 +142,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
       <div className={`${styles.totalPrice} mt-10`}>
 
         <div className={`${styles.totalPriceText}`}>
-          <p className="text text_type_digits-medium">{totalPrice.totalPrice}</p>
+          <p className="text text_type_digits-medium">{totalPrice}</p>
           <CurrencyIcon type="TIconTypes" />
         </div>
         <Button onClick={handleOrderDetailsOpen} type="primary" size="large" htmlType="submit">
@@ -121,10 +161,6 @@ BurgerConstructor.propTypes = {
 
 CurrencyIcon.propTypes = iconPropTypes;
 DragIcon.propTypes = iconPropTypes;
-
-
-
-
 
 
 export default BurgerConstructor;

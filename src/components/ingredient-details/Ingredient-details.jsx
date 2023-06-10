@@ -1,10 +1,13 @@
-
+// импорт стилей
 import styles from "./ingredient-details.module.css";
-import PropTypes from 'prop-types';
+
+// импорт библиотек
 import ingredientPropTypes from '../../utils/types.js';
 
 
 function ingredientDetails({ ingredient }) {
+
+
   return (
     <>
       <h1 className={`${styles.title} text text_type_main-large mt-10 ml-10 mr-10`}>Детали ингредиента</h1>

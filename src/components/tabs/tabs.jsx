@@ -1,15 +1,25 @@
-import { useState } from 'react';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './tabs.module.css';
+// импорт библиотек
 import PropTypes from 'prop-types';
 
+// импорт стилей
+import styles from './tabs.module.css';
 
-function Tabs({ tabData }) {
-  const [current, setCurrent] = useState(tabData[0]?.value);
+// импорт компонентов
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
+// импорт хуков
+import { useSelector } from "react-redux";
+
+// импорт функций useSelector
+import { getTabsNavigation } from "../../services/store-selectors.js";
+
+function Tabs({ tabData, onTabClick }) {
+  const { activeTab } = useSelector(getTabsNavigation); // активный таб
+
   return (
     <div className={styles.tabsContainer}>
       {tabData.map((tab) => (
-        <Tab key={tab.value} value={tab.value} active={current === tab.value} onClick={setCurrent}>
+        <Tab key={tab.value} value={tab.value} active={activeTab === tab.value}  onClick={() => onTabClick(tab.value)}>
           {tab.label}
         </Tab>
       ))}
@@ -22,8 +32,9 @@ Tabs.propTypes = {
     PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
-    }),
+    })
   ).isRequired,
+  onTabClick: PropTypes.func.isRequired,
 };
 
 export default Tabs;
