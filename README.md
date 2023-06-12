@@ -1,7 +1,17 @@
-# Каноническая работа проекта Stellar Burger
-# Этап "Промежуточный проект. CRA-заготовка и структура папок под компоненты"
+# Stellar Burger Project
 
-Проект предназначен для отработки создания проектов с использованием React.
+GH Pages link: https://alex-markin.github.io/react-stellar-burger/
 
+## Student project aimed to master React and Redux toolkit.
 
-Для ревьюера: закрыт предыдущий пулреквест для исключения отслеживания файлов node_modules.
+# Functionality:
+* Dragging and sorting ingredients
+* Making an order
+* Logging in and out
+* Navigation through ingredients
+
+# Used stack:
+* React
+* Redux toolkit
+* React Dnd
+
