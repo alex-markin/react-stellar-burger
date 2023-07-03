@@ -1,4 +1,4 @@
-import { checkReponse } from "../utils/check-response.js";
+import { checkResponse } from "../utils/check-response.js";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const orderSlice = createSlice({
@@ -52,7 +52,7 @@ export const placeOrder = (url, currentIngredients) => (dispatch) => {
       },
       body: JSON.stringify(body),
     })
-      .then(checkReponse)
+      .then(checkResponse)
       .then((data) => {
         dispatch(fetchOrderSuccess(data.order));
       })

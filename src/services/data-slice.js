@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { checkReponse } from '../utils/check-response';
+import { checkResponse } from '../utils/check-response';
 
 
 export const dataSlice = createSlice({
@@ -39,7 +39,7 @@ export const {
 export const fetchData = (url) => (dispatch) => {
   dispatch(fetchIngredientsRequest());
   fetch(`${url}/ingredients`)
-    .then(checkReponse)
+    .then(checkResponse)
     .then((data) => {
       dispatch(fetchIngredientsSuccess(data.data));
     })
