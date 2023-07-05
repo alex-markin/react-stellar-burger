@@ -2,6 +2,8 @@
 import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+
 
 // импорт компонентов
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients"; // импорт компонента ингредиентов бургера
@@ -27,7 +29,7 @@ import { placeOrder } from "../../services/order-slice.js"; // импорт фу
 
 // импорт функций useSelector
 import { getCurrentIngredients, getCurrentOrder, getData, getSelectedIngredient } from "../../services/store-selectors.js";
-import {checkToken} from "../../services/user-auth-slice.js"; // импорт функции проверки токена
+import { checkToken } from "../../services/user-auth-slice.js"; // импорт функции проверки токена
 
 
 // адрес сервера
@@ -39,7 +41,6 @@ function Main() {
 
   // диспатч Redux
   const dispatch = useDispatch();
-
 
   // стейты
   const { isModalOpen, openModal, closeModal } = useModal(); // стейт модального окна
@@ -125,7 +126,6 @@ function Main() {
           <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
         </DndProvider>
       </main>
-      {modal}
     </>
   );
 }

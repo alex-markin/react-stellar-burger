@@ -1,35 +1,43 @@
-import React, { useEffect } from "react";
-import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+
+// импорт библиотек
+import { NavLink, useLocation } from 'react-router-dom';
+
+// импорт стилей
 import styles from "./profile.module.css";
-import { NavLink } from 'react-router-dom';
+
+// импорт хуков и экшенов Redux
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../../services/user-auth-slice.js";
 
+// импорт компонентов
+import ProfileEdit from "../../components/profile-edit/profile-edit.jsx";
+import OrdersHistory from "../../components/orders-history/orders-history.jsx";
+
 const Profile = () => {
 
-  const [nameValue, setName] = React.useState('');
-  const [mailValue, setMail] = React.useState('');
-  const [passwordValue, setPassword] = React.useState('');
-
-  const inputRef = React.useRef(null);
-
+  // хуки
   const user = useSelector((state) => state.userAuth.user);
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  useEffect(() => {
-    if (user) {
-      setName(user.name);
-      setMail(user.email);
-      setPassword(user.password);
-    }
-  }, [user]);
+  // переменные путей
+  const profilePath = '/profile';
+  const ordersPath = '/profile/orders';
 
-  const logingOut = () => {
-    dispatch(logout());
-    // Navigate('/login');
+  // функция для определения активного NavLink
+  const isActive = (url) => {
+    return location.pathname === url;
   }
 
+  const activeStyle = `${styles.link} ${styles.activeLink} text text_type_main-medium `;
+  const inactiveStyle = `${styles.link} text text_type_main-medium text_color_inactive `;
+
+
+  // функция выхода из аккаунта
+  const logingOut = () => {
+    dispatch(logout());
+  }
 
 
   return (
@@ -39,7 +47,7 @@ const Profile = () => {
           <li className={styles.navLink}>
             <NavLink
               to="/profile"
-              className={`${styles.link} text text_type_main-medium text_color_inactive`}
+              className={isActive(profilePath) ? activeStyle : inactiveStyle}
             >
               Профиль
             </NavLink>
@@ -47,7 +55,7 @@ const Profile = () => {
           <li className={styles.navLink}>
             <NavLink
               to="/profile/orders"
-              className={`${styles.link} text text_type_main-medium text_color_inactive`}
+              className={isActive(ordersPath) ? activeStyle : inactiveStyle}
             >
               История заказов
             </NavLink>
@@ -59,41 +67,20 @@ const Profile = () => {
             В этом разделе вы можете изменить свои персональные данные
           </p>
         </nav>
-        <form className={styles.form}>
-          <Input
-            type={'text'}
-            onChange={e => setName(e.target.value)}
-            value={nameValue}
-            name={'name'}
-            error={false}
-            ref={inputRef}
-            errorText={'Ошибка'}
-            size={'default'}
-            icon="EditIcon"
+
+        {location.pathname === profilePath && (
+          <ProfileEdit
+            // setMail={setMail}
+            // setName={setName}
+            // setPassword={setPassword}
+            // nameValue={nameValue}
+            // mailValue={mailValue}
+            // passwordValue={passwordValue}
           />
-          <Input
-            type={'email'}
-            onChange={e => setMail(e.target.value)}
-            value={mailValue}
-            name={'name'}
-            error={false}
-            ref={inputRef}
-            errorText={'Ошибка'}
-            size={'default'}
-            icon="EditIcon"
-          />
-          <Input
-            type={'password'}
-            onChange={e => setPassword(e.target.value)}
-            value={passwordValue}
-            name={'name'}
-            error={false}
-            ref={inputRef}
-            errorText={'Ошибка'}
-            size={'default'}
-            icon="EditIcon"
-          />
-        </form>
+        )}
+        {location.pathname === ordersPath && (
+          <OrdersHistory />
+        )}
       </div>
     </main>
 

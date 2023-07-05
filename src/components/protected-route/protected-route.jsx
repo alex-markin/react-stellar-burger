@@ -2,6 +2,7 @@
 
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import LoadingPage from "../../pages/loading-page/loading-page"
 
 
 
@@ -17,7 +18,7 @@ const ProtectedRoute = ({ onlyUnAuth = false, component }) => {
     // Запрос еще выполняется
     // Выводим прелоадер в ПР
     // Здесь возвращается просто null для экономии времени
-    return null;
+    return <LoadingPage />;
   }
 
   if (onlyUnAuth && isAuthenticated) {

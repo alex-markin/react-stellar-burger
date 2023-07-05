@@ -6,6 +6,7 @@ export const userAuthSlice = createSlice({
   name: "userAuth",
   initialState: {
     user: null,
+    password: null,
     isAuthenticated: false,
     loading: false,
     isAuthChecked: false,
@@ -15,6 +16,7 @@ export const userAuthSlice = createSlice({
     fetchRequest: (state) => {
       state.loading = true;
       state.error = null;
+      state.isAuthChecked = false;
     },
 
     setUser: (state, action) => {
@@ -25,8 +27,13 @@ export const userAuthSlice = createSlice({
       state.isAuthenticated = true;
     },
 
+    setPassword: (state, action) => {
+      state.password = action.payload;
+    },
+
     setLogout: (state) => {
       state.user = null;
+      state.password = null;
       state.loading = false;
       state.error = null;
       state.isAuthChecked = true;
@@ -52,12 +59,14 @@ export const {
   fetchUserFailure,
   setLogout,
   setAuthChecked,
+  setPassword
 } = userAuthSlice.actions;
 
 export const getUser = () => (dispatch) => {
   return api.getUser()
   .then((res) => {
     dispatch(setUser(res.user));
+    return res;
   })
   .catch((err) => {
     dispatch(fetchUserFailure(err));
@@ -71,6 +80,7 @@ export const login = (email, password) => (dispatch) => {
     .login(email, password)
     .then((res) => {
       dispatch(setUser(res.user));
+      dispatch(setPassword(password));
       localStorage.setItem("refreshToken", res.refreshToken);
       localStorage.setItem("accessToken", res.accessToken);
     })
@@ -100,6 +110,7 @@ export const register = (name, email, password) => (dispatch) => {
     .register(name, email, password)
     .then((res) => {
       dispatch(setUser(res.user));
+      dispatch(setPassword(password));
       localStorage.setItem("refreshToken", res.refreshToken);
       localStorage.setItem("accessToken", res.accessToken);
     })
@@ -143,6 +154,19 @@ export const resetPassword = (password, token) => (dispatch) => {
     })
     .catch((err) => {
       dispatch(fetchUserFailure(err));
+    });
+}
+
+export const changeUser = (name, mail, password) => (dispatch) => {
+  dispatch(fetchRequest());
+  api
+    .changeUser(name, mail, password)
+    .then((res) => {
+      dispatch(setUser(res.user));
+      dispatch(setPassword(password));
+    })
+    .catch((err) => {
+      console.log(err);
     });
 }
 

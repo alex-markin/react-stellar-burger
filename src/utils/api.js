@@ -61,6 +61,27 @@ const getUser = () => {
     );
 };
 
+const changeUser = (name, email, password) => {
+  return fetchWithRefresh(userAuthUrl, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: localStorage.getItem("accessToken"),
+    },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      password: password }),
+  })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+    }
+    );
+  };
+
 
 
 const login = (email, password) => {
@@ -138,7 +159,6 @@ const resetPassword = (password, token) => {
     .then(checkResponse)
     .then((res) => {
       return res;
-      console.log(res);
     })
     .catch((err) => {
       console.log(err);
@@ -169,6 +189,7 @@ const forgotPassword = (email) => {
 
 export const api = {
   getUser,
+  changeUser,
   login,
   register,
   logout,
