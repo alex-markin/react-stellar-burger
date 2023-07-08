@@ -4,6 +4,10 @@ import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-component
 import { Link } from 'react-router-dom';
 import { resetPassword } from "../../services/user-auth-slice.js";
 import { useDispatch } from "react-redux";
+
+// импорт роутов
+import { ROUTES } from "../../components/app/app.jsx";
+
 // импорт стилей
 import styles from "./styles.module.css";
 
@@ -64,7 +68,7 @@ function ResetPassword() {
         <div className={styles.linkContainer}>
           <div className={styles.linkBlock}>
             <p className="text text_type_main-default text_color_inactive">Вспомнили пароль?</p>
-            <Link to="/login" className={`${styles.link} text text_type_main-default`}>Войти</Link>
+            <Link to={ROUTES.LOGIN} className={`${styles.link} text text_type_main-default`}>Войти</Link>
           </div>
         </div>
 

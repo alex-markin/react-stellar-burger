@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { forgotPassword } from "../../services/user-auth-slice.js";
 import { useDispatch } from "react-redux";
 
+// импорт роутов
+import { ROUTES } from "../../components/app/app.jsx";
 
 function ForgotPassword() {
 
@@ -18,7 +20,7 @@ function ForgotPassword() {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(forgotPassword(value));
-    navigate('/reset-password');
+    navigate(ROUTES.RESET_PASSWORD);
   }
 
 
@@ -47,7 +49,7 @@ function ForgotPassword() {
         <div className={styles.linkContainer}>
           <div className={styles.linkBlock}>
             <p className="text text_type_main-default text_color_inactive">Вспомнили пароль?</p>
-            <Link to="/login" className={`${styles.link} text text_type_main-default`}>Войти</Link>
+            <Link to={ROUTES.LOGIN} className={`${styles.link} text text_type_main-default`}>Войти</Link>
           </div>
         </div>
 

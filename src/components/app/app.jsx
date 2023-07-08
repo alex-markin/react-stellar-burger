@@ -23,6 +23,18 @@ import { useSelector, useDispatch } from 'react-redux'; // импорт хука
 import { getSelectedIngredient } from "../../services/store-selectors.js"; // импорт функций useSelector
 
 
+export const ROUTES = {
+  MAIN: '/',
+  PROFILE: '/profile',
+  PROFILE_ORDERS: '/profile/orders',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
+  NOT_FOUND: '/*',
+  INGREDIENT_DETAILS: '/ingredients/:ingredientId',
+};
+
 function App() {
 
   const dispatch = useDispatch();
@@ -40,20 +52,23 @@ function App() {
     navigate(-1);
   };
 
+
+
   return (
     <>
       <AppHeader />
       <Routes>
-        <Route path='/' element={<OnlyAuth component={<Main />} />} />
-        <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
-        <Route path="/profile/orders" element={<OnlyAuth component={<Profile />} />} />
-        <Route path="/login" element={<OnlyUnAuth component={<LogIn />} />} />
-        <Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
-        <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
-        <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
-        <Route path="*" element={<NotFound404 />} />
+        <Route path={ROUTES.MAIN} element={<Main />} />
+        <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} >
+          <Route path={ROUTES.PROFILE_ORDERS} element={<OnlyAuth component={<Profile />} />} />
+        </Route>
+        <Route path={ROUTES.LOGIN} element={<OnlyUnAuth component={<LogIn />} />} />
+        <Route path={ROUTES.REGISTER} element={<OnlyUnAuth component={<Register />} />} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<OnlyUnAuth component={<ForgotPassword />} />} />
+        <Route path={ROUTES.RESET_PASSWORD} element={<OnlyUnAuth component={<ResetPassword />} />} />
+        <Route path={ROUTES.NOT_FOUND} element={<NotFound404 />} />
         <Route
-          path="/ingredients/:ingredientId"
+          path={ROUTES.INGREDIENT_DETAILS}
           element={
             background ? (
               <Modal onClose={handleModalClose}>

@@ -19,6 +19,12 @@ export const userAuthSlice = createSlice({
       state.isAuthChecked = false;
     },
 
+    fetchRequestSuccess: (state) => {
+      state.loading = false;
+      state.error = null;
+      state.isAuthChecked = true;
+    },
+
     setUser: (state, action) => {
       state.user = action.payload;
       state.loading = false;
@@ -55,6 +61,7 @@ export const userAuthSlice = createSlice({
 
 export const {
   fetchRequest,
+  fetchRequestSuccess,
   setUser,
   fetchUserFailure,
   setLogout,
@@ -64,14 +71,14 @@ export const {
 
 export const getUser = () => (dispatch) => {
   return api.getUser()
-  .then((res) => {
-    dispatch(setUser(res.user));
-    return res;
-  })
-  .catch((err) => {
-    dispatch(fetchUserFailure(err));
-    return err;
-  });
+    .then((res) => {
+      dispatch(setUser(res.user));
+      return res;
+    })
+    .catch((err) => {
+      dispatch(fetchUserFailure(err));
+      return err;
+    });
 };
 
 export const login = (email, password) => (dispatch) => {
@@ -120,25 +127,26 @@ export const register = (name, email, password) => (dispatch) => {
 };
 
 export const checkUserAuth = () => dispatch => {
-    if (localStorage.getItem("accessToken")) {
-      dispatch(getUser())
-        .catch((err) => {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          dispatch(setUser({}));
-        })
-        .finally(() => dispatch(setAuthChecked(true)));
-    } else {
-      dispatch(setAuthChecked(true));
-    }
-  };
+  if (localStorage.getItem("accessToken")) {
+    dispatch(getUser())
+      .catch((err) => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        dispatch(setUser({}));
+      })
+      .finally(() => dispatch(setAuthChecked(true)));
+  } else {
+    dispatch(setAuthChecked(true));
+  }
+};
 
 export const forgotPassword = (email) => (dispatch) => {
   dispatch(fetchRequest());
   api
     .forgotPassword(email)
     .then((res) => {
-     console.log(res);
+      console.log(res);
+      dispatch(fetchRequestSuccess());
     })
     .catch((err) => {
       dispatch(fetchUserFailure(err));
@@ -151,6 +159,7 @@ export const resetPassword = (password, token) => (dispatch) => {
     .resetPassword(password, token)
     .then((res) => {
       console.log(res);
+      dispatch(fetchRequestSuccess());
     })
     .catch((err) => {
       dispatch(fetchUserFailure(err));
@@ -158,7 +167,6 @@ export const resetPassword = (password, token) => (dispatch) => {
 }
 
 export const changeUser = (name, mail, password) => (dispatch) => {
-  dispatch(fetchRequest());
   api
     .changeUser(name, mail, password)
     .then((res) => {

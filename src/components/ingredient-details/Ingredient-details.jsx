@@ -6,14 +6,28 @@ import ingredientPropTypes from '../../utils/types.js';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 
+// ипорт путей
+import { Navigate } from 'react-router-dom';
+import { ROUTES } from "../app/app";
 
 function IngredientDetails({ ingredient, isIndependent }) {
 
   const { ingredientId } = useParams();
-  const ingredients = JSON.parse(localStorage.getItem('ingredients'));
 
-  if (!ingredient) {
+  let ingredients;
+
+  try {
+    ingredients = JSON.parse(localStorage.getItem('ingredients'))
+  } catch (e) {
+    ingredients = null;
+  }
+
+  if (!ingredient && ingredients) {
     ingredient = ingredients.find((item) => item._id === ingredientId);
+  }
+
+  if (!ingredient && !ingredients) {
+    Navigate(ROUTES.NOT_FOUND)
   }
 
   const contentStyle = isIndependent ? `${styles.content} ${styles.content_center}` : null;

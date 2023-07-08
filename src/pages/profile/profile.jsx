@@ -2,6 +2,10 @@
 // импорт библиотек
 import { NavLink, useLocation } from 'react-router-dom';
 
+// импорт роутов
+import { ROUTES } from "../../components/app/app.jsx";
+
+
 // импорт стилей
 import styles from "./profile.module.css";
 
@@ -22,8 +26,8 @@ const Profile = () => {
   const location = useLocation();
 
   // переменные путей
-  const profilePath = '/profile';
-  const ordersPath = '/profile/orders';
+  const profilePath = ROUTES.PROFILE;
+  const ordersPath = ROUTES.PROFILE_ORDERS;
 
   // функция для определения активного NavLink
   const isActive = (url) => {
@@ -46,16 +50,16 @@ const Profile = () => {
         <nav className={styles.nav}>
           <li className={styles.navLink}>
             <NavLink
-              to="/profile"
-              className={isActive(profilePath) ? activeStyle : inactiveStyle}
+              to={ROUTES.PROFILE}
+              className={isActive(ROUTES.PROFILE) ? activeStyle : inactiveStyle}
             >
               Профиль
             </NavLink>
           </li>
           <li className={styles.navLink}>
             <NavLink
-              to="/profile/orders"
-              className={isActive(ordersPath) ? activeStyle : inactiveStyle}
+              to={ROUTES.PROFILE_ORDERS}
+              className={isActive(ROUTES.PROFILE_ORDERS) ? activeStyle : inactiveStyle}
             >
               История заказов
             </NavLink>
@@ -69,14 +73,7 @@ const Profile = () => {
         </nav>
 
         {location.pathname === profilePath && (
-          <ProfileEdit
-            // setMail={setMail}
-            // setName={setName}
-            // setPassword={setPassword}
-            // nameValue={nameValue}
-            // mailValue={mailValue}
-            // passwordValue={passwordValue}
-          />
+          <ProfileEdit />
         )}
         {location.pathname === ordersPath && (
           <OrdersHistory />

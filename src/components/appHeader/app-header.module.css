@@ -61,6 +61,10 @@
 }
 
 .link {
-  color: inherit;
   text-decoration: none;
+  color: none;
+}
+
+.activeLink {
+  color: inherit;
 }

@@ -4,9 +4,10 @@ import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-component
 import styles from "./styles.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-
 import { login } from "../../services/user-auth-slice.js";
 
+// импорт роутов
+import { ROUTES } from "../../components/app/app.jsx";
 
 function LogIn() {
 
@@ -15,7 +16,6 @@ function LogIn() {
 
   const inputRef = React.useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -63,11 +63,11 @@ function LogIn() {
         <div className={styles.linkContainer}>
           <div className={styles.linkBlock}>
             <p className="text text_type_main-default text_color_inactive">Вы - новый пользователь? </p>
-            <Link to="/register" className={`${styles.link} text text_type_main-default`}>Зарегистрироваться</Link>
+            <Link to={ROUTES.REGISTER} className={`${styles.link} text text_type_main-default`}>Зарегистрироваться</Link>
           </div>
           <div className={styles.linkBlock}>
             <p className="text text_type_main-default text_color_inactive">Забыли пароль? </p>
-            <Link to="/forgot-password" className={`${styles.link} text text_type_main-default`}>Восстановить пароль</Link>
+            <Link to={ROUTES.FORGOT_PASSWORD} className={`${styles.link} text text_type_main-default`}>Восстановить пароль</Link>
           </div>
         </div>
 

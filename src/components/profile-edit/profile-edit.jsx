@@ -34,7 +34,7 @@ function ProfileEdit() {
     dispatch(getUser());
     setName(user.name);
     setMail(user.email);
-  }, [dispatch]);
+  }, []);
 
   // функция для определения видимости кнопок
   const onFocus = () => {
@@ -53,6 +53,7 @@ function ProfileEdit() {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(changeUser(nameValue, mailValue, passwordValue));
+    setVisible(false);
   }
 
 

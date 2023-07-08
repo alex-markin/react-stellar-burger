@@ -3,10 +3,10 @@ import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-component
 import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-
 import { register } from "../../services/user-auth-slice.js";
 
-
+// импорт роутов
+import { ROUTES } from "../../components/app/app.jsx";
 
 function Register() {
 
@@ -30,7 +30,7 @@ function Register() {
         <h1 className={`${styles.header} text text_type_main-medium`} >Регистрация</h1>
         <form className={styles.form} onSubmit={onSubmit}>
           <div className={styles.inputContainer}>
-          <Input
+            <Input
               type={'text'}
               placeholder={'Имя'}
               onChange={e => setName(e.target.value)}
@@ -65,7 +65,7 @@ function Register() {
               errorText={'Ошибка'}
               size={'default'}
             />
-            </div>
+          </div>
 
           <Button type="primary" size="medium" htmlType="submit">Зарегистрироваться</Button>
         </form>
@@ -73,7 +73,7 @@ function Register() {
         <div className={styles.linkContainer}>
           <div className={styles.linkBlock}>
             <p className="text text_type_main-default text_color_inactive">Уже зарегистрированы? </p>
-            <Link to="/login" className={`${styles.link} text text_type_main-default`}>Войти</Link>
+            <Link to={ROUTES.LOGIN} className={`${styles.link} text text_type_main-default`}>Войти</Link>
           </div>
         </div>
 
