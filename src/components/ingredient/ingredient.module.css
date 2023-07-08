@@ -27,3 +27,7 @@
   height: 24px;
 }
 
+.link {
+  color: inherit;
+  text-decoration: none;
+}

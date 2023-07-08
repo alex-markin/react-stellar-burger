@@ -1,12 +1,17 @@
 
-import React, { useEffect } from "react";
+// импорт библиотек и хуков
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './profile-edit.module.css';
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logout, getUser } from "../../services/user-auth-slice.js";
 
+// импорт стилей
+import styles from './profile-edit.module.css';
+
+// импорт экшенов и функций получения данных из хранилища
+import { getUser } from "../../services/user-auth-slice.js";
 import { changeUser } from "../../services/user-auth-slice.js";
+import { getUserAuth } from "../../services/store-selectors.js";
 
 function ProfileEdit() {
 
@@ -20,8 +25,8 @@ function ProfileEdit() {
   const inputRef = React.useRef(null);
 
   // стейт юзера, пароля и диспатч
-  const user = useSelector((state) => state.userAuth.user);
-  const password = useSelector((state) => state.userAuth.password);
+  const user = useSelector(getUserAuth).user;
+  const password = useSelector(getUserAuth).password;
   const dispatch = useDispatch();
 
   // эффект для получения данных юзера

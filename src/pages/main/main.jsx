@@ -2,7 +2,7 @@
 import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { BrowserRouter, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 // импорт компонентов
@@ -10,7 +10,6 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor"; // импорт компонента конструктора бургера
 import Modal from "../../components/modal/modal"; // импорт компонента модального окна
 import OrderDetails from "../../components/order-details/order-details.jsx"; // импорт компонента деталей заказа
-import IngredientDetails from "../../components/ingredient-details/Ingredient-details"; // импорт компонента деталей ингредиента
 
 // импорт стилей
 import styles from "./main.module.css";
@@ -28,31 +27,27 @@ import { orderSlice } from "../../services/order-slice.js"; // импорт ре
 import { placeOrder } from "../../services/order-slice.js"; // импорт функции для взаимодействия с сервером для размещения заказа
 
 // импорт функций useSelector
-import { getCurrentIngredients, getCurrentOrder, getData, getSelectedIngredient } from "../../services/store-selectors.js";
-import { checkToken } from "../../services/user-auth-slice.js"; // импорт функции проверки токена
+import { getCurrentIngredients, getCurrentOrder, getData } from "../../services/store-selectors.js";
 
 
 // адрес сервера
 const url = "https://norma.nomoreparties.space/api";
 
 
-
 function Main() {
 
   // диспатч Redux
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // стейты
-  const { isModalOpen, openModal, closeModal } = useModal(); // стейт модального окна
+  const { isModalOpen, openModal } = useModal(); // стейт модального окна
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false); // открытие модального окна с деталями заказа
-  const [ingredientDetailOpen, setIngredientDetailsOpen] = React.useState(false); // открытие модального окна с деталями ингредиента
 
   // получение данных из хранилища Redux
   const data = useSelector(getData); // данные с сервера
   const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
-  const { selectedIngredient } = useSelector(getSelectedIngredient); // выбранный ингредиент для модального окна
   const { order } = useSelector(getCurrentOrder); // заказ
-  const { user } = useSelector((store) => store.userAuth); // пользователь
 
   // получаем данные с сервера
   React.useEffect(() => {
@@ -61,7 +56,6 @@ function Main() {
       dispatch(fetchData(url));
     }
   }, [url]);
-
 
   // функция отправки заказа и получения номера заказа
   function handlePlaceOrder() {
@@ -89,18 +83,9 @@ function Main() {
   function handleIngredientDetailsOpen(item) {
     dispatch(selectedIngredientSlice.actions.mountIngredient(item));
     openModal();
-    setIngredientDetailsOpen(true);
-
   }
 
-  function handleIngredientDetailsClose() {
-    closeModal();
-    setIngredientDetailsOpen(false);
-    dispatch(selectedIngredientSlice.actions.unmountIngredient());
-  }
-
-  // работа модального окна
-  const modal = isModalOpen && orderDetailsOpen && order ?
+  const modal = orderDetailsOpen && order ?
     (
       <Modal onClose={handleOrderDetailsClose}>
         {order.loading ? (
@@ -109,13 +94,7 @@ function Main() {
           <OrderDetails orderNumber={order.number} />
         )}
       </Modal>
-    ) : isModalOpen && ingredientDetailOpen ?
-      (
-        <Modal onClose={handleIngredientDetailsClose}>
-          <IngredientDetails ingredient={selectedIngredient} />
-        </Modal>
-      ) : null;
-
+    ) : null;
 
 
   return (
@@ -126,6 +105,7 @@ function Main() {
           <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
         </DndProvider>
       </main>
+      {modal}
     </>
   );
 }

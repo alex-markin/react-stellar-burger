@@ -42,6 +42,7 @@ export const fetchData = (url) => (dispatch) => {
     .then(checkResponse)
     .then((data) => {
       dispatch(fetchIngredientsSuccess(data.data));
+      localStorage.setItem('ingredients', JSON.stringify(data.data));
     })
     .catch((error) => {
       dispatch(fetchIngredientsFailure(error));

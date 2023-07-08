@@ -3,6 +3,8 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import LoadingPage from "../../pages/loading-page/loading-page"
+import PropTypes from 'prop-types';
+
 
 
 
@@ -35,6 +37,11 @@ const ProtectedRoute = ({ onlyUnAuth = false, component }) => {
   // !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
 
   return component;
+};
+
+ProtectedRoute.propTypes = {
+  onlyUnAuth: PropTypes.bool,
+  component: PropTypes.element.isRequired,
 };
 
 export default ProtectedRoute;
