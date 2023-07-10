@@ -59,3 +59,12 @@
   justify-content: center;
   justify-self: center;
 }
+
+.link {
+  text-decoration: none;
+  color: none;
+}
+
+.activeLink {
+  color: inherit;
+}

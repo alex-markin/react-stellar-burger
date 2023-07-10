@@ -1,127 +1,85 @@
 // импорт библиотек
-import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from "react";
 
+// импорт страниц
+import Main from "../../pages/main/main.jsx"; // импорт компонента главной страницы
+import LogIn from "../../pages/authorisation/login.jsx"; // импорт компонента страницы авторизации
+import Register from "../../pages/authorisation/register.jsx"; // импорт компонента страницы регистрации
+import ForgotPassword from "../../pages/authorisation/forgot-password.jsx"; // импорт компонента страницы восстановления пароля
+import ResetPassword from "../../pages/authorisation/reset-password.jsx"; // импорт компонента страницы сброса пароля
+import NotFound404 from "../../pages/not-found-404/not-found-404.jsx"; // импорт компонента страницы 404;
+import Profile from "../../pages/profile/profile.jsx"; // импорт компонента страницы профиля
+import Modal from "../modal/modal.jsx"; // импорт компонента модального окна
+import IngredientDetails from "../ingredient-details/Ingredient-details.jsx" // импорт компонента деталей ингредиента
 
 // импорт компонентов
-import AppHeader from "../appHeader/app-header"; // импорт компонента хедера
-import BurgerIngredients from "../burger-ingredients/burger-ingredients"; // импорт компонента ингредиентов бургера
-import BurgerConstructor from "../burger-constructor/burger-constructor"; // импорт компонента конструктора бургера
-import Modal from "../modal/modal.jsx"; // импорт компонента модального окна
-import OrderDetails from "../order-details/order-details.jsx"; // импорт компонента деталей заказа
-import IngredientDetails from "../ingredient-details/Ingredient-details"; // импорт компонента деталей ингредиента
-
-// импорт стилей
-import styles from "./app.module.css";
+import AppHeader from "../appHeader/app-header.js"; // импорт компонента шапки
+import { OnlyAuth, OnlyUnAuth } from "../protected-route/protected-route.jsx"; // импорт компонента защищенного роута
 
 // импорт хуков
-import { useModal } from "../../hooks/use-modal.js"; // импорт хука модального окна
-import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { checkUserAuth } from "../../services/user-auth-slice.js"; // импорт функции проверки авторизации пользователя
+import { useSelector, useDispatch } from 'react-redux'; // импорт хука редакса
+import { getSelectedIngredient } from "../../services/store-selectors.js"; // импорт функций useSelector
 
-// импорт слайсов и редьюсеров Redux toolkit
-import { fetchData } from "../../services/data-slice.js"; // импорт редьюсера для получения данных с сервера
-import { selectedIngredientSlice } from "../../services/selected-ingredient-slice.js"; // импорт редьюсера для выбранного ингредиента
-import { orderSlice } from "../../services/order-slice.js"; // импорт редьюсера для заказа
 
-// импорт утилитарных функций
-import { placeOrder } from "../../services/order-slice.js"; // импорт функции для взаимодействия с сервером для размещения заказа
-
-// импорт функций useSelector
-import { getCurrentIngredients, getCurrentOrder, getData, getSelectedIngredient } from "../../services/store-selectors.js";
-
-// адрес сервера
-const url = "https://norma.nomoreparties.space/api";
+export const ROUTES = {
+  MAIN: '/',
+  PROFILE: '/profile',
+  PROFILE_ORDERS: '/profile/orders',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
+  NOT_FOUND: '/*',
+  INGREDIENT_DETAILS: '/ingredients/:ingredientId',
+};
 
 function App() {
 
-  // диспатч Redux
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const background = location.state && location.state.background;
 
-  // стейты
-  const { isModalOpen, openModal, closeModal } = useModal(); // стейт модального окна
-  const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false); // открытие модального окна с деталями заказа
-  const [ingredientDetailOpen, setIngredientDetailsOpen] = React.useState(false); // открытие модального окна с деталями ингредиента
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, []);
 
-  // получение данных из хранилища Redux
-  const data = useSelector(getData); // данные с сервера
-  const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
-  const { selectedIngredient } = useSelector(getSelectedIngredient); // выбранный ингредиент для модального окна
-  const { order } = useSelector(getCurrentOrder); // заказ
+  const { selectedIngredient } = useSelector(getSelectedIngredient);
 
-  // получаем данные с сервера
-  React.useEffect(() => {
-    // проверка наличия данных в хранилище
-    if (data.data.length === 0) {
-      dispatch(fetchData(url));
-    }
-  }, [url]);
-
-  // функция отправки заказа и получения номера заказа
-  function handlePlaceOrder() {
-    dispatch(placeOrder(url, currentIngredients));
+  const handleModalClose = () => {
+    navigate(-1);
   };
-
-  // функция открытия модального окна с деталями заказа
-  async function handleOrderDetailsOpen() {
-    try {
-      handlePlaceOrder();
-      openModal();
-      setOrderDetailsOpen(true);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  function handleOrderDetailsClose() {
-    openModal();
-    setOrderDetailsOpen(false);
-    dispatch(orderSlice.actions.resetOrder());
-  }
-
-  // функция открытия модального окна с деталями ингредиента
-  function handleIngredientDetailsOpen(item) {
-    dispatch(selectedIngredientSlice.actions.mountIngredient(item));
-    openModal();
-    setIngredientDetailsOpen(true);
-
-  }
-
-  function handleIngredientDetailsClose() {
-    closeModal();
-    setIngredientDetailsOpen(false);
-    dispatch(selectedIngredientSlice.actions.unmountIngredient());
-  }
-
-  // работа модального окна
-  const modal = isModalOpen && orderDetailsOpen && order ?
-    (
-      <Modal onClose={handleOrderDetailsClose}>
-        {order.loading ? (
-          <p>Загрузка...</p>
-        ) : (
-          <OrderDetails orderNumber={order.number} />
-        )}
-      </Modal>
-    ) : isModalOpen && ingredientDetailOpen ?
-      (
-        <Modal onClose={handleIngredientDetailsClose}>
-          <IngredientDetails ingredient={selectedIngredient} />
-        </Modal>
-      ) : null;
 
 
 
   return (
     <>
       <AppHeader />
-      <main className={styles.contentContainer}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients handleIngredientDetails={handleIngredientDetailsOpen} />
-          <BurgerConstructor handleOrderDetailsOpen={handleOrderDetailsOpen} />
-        </DndProvider>
-      </main>
-      {modal}
+      <Routes>
+        <Route path={ROUTES.MAIN} element={<Main />} />
+        <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} >
+          <Route path={ROUTES.PROFILE_ORDERS} element={<OnlyAuth component={<Profile />} />} />
+        </Route>
+        <Route path={ROUTES.LOGIN} element={<OnlyUnAuth component={<LogIn />} />} />
+        <Route path={ROUTES.REGISTER} element={<OnlyUnAuth component={<Register />} />} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<OnlyUnAuth component={<ForgotPassword />} />} />
+        <Route path={ROUTES.RESET_PASSWORD} element={<OnlyUnAuth component={<ResetPassword />} />} />
+        <Route path={ROUTES.NOT_FOUND} element={<NotFound404 />} />
+        <Route
+          path={ROUTES.INGREDIENT_DETAILS}
+          element={
+            background ? (
+              <Modal onClose={handleModalClose}>
+                <IngredientDetails ingredient={selectedIngredient} />
+              </Modal>
+            ) : (
+              < IngredientDetails isIndependent={true} />
+            )
+          }
+        />
+      </Routes>
     </>
   );
 }

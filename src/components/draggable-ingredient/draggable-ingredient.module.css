@@ -10,6 +10,7 @@
 
 .isDragging {
   border: 2px solid rgb(117,38,195);
+  border-radius: 5%;
   opacity: 0.5;
 }
 

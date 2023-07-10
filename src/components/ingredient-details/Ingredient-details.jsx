@@ -3,14 +3,39 @@ import styles from "./ingredient-details.module.css";
 
 // импорт библиотек
 import ingredientPropTypes from '../../utils/types.js';
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
+// ипорт путей
+import { Navigate } from 'react-router-dom';
+import { ROUTES } from "../app/app";
 
-function ingredientDetails({ ingredient }) {
+function IngredientDetails({ ingredient, isIndependent }) {
 
+  const { ingredientId } = useParams();
+
+  let ingredients;
+
+  try {
+    ingredients = JSON.parse(localStorage.getItem('ingredients'))
+  } catch (e) {
+    ingredients = null;
+  }
+
+  if (!ingredient && ingredients) {
+    ingredient = ingredients.find((item) => item._id === ingredientId);
+  }
+
+  if (!ingredient && !ingredients) {
+    Navigate(ROUTES.NOT_FOUND)
+  }
+
+  const contentStyle = isIndependent ? `${styles.content} ${styles.content_center}` : null;
+  const titleStyle = isIndependent ? `${styles.title} ${styles.title_center}` : `${styles.title}`;
 
   return (
-    <>
-      <h1 className={`${styles.title} text text_type_main-large mt-10 ml-10 mr-10`}>Детали ингредиента</h1>
+    <div className={contentStyle}>
+      <h1 className={`${titleStyle} text text_type_main-large mt-10 ml-10 mr-10`}>Детали ингредиента</h1>
       <div className={`${styles.container} `}>
         <img className={styles.image} src={ingredient.image} alt={ingredient.name} />
         <h2 className={`${styles.name} text text_type_main-medium mt-4 mb-8`}>{ingredient.name}</h2>
@@ -50,14 +75,15 @@ function ingredientDetails({ ingredient }) {
         </div>
       </div>
 
-    </>
+    </div>
   )
 }
 
 
-ingredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
+IngredientDetails.propTypes = {
+  ingredient: ingredientPropTypes,
+  isIndependent: PropTypes.bool,
 };
 
 
-export default ingredientDetails;
+export default IngredientDetails;

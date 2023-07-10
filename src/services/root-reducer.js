@@ -5,6 +5,7 @@ import { dataSlice } from './data-slice';
 import { selectedIngredientSlice } from './selected-ingredient-slice';
 import { orderSlice } from './order-slice';
 import { tabsNavigationSlice } from './tabs-navigation-slice';
+import { userAuthSlice } from './user-auth-slice';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsSlice.reducer,
@@ -12,4 +13,5 @@ export const rootReducer = combineReducers({
   selectedIngredient: selectedIngredientSlice.reducer,
   order: orderSlice.reducer,
   tabsNavigation: tabsNavigationSlice.reducer,
+  userAuth: userAuthSlice.reducer
 });
