@@ -10,9 +10,9 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 // импорт хуков и функций
 import { useParams } from 'react-router-dom';
 import { formatDate } from '../../utils/format-date';
-import { getOrders, resetOrderDetalisation } from '../../services/order-detalisation-slice';
+import { getOrders, resetOrder } from '../../services/order-details-slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrderDetalisation } from '../../services/store-selectors';
+import { getOrderDetails } from '../../services/store-selectors';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -28,14 +28,13 @@ function OrderDetalisation() {
     dispatch(getOrders(orderId));
 
     return () => {
-      dispatch(resetOrderDetalisation());
+      dispatch(resetOrder());
     }
 
   }, [orderId]);
 
   // получение данных из хранилища Redux
-  const { order, loading } = useSelector(getOrderDetalisation);
-
+  const { order, loading } = useSelector(getOrderDetails);
 
   if (!order || loading) {
     return <LoadingSpinner loadingText={'Загрузка...'} />

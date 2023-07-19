@@ -6,6 +6,6 @@ export const getCurrentOrder = (state) => state.order;
 export const getTabsNavigation = (state) => state.tabsNavigation;
 export const getUserAuth = (state) => state.userAuth;
 export const getOrders = (state) => state.orders;
-export const getOrderDetalisation = (state) => state.orderDetalisation;
+export const getOrderDetails = (state) => state.orderDetails;
 
 

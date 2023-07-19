@@ -10,17 +10,17 @@ import styles from './orders-list.module.css';
 // импорт хуков и функций
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../../services/store-selectors';
-import { useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import { connect, disconnect } from '../../services/socket-connection/actions.js';
 import { webSocketStatus } from '../../utils/web-socket-status.js';
 
 // импорт url адресов
 import { ALL_ORDERS_URL } from '../../pages/order-feed/order-feed';
 
-
 function OrdersList() {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const match = useMatch({
     path: 'profile/orders',
@@ -29,9 +29,14 @@ function OrdersList() {
   })
 
   useEffect(() => {
+
     if(match) {
       const accessToken = localStorage.getItem('accessToken').replace('Bearer ', '');
-      dispatch(connect(`${ALL_ORDERS_URL}?token=${accessToken}`));
+      if (accessToken) {
+        dispatch(connect(`${ALL_ORDERS_URL}?token=${accessToken}`));
+      } else {
+        navigate('/login');
+      }
     }
     return () => {
       dispatch(disconnect());

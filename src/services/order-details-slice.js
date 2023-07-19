@@ -1,32 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { api } from "../utils/api";
 
-export const orderDetalisationSlice = createSlice({
-  name: "orderDetalisation",
+export const orderDetailsSlice = createSlice({
+  name: "orderDetails",
   initialState: {
     order: null,
     loading: false,
     error: null,
   },
   reducers: {
-    fetchOrderDetalisation: (state) => {
+    fetchOrder: (state) => {
       state.loading = true;
       state.error = null;
     },
 
-    fetchOrderDetalisationSuccess: (state, action) => {
+    fetchOrdeSuccess: (state, action) => {
       state.order = action.payload;
       state.loading = false;
       state.error = null;
     },
 
-    fetchOrderDetalisationFailure: (state, action) => {
+    fetchOrderFailure: (state, action) => {
       state.order = null;
       state.loading = false;
       state.error = action.payload;
     },
 
-    resetOrderDetalisation: (state) => {
+    resetOrder: (state) => {
       state.order = null;
       state.loading = false;
       state.error = null;
@@ -36,16 +36,17 @@ export const orderDetalisationSlice = createSlice({
 
 });
 
-export const { fetchOrderDetalisation, fetchOrderDetalisationSuccess, resetOrderDetalisation } = orderDetalisationSlice.actions;
+export const { fetchOrder, fetchOrdeSuccess, resetOrder, fetchOrderFailure } = orderDetailsSlice.actions;
 
 export const getOrders = (id) => (dispatch) => {
-  dispatch(fetchOrderDetalisation());
+  dispatch(fetchOrder());
   return api.getOrder(id)
     .then((data) => {
-      dispatch(fetchOrderDetalisationSuccess(data.orders[0]));
+      dispatch(fetchOrdeSuccess(data.orders[0]));
     })
     .catch((err) => {
       console.log(err);
+      fetchOrderFailure(err);
     });
 }
 

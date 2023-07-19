@@ -7,7 +7,7 @@ import { orderSlice } from './order-slice';
 import { tabsNavigationSlice } from './tabs-navigation-slice';
 import { userAuthSlice } from './user-auth-slice';
 import { ordersReducer } from './socket-connection/reducer';
-import { orderDetalisationSlice } from './order-detalisation-slice';
+import { orderDetailsSlice } from './order-details-slice';
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsSlice.reducer,
@@ -17,6 +17,6 @@ export const rootReducer = combineReducers({
   tabsNavigation: tabsNavigationSlice.reducer,
   userAuth: userAuthSlice.reducer,
   orders: ordersReducer,
-  orderDetalisation: orderDetalisationSlice.reducer,
+  orderDetails: orderDetailsSlice.reducer,
 
 });

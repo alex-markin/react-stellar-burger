@@ -17,6 +17,12 @@ export const socketMiddleware = (wsActions) => {
       } = wsActions;
 
       if (type === wsConnect.type) {
+
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          console.log(socket);
+          return;
+        }
+
         socket = new WebSocket(action.payload);
         dispatch(wsConnecting());
       }

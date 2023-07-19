@@ -15,6 +15,7 @@ import othersImage from "../../images/cheese.png"; // импорт изобра�
 import { formatDate } from "../../utils/format-date.js"; // импорт функции форматирования даты
 import { useMatch } from 'react-router-dom';
 import { useLocation, Link } from 'react-router-dom';
+import { useMemo } from "react";
 
 function Order({ order }) {
 
@@ -47,8 +48,9 @@ function Order({ order }) {
   const date = formatDate(createdAt);
 
   // суммарная стоимость ингредиентов
-  const totalPrice = filteredIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0);
-
+  const totalPrice = useMemo(() => {
+    return filteredIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0);
+  }, [filteredIngredients]);
   // стиль статуса заказа
   const statusStyle = order.status === 'done' ? `text text_type_main-default ${styles.statusComplete}` : `text text_type_main-default`;
 
