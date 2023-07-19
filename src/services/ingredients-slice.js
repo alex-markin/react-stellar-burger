@@ -52,5 +52,11 @@ export const ingredientsSlice = createSlice({
       state.ingredients.splice(sourceIndex, 1);
       state.ingredients.splice(hoverIndex, 0, draggedIngredient);
     },
+
+    resetIngredients: (state) => {
+      state.ingredients = [];
+      state.bun = null;
+      state.count = {};
+    }
   },
 });

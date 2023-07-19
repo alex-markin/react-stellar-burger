@@ -28,6 +28,7 @@ import { placeOrder } from "../../services/order-slice.js"; // импорт фу
 
 // импорт функций useSelector
 import { getCurrentIngredients, getCurrentOrder, getData } from "../../services/store-selectors.js";
+import { ingredientsSlice } from "../../services/ingredients-slice";
 
 
 // адрес сервера
@@ -47,13 +48,14 @@ function Main() {
   // получение данных из хранилища Redux
   const data = useSelector(getData); // данные с сервера
   const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
-  const { order } = useSelector(getCurrentOrder); // заказ
+  const { order, loading } = useSelector(getCurrentOrder); // заказ
 
   // получаем данные с сервера
   React.useEffect(() => {
     // проверка наличия данных в хранилище
     if (data.data.length === 0) {
       dispatch(fetchData(url));
+      localStorage.setItem('ingredients', JSON.stringify(data.data));
     }
   }, [url]);
 
@@ -65,9 +67,9 @@ function Main() {
   // функция открытия модального окна с деталями заказа
   async function handleOrderDetailsOpen() {
     try {
-      handlePlaceOrder();
-      openModal();
       setOrderDetailsOpen(true);
+      openModal();
+      handlePlaceOrder();
     } catch (err) {
       console.log(err);
     }
@@ -77,6 +79,8 @@ function Main() {
     openModal();
     setOrderDetailsOpen(false);
     dispatch(orderSlice.actions.resetOrder());
+    dispatch(ingredientsSlice.actions.resetIngredients());
+
   }
 
   // функция открытия модального окна с деталями ингредиента
@@ -85,14 +89,10 @@ function Main() {
     openModal();
   }
 
-  const modal = orderDetailsOpen && order ?
+  const modal = orderDetailsOpen ?
     (
       <Modal onClose={handleOrderDetailsClose}>
-        {order.loading ? (
-          <p>Загрузка...</p>
-        ) : (
-          <OrderDetails orderNumber={order.number} />
-        )}
+          <OrderDetails />
       </Modal>
     ) : null;
 

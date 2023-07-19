@@ -11,11 +11,13 @@ import ResetPassword from "../../pages/authorisation/reset-password.jsx"; // и�
 import NotFound404 from "../../pages/not-found-404/not-found-404.jsx"; // импорт компонента страницы 404;
 import Profile from "../../pages/profile/profile.jsx"; // импорт компонента страницы профиля
 import Modal from "../modal/modal.jsx"; // импорт компонента модального окна
-import IngredientDetails from "../ingredient-details/Ingredient-details.jsx" // импорт компонента деталей ингредиента
+import OrderFeed from "../../pages/order-feed/order-feed.jsx"; // импорт компонента страницы ленты заказов
 
 // импорт компонентов
 import AppHeader from "../appHeader/app-header.js"; // импорт компонента шапки
+import IngredientDetails from "../ingredient-details/Ingredient-details.jsx" // импорт компонента деталей ингредиента
 import { OnlyAuth, OnlyUnAuth } from "../protected-route/protected-route.jsx"; // импорт компонента защищенного роута
+import OrderDetalisation from "../order-detalisation/order-detalisation.jsx"; // импорт компонента детализации заказа
 
 // импорт хуков
 import { checkUserAuth } from "../../services/user-auth-slice.js"; // импорт функции проверки авторизации пользователя
@@ -25,8 +27,11 @@ import { getSelectedIngredient } from "../../services/store-selectors.js"; // и
 
 export const ROUTES = {
   MAIN: '/',
+  ORDER_FEED: '/feed',
   PROFILE: '/profile',
   PROFILE_ORDERS: '/profile/orders',
+  FEED_ORDER_DETAILS: '/feed/:orderId',
+  PROFILE_ORDER_DETAILS: '/profile/orders/:orderId',
   LOGIN: '/login',
   REGISTER: '/register',
   FORGOT_PASSWORD: '/forgot-password',
@@ -53,12 +58,13 @@ function App() {
   };
 
 
-
   return (
     <>
       <AppHeader />
       <Routes>
         <Route path={ROUTES.MAIN} element={<Main />} />
+        <Route path={ROUTES.ORDER_FEED} element={<OnlyAuth component={<OrderFeed />} />} />
+
         <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} >
           <Route path={ROUTES.PROFILE_ORDERS} element={<OnlyAuth component={<Profile />} />} />
         </Route>
@@ -79,6 +85,29 @@ function App() {
             )
           }
         />
+
+        <Route
+          path={ROUTES.FEED_ORDER_DETAILS}
+          element={
+            background ? (
+              <Modal onClose={handleModalClose}>
+                <OrderDetalisation />
+              </Modal>
+            ) : (
+              < OrderDetalisation />
+            )} />
+
+        <Route
+          path={ROUTES.PROFILE_ORDER_DETAILS}
+          element={
+            background ? (
+              <Modal onClose={handleModalClose}>
+                <OrderDetalisation />
+              </Modal>
+            ) : (
+              < OrderDetalisation />
+            )} />
+
       </Routes>
     </>
   );

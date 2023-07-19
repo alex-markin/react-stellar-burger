@@ -1,13 +1,29 @@
 .contentContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  gap: 40px;
+  gap: 20px;
   max-width: 1240px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+}
 
+.header {
+  padding: 40px 0 0 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  max-width: 1240px;
+
+}
+
+.sectionsContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1240px;
+  gap: 60px;
 }
 
 ::-webkit-scrollbar-thumb {

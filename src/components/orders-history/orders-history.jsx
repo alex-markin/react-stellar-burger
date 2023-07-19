@@ -1,11 +1,10 @@
-
+import OrdersList from "../orders-list/orders-list";
+import styles from './orders-history.module.css';
 
 function OrdersHistory() {
   return (
-    <div>
-      <h1>История Заказов</h1>
-      <p>Будет реализована во второй работе</p> 
-
+    <div className={styles.ordersHistory}>
+      <OrdersList />
     </div>
   )
 }

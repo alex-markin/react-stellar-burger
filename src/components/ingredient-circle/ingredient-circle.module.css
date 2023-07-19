@@ -1,0 +1,30 @@
+.ingredientCircle {
+  width: 64px;
+  height: 56px;
+  border-radius: 100px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #131316;
+  padding: 4px 0px;
+  border: 2px solid #4C4CFF;
+  position: relative;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+.imgWithCount {
+  opacity: 0.5;
+}
+
+.count {
+  position: absolute;
+  left: 50%;
+    transform: translate(30%) ;
+}
