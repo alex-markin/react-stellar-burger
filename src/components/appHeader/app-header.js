@@ -29,7 +29,6 @@ const AppHeader = () => {
             <NavLink
               to={ROUTES.MAIN}
               className={isActive(ROUTES.MAIN) ? activeStyle : inactiveStyle}
-            //  className={`${styles.link} text text_type_main-default ml-2`}
             >
               Конструктор
             </NavLink>
@@ -37,9 +36,8 @@ const AppHeader = () => {
           <li className={`${styles.item} pl-5 pt-4 pr-5 pb-4`}>
             <ListIcon type="TIconTypes" />
             <NavLink
-              to={ROUTES.NOT_FOUND}
-              className={isActive(ROUTES.NOT_FOUND) ? activeStyle : inactiveStyle}
-            // className={`${styles.link} text text_type_main-default ml-2`}
+              to={ROUTES.ORDER_FEED}
+              className={isActive(ROUTES.ORDER_FEED) ? activeStyle : inactiveStyle}
             >
               Лента заказов
             </NavLink>
@@ -59,7 +57,6 @@ const AppHeader = () => {
             <NavLink
               to={ROUTES.PROFILE}
               className={isActive(ROUTES.PROFILE) ? activeStyle : inactiveStyle}
-            //  className={`${styles.link} text text_type_main-default ml-2`}
              >
               Личный кабинет
             </NavLink>

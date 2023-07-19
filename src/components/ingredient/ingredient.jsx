@@ -20,11 +20,8 @@ import { getCurrentIngredients } from "../../services/store-selectors.js";
 
 function Ingredient({ item, onClick }) {
 
-  // const location = useLocation();
   const ingredientId = item['_id'];
   const location = useLocation();
-
-  // диспатч Redux
 
   // получение данных из хранилища Redux
   const { count } = useSelector(getCurrentIngredients);
@@ -42,10 +39,7 @@ function Ingredient({ item, onClick }) {
   return (
     <Link
       key={ingredientId}
-      // Тут мы формируем динамический путь для нашего ингредиента
       to={`/ingredients/${ingredientId}`}
-      // а также сохраняем в свойство background роут,
-      // на котором была открыта наша модалка
       className={styles.link}
       state={{ background: location }}
 

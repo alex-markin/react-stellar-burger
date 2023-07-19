@@ -8,6 +8,7 @@ const loginUrl = 'https://norma.nomoreparties.space/api/auth/login';
 const userAuthUrl = 'https://norma.nomoreparties.space/api/auth/user';
 const refreshTokenUrl = 'https://norma.nomoreparties.space/api/auth/token';
 const logoutUrl = 'https://norma.nomoreparties.space/api/auth/logout';
+const getOrderUrl = 'https://norma.nomoreparties.space/api/orders';
 
 export const refreshToken = () => {
   return fetch(refreshTokenUrl, {
@@ -185,6 +186,26 @@ const forgotPassword = (email) => {
     );
 };
 
+const getOrder = (number) => {
+  return fetchWithRefresh(`${getOrderUrl}/${number}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: localStorage.getItem("accessToken"),
+    }
+  })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+
+    }
+    );
+};
+
+
+
 
 
 export const api = {
@@ -194,6 +215,7 @@ export const api = {
   register,
   logout,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  getOrder
 };
 

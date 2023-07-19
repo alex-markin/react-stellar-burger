@@ -2,7 +2,7 @@ import { checkResponse } from "../utils/check-response.js";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const orderSlice = createSlice({
-  name: "data",
+  name: "order",
   initialState: {
     order: null,
     loading: false,
@@ -49,6 +49,7 @@ export const placeOrder = (url, currentIngredients) => (dispatch) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: localStorage.getItem("accessToken"),
       },
       body: JSON.stringify(body),
     })
