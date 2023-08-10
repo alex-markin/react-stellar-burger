@@ -1,6 +1,5 @@
 // импорт библиотек и внешних компонентов
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
-import PropTypes from 'prop-types';
 
 
 // импорт хуков
@@ -10,11 +9,21 @@ import { useRef } from 'react';
 // импорт стилей
 import styles from "./draggable-ingredient.module.css";
 
+// импорт типов
+import { Item } from '../../utils/types';
+
+type DraggableIngredientProps = {
+  item: Item;
+  handleClose: (item: Item) => void;
+  index: number;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
+  uuid?: string;
+}
 
 
-function DraggableIngredient({ item, handleClose, index, moveCard, uuid }) {
+export default function DraggableIngredient({ item, handleClose, index, moveCard, uuid }: DraggableIngredientProps) {
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
   // функционал смены ингредиентов местами
   const [{ isDragging }, drag] = useDrag({
@@ -34,7 +43,7 @@ function DraggableIngredient({ item, handleClose, index, moveCard, uuid }) {
         handlerId: monitor.getHandlerId(),
       }
     },
-    hover(item, monitor) {
+    hover(item: Item, monitor) {
       if (!ref.current) {
         return;
       }
@@ -45,11 +54,13 @@ function DraggableIngredient({ item, handleClose, index, moveCard, uuid }) {
       if (dragIndex === hoverIndex) {
         return
       }
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverBoundingRect: DOMRect = ref.current?.getBoundingClientRect()
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      const clientOffset = monitor.getClientOffset()
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const clientOffset: null | { x: number; y: number } = monitor.getClientOffset()
+      const hoverClientY: number = clientOffset && hoverBoundingRect
+        ? clientOffset.y - hoverBoundingRect.top
+        : 0;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
@@ -74,7 +85,6 @@ function DraggableIngredient({ item, handleClose, index, moveCard, uuid }) {
       <DragIcon type="primary" />
       <ConstructorElement
         isLocked={false}
-        type="undefined"
         text={item.name}
         price={item.price}
         thumbnail={item.image}
@@ -84,16 +94,3 @@ function DraggableIngredient({ item, handleClose, index, moveCard, uuid }) {
   );
 }
 
-DraggableIngredient.propTypes = {
-  item: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-  }).isRequired,
-  handleClose: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
-  moveCard: PropTypes.func.isRequired,
-  uuid: PropTypes.string.isRequired,
-};
-
-export default DraggableIngredient;

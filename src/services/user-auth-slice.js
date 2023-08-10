@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { checkReponse } from "../utils/check-response";
 import { api } from "../utils/api";
 
 export const userAuthSlice = createSlice({

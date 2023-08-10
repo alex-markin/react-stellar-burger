@@ -2,7 +2,7 @@
 import styles from "./ingredient-details.module.css";
 
 // импорт библиотек
-import ingredientPropTypes from '../../utils/types.js';
+import ingredientPropTypes from '../../utils/types';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 

@@ -3,26 +3,26 @@ import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from "react";
 
 // импорт страниц
-import Main from "../../pages/main/main.jsx"; // импорт компонента главной страницы
-import LogIn from "../../pages/authorisation/login.jsx"; // импорт компонента страницы авторизации
-import Register from "../../pages/authorisation/register.jsx"; // импорт компонента страницы регистрации
-import ForgotPassword from "../../pages/authorisation/forgot-password.jsx"; // импорт компонента страницы восстановления пароля
-import ResetPassword from "../../pages/authorisation/reset-password.jsx"; // импорт компонента страницы сброса пароля
-import NotFound404 from "../../pages/not-found-404/not-found-404.jsx"; // импорт компонента страницы 404;
-import Profile from "../../pages/profile/profile.jsx"; // импорт компонента страницы профиля
-import Modal from "../modal/modal.jsx"; // импорт компонента модального окна
-import OrderFeed from "../../pages/order-feed/order-feed.jsx"; // импорт компонента страницы ленты заказов
+import Main from "../../pages/main/main"; // импорт компонента главной страницы
+import LogIn from "../../pages/authorisation/login"; // импорт компонента страницы авторизации
+import Register from "../../pages/authorisation/register"; // импорт компонента страницы регистрации
+import ForgotPassword from "../../pages/authorisation/forgot-password"; // импорт компонента страницы восстановления пароля
+import ResetPassword from "../../pages/authorisation/reset-password"; // импорт компонента страницы сброса пароля
+import NotFound404 from "../../pages/not-found-404/not-found-404"; // импорт компонента страницы 404;
+import Profile from "../../pages/profile/profile"; // импорт компонента страницы профиля
+import Modal from "../modal/modal"; // импорт компонента модального окна
+import OrderFeed from "../../pages/order-feed/order-feed"; // импорт компонента страницы ленты заказов
 
 // импорт компонентов
-import AppHeader from "../appHeader/app-header.js"; // импорт компонента шапки
-import IngredientDetails from "../ingredient-details/Ingredient-details.jsx" // импорт компонента деталей ингредиента
-import { OnlyAuth, OnlyUnAuth } from "../protected-route/protected-route.jsx"; // импорт компонента защищенного роута
-import OrderDetalisation from "../order-detalisation/order-detalisation.jsx"; // импорт компонента детализации заказа
+import AppHeader from "../appHeader/app-header"; // импорт компонента шапки
+import IngredientDetails from "../ingredient-details/Ingredient-details" // импорт компонента деталей ингредиента
+import { OnlyAuth, OnlyUnAuth } from "../protected-route/protected-route"; // импорт компонента защищенного роута
+import OrderDetalisation from "../order-detalisation/order-detalisation"; // импорт компонента детализации заказа
 
 // импорт хуков
-import { checkUserAuth } from "../../services/user-auth-slice.js"; // импорт функции проверки авторизации пользователя
+import { checkUserAuth } from "../../services/user-auth-slice"; // импорт функции проверки авторизации пользователя
 import { useSelector, useDispatch } from 'react-redux'; // импорт хука редакса
-import { getSelectedIngredient } from "../../services/store-selectors.js"; // импорт функций useSelector
+import { getSelectedIngredient } from "../../services/store-selectors"; // импорт функций useSelector
 
 
 export const ROUTES = {

@@ -1,13 +1,13 @@
 .page {
   width: 100%;
   height: 100vh;
-  padding-left: 20%;
-
+  display: flex;
+  justify-content: center;
 }
 
 .contentContainer {
   width: 100%;
-  /* max-width: 860px; */
+  max-width: 860px;
   display: flex;
   flex-direction: row;
   gap: 60px;

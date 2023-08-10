@@ -6,10 +6,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
 import { v4 as uuidv4 } from 'uuid'; // импорт библиотеки uuid
 
+// импорт типов
+import { Item } from "../../utils/types";
+
 // импорт стилей
 import styles from "./burger-constructor-styles.module.css";
-import PropTypes from 'prop-types';
-import iconPropTypes from '../appHeader/app-header.js'; // импорт проптайпсов для иконок
+
 
 // импорт слайсов и редьюсеров Redux toolkit
 import { ingredientsSlice } from "../../services/ingredients-slice";
@@ -17,10 +19,10 @@ import { ingredientsSlice } from "../../services/ingredients-slice";
 // импорт хуков
 import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
 import { useCallback } from "react";
-import { useDrag, useDrop } from 'react-dnd'; // импорт хука для перетаскивания
+import { useDrop } from 'react-dnd'; // импорт хука для перетаскивания
 
 // импорт компонентов
-import DraggableIngredient from "../draggable-ingredient/draggable-ingredient.jsx";
+import DraggableIngredient from "../draggable-ingredient/draggable-ingredient";
 
 
 // импорт функций useSelector
@@ -28,7 +30,11 @@ import { getCurrentIngredients, getData } from "../../services/store-selectors.j
 
 // Burger Ingredients component
 
-function BurgerConstructor({ handleOrderDetailsOpen }) {
+type BurgerConstructorProps = {
+  handleOrderDetailsOpen: () => void;
+}
+
+export default function BurgerConstructor({ handleOrderDetailsOpen }: BurgerConstructorProps) {
 
   const dispatch = useDispatch(); // диспатч Redux
 
@@ -36,15 +42,33 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
   const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
   const { data } = useSelector(getData); // данные с сервера
 
+
+
   // рассчёт итоговой стоимости заказа
-  const totalPrice = currentIngredients.ingredients.reduce((acc, ingredient) => {
+  type Ingredient = {
+    price: number;
+  }
+
+  const totalPrice: number = currentIngredients.ingredients.reduce((acc: number, ingredient: Ingredient) => {
     return acc + ingredient.price;
   }, 0) + (currentIngredients.bun ? currentIngredients.bun.price * 2 : 0);
 
 
   // перетаскивание ингредиентов
 
-  const [{ isHover }, dropTarget] = useDrop({
+  type DragItem = {
+    item: {
+      [key: string]: string | number;
+    };
+    source: string;
+    type: string;
+  }
+
+  type isHover = {
+    isHover: boolean;
+  }
+
+  const [{ isHover }, dropTarget] = useDrop<DragItem, void, isHover>({
     accept: 'ingredient',
     drop({ item, source }) {
 
@@ -65,7 +89,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 
 
   // обработчик удаления ингредиента
-  const handleClose = (item) => {
+  const handleClose = (item: Record<string, any>) => {
     dispatch(ingredientsSlice.actions.removeIngredient(item));
   };
 
@@ -86,7 +110,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 
         {/* секция с верхней булкой */}
         <ul className={`${styles.ingredientsTop}`}>
-          {data.map((item) => {
+          {data.map((item: Item) => {
             return currentIngredients.bun === item
               ? (
                 <ConstructorElement
@@ -106,12 +130,11 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 
         {/* секция с ингредиентами */}
         <ul className={styles.ingredientsCenter} >
-          {currentIngredients.ingredients.map((item, index) => {
+          {currentIngredients.ingredients.map((item: Item, index: number) => {
             return item
               ? (
                 <DraggableIngredient
                   key={item.uuid}
-                  uuid={item.uuid}
                   item={item}
                   handleClose={handleClose}
                   index={index}
@@ -122,7 +145,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
         </ul>
         {/* секция с нижней булкой */}
         <ul className={`${styles.ingredientsBottom}`}>
-          {data.map((item) => {
+          {data.map((item: Item) => {
             return currentIngredients.bun === item
               ? (
                 <ConstructorElement
@@ -143,7 +166,7 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 
         <div className={`${styles.totalPriceText}`}>
           <p className="text text_type_digits-medium">{totalPrice}</p>
-          <CurrencyIcon type="TIconTypes" />
+          <CurrencyIcon type="primary" />
         </div>
         <Button onClick={handleOrderDetailsOpen} type="primary" size="large" htmlType="submit">
           Оформить заказ
@@ -154,13 +177,3 @@ function BurgerConstructor({ handleOrderDetailsOpen }) {
 }
 
 
-BurgerConstructor.propTypes = {
-  handleOrderDetailsOpen: PropTypes.func.isRequired,
-};
-
-
-CurrencyIcon.propTypes = iconPropTypes;
-DragIcon.propTypes = iconPropTypes;
-
-
-export default BurgerConstructor;

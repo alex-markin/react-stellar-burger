@@ -1,18 +1,17 @@
 import { BurgerIcon, ListIcon, ProfileIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-import PropTypes from 'prop-types';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ROUTES } from '../../components/app/app.jsx'
+import { ROUTES } from '../app/app.jsx'
 
 
 
 
-const AppHeader = () => {
+export default function AppHeader() {
 
   const location = useLocation();
 
   // функция для определения активного NavLink
-  const isActive = (url) => {
+  const isActive = (url: string) => {
     return location.pathname === url;
   }
 
@@ -25,7 +24,7 @@ const AppHeader = () => {
       <nav className={styles.nav}>
         <ul className={styles.list}>
           <li className={`${styles.item} pl-5 pt-4 pr-5 pb-4`}>
-            <BurgerIcon type="TIconTypes" />
+            <BurgerIcon type="primary" />
             <NavLink
               to={ROUTES.MAIN}
               className={isActive(ROUTES.MAIN) ? activeStyle : inactiveStyle}
@@ -34,7 +33,7 @@ const AppHeader = () => {
             </NavLink>
           </li>
           <li className={`${styles.item} pl-5 pt-4 pr-5 pb-4`}>
-            <ListIcon type="TIconTypes" />
+            <div className={styles.iconContainer}><ListIcon type="primary" /></div>
             <NavLink
               to={ROUTES.ORDER_FEED}
               className={isActive(ROUTES.ORDER_FEED) ? activeStyle : inactiveStyle}
@@ -53,11 +52,11 @@ const AppHeader = () => {
       <nav className={styles.account}>
         <ul className={styles.list}>
           <li className={`${styles.item} pl-5 pt-4 pr-5 pb-4`}>
-            <ProfileIcon type="TIconTypes" />
+            <ProfileIcon type="primary" />
             <NavLink
               to={ROUTES.PROFILE}
               className={isActive(ROUTES.PROFILE) ? activeStyle : inactiveStyle}
-             >
+            >
               Личный кабинет
             </NavLink>
           </li>
@@ -70,15 +69,6 @@ const AppHeader = () => {
   );
 }
 
-export const iconPropTypes = {
-  type: PropTypes.string.isRequired,
-};
-
-BurgerIcon.propTypes = iconPropTypes;
-ListIcon.propTypes = iconPropTypes;
-ProfileIcon.propTypes = iconPropTypes;
 
 
-
-export default AppHeader;
 
