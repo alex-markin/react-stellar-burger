@@ -1,7 +1,10 @@
 import styles from "./loading-spinner.module.css";
-import propTypes from "prop-types";
 
-const LoadingSpinner = ({loadingText}) => {
+type LoadingSpinnerProps = {
+  loadingText: string;
+}
+
+export default function LoadingSpinner({ loadingText }: LoadingSpinnerProps) {
   return (
     <div className={styles.spinnerContainer}>
       <div className={styles.spinner}></div>
@@ -10,8 +13,4 @@ const LoadingSpinner = ({loadingText}) => {
   );
 }
 
-LoadingSpinner.propTypes = {
-  loadingText: propTypes.string,
-}
 
-export default LoadingSpinner;

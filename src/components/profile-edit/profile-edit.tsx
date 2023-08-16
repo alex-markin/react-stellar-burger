@@ -1,7 +1,7 @@
 
 // импорт библиотек и хуков
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect } from "react";
+import { useEffect, useState, useRef, FormEvent } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
@@ -13,16 +13,16 @@ import { getUser } from "../../services/user-auth-slice.js";
 import { changeUser } from "../../services/user-auth-slice.js";
 import { getUserAuth } from "../../services/store-selectors.js";
 
-function ProfileEdit() {
+export default function ProfileEdit() {
 
   // стейты инпутов
-  const [nameValue, setName] = React.useState('');
-  const [mailValue, setMail] = React.useState('');
-  const [passwordValue, setPassword] = React.useState('');
+  const [nameValue, setName] = useState('');
+  const [mailValue, setMail] = useState('');
+  const [passwordValue, setPassword] = useState('');
 
   // стейт для видимости кнопок и реф для инпутов
-  const [visible, setVisible] = React.useState(false);
-  const inputRef = React.useRef(null);
+  const [visible, setVisible] = useState(false);
+  const inputRef = useRef(null);
 
   // стейт юзера, пароля и диспатч
   const user = useSelector(getUserAuth).user;
@@ -50,7 +50,7 @@ function ProfileEdit() {
   }
 
   // функция для отправки данных на сервер
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(changeUser(nameValue, mailValue, passwordValue));
     setVisible(false);
@@ -114,4 +114,3 @@ function ProfileEdit() {
   )
 }
 
-export default ProfileEdit;

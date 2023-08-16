@@ -3,11 +3,11 @@ import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-component
 import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { forgotPassword } from "../../services/user-auth-slice.js";
+import { forgotPassword } from "../../services/user-auth-slice";
 import { useDispatch } from "react-redux";
 
 // импорт роутов
-import { ROUTES } from "../../components/app/app.jsx";
+import { ROUTES } from "../../components/app/app";
 
 function ForgotPassword() {
 

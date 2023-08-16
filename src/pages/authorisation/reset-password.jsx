@@ -2,11 +2,11 @@
 import React from "react";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from 'react-router-dom';
-import { resetPassword } from "../../services/user-auth-slice.js";
+import { resetPassword } from "../../services/user-auth-slice";
 import { useDispatch } from "react-redux";
 
 // импорт роутов
-import { ROUTES } from "../../components/app/app.jsx";
+import { ROUTES } from "../../components/app/app";
 
 // импорт стилей
 import styles from "./styles.module.css";

@@ -6,6 +6,10 @@ import LoadingPage from "../../pages/loading-page/loading-page"
 import PropTypes from 'prop-types';
 
 
+// type ProtectedRouteProps = {
+//   onlyUnAuth?: boolean,
+//   component: JSX.Element,
+// }
 
 
 const ProtectedRoute = ({ onlyUnAuth = false, component }) => {

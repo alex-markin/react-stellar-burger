@@ -2,10 +2,10 @@ import styles from "./not-found-404.module.css";
 import { Link } from 'react-router-dom';
 
 // импорт роутов
-import { ROUTES } from "../../components/app/app.jsx";
+import { ROUTES } from "../../components/app/app";
 
 
-function NotFound404() {
+export default function NotFound404() {
   return (
     <main className={styles.page}>
       <div className={styles.contentContainer}>
@@ -22,4 +22,3 @@ function NotFound404() {
   );
 }
 
-export default NotFound404;

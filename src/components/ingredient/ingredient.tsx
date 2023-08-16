@@ -1,8 +1,6 @@
 
 // ипорт библиотек
-import React from 'react';
 import { useDrag } from 'react-dnd';
-import PropTypes from 'prop-types';
 import { useLocation, Link } from 'react-router-dom';
 
 // импорт компонентов
@@ -15,10 +13,18 @@ import styles from './ingredient.module.css';
 import { useSelector } from 'react-redux';
 
 // импорт функций useSelector
-import { getCurrentIngredients } from "../../services/store-selectors.js";
+import { getCurrentIngredients } from "../../services/store-selectors";
+
+// импорт типов
+import { Item } from '../../utils/types'
 
 
-function Ingredient({ item, onClick }) {
+type IngredientProps = {
+  item: Item,
+  onClick: () => void
+}
+
+export default function Ingredient({ item, onClick }: IngredientProps) {
 
   const ingredientId = item['_id'];
   const location = useLocation();
@@ -57,16 +63,3 @@ function Ingredient({ item, onClick }) {
   );
 
 }
-
-Ingredient.propTypes = {
-  item: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-  }).isRequired,
-  onClick: PropTypes.func.isRequired,
-};
-
-
-export default Ingredient;

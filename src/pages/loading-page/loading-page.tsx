@@ -2,7 +2,7 @@ import styles from "./loading-page.module.css";
 
 
 
-function LoadingPage() {
+export default function LoadingPage() {
   return (
     <main className={styles.page}>
       <div className={styles.contentContainer}>
@@ -12,4 +12,3 @@ function LoadingPage() {
   );
 }
 
-export default LoadingPage;

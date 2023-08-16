@@ -1,7 +1,11 @@
-export const formatDate = (dateString) => {
+
+
+export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const currentDate = new Date();
-  const diffInDays = Math.floor((currentDate - date) / (1000 * 60 * 60 * 24));
+  const diffInDays = Math.floor(
+    (currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+  );
 
   if (diffInDays === 0) {
     const formattedTime = formatTime(date);
@@ -17,7 +21,7 @@ export const formatDate = (dateString) => {
   }
 };
 
-const formatTime = (date) => {
+const formatTime = (date: Date) => {
   return date.toLocaleString('ru-RU', {
     hour: 'numeric',
     minute: 'numeric',

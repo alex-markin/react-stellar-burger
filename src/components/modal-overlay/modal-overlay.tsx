@@ -1,31 +1,43 @@
 // импорт библиотек
-import React from "react";
+import React, { useEffect, KeyboardEvent, MouseEvent } from "react";
 import PropTypes from 'prop-types';
 
 // импорт стилей
 import styles from "./modal-overlay.module.css";
 
 
-function ModalOverlay({ onClose }) {
+type ModalOverlayProps = {
+  onClose: () => void;
+}
+
+
+
+export default function ModalOverlay({ onClose }: ModalOverlayProps) {
 
   // закрытие модального окна по нажатию на Esc и по клику на оверлей
-  React.useEffect(() => {
-    const handleEsc = (event) => {
+
+  useEffect(() => {
+
+    const handleEsc = (event: KeyboardEvent<Window>) => {
       if (event.key === "Escape") {
         onClose();
       }
     };
-    window.addEventListener('keydown', handleEsc);
 
-    const handleOverlayClick = (event) => {
-      if (event.target.classList.contains(styles.overlay)) {
+    const handleOverlayClick = (event: Event) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains(styles.overlay)) {
         onClose();
       }
     };
+
+
+
+    window.addEventListener('keydown', handleEsc as any);
     window.addEventListener('click', handleOverlayClick);
 
     return () => {
-      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('keydown', handleEsc as any);
       window.removeEventListener('click', handleOverlayClick);
     };
   }, [onClose]);
@@ -38,9 +50,3 @@ function ModalOverlay({ onClose }) {
   );
 }
 
-ModalOverlay.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
-
-
-export default ModalOverlay;

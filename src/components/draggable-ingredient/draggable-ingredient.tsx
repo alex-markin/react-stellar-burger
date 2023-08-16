@@ -62,6 +62,7 @@ export default function DraggableIngredient({ item, handleClose, index, moveCard
         ? clientOffset.y - hoverBoundingRect.top
         : 0;
 
+
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return
       }

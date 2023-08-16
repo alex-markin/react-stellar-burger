@@ -4,7 +4,7 @@ import styles from './orders-summary.module.css';
 // импорт хуков и функций
 import { getOrders } from '../../services/store-selectors';
 import { useSelector } from 'react-redux';
-import { webSocketStatus } from '../../utils/web-socket-status.js';
+import { webSocketStatus } from '../../utils/web-socket-status';
 
 
 function OrdersSummary() {

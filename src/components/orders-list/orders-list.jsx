@@ -11,8 +11,8 @@ import styles from './orders-list.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../../services/store-selectors';
 import { useMatch, useNavigate } from 'react-router-dom';
-import { connect, disconnect } from '../../services/socket-connection/actions.js';
-import { webSocketStatus } from '../../utils/web-socket-status.js';
+import { connect, disconnect } from '../../services/socket-connection/actions';
+import { webSocketStatus } from '../../utils/web-socket-status';
 
 // импорт url адресов
 import { ALL_ORDERS_URL } from '../../pages/order-feed/order-feed';

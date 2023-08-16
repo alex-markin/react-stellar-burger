@@ -1,31 +1,38 @@
 
 // импорт библиотек
 import { useEffect } from "react";
-import { PropTypes, func } from 'prop-types'; // импорт проптайпсов
 
 // импорт хуков
 import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
 
 // импорт компонентов
-import Tabs from "../tabs/tabs.jsx"; // импорт компонента Табс
-import Ingredient from "../ingredient/ingredient.jsx"; // импорт компонента Ингредиент
+import Tabs from "../tabs/tabs"; // импорт компонента Табс
+import Ingredient from "../ingredient/ingredient"; // импорт компонента Ингредиент
 
 // импорт стилей
 import styles from "./burger-ingredients.module.css"; // импорт стилей
 
 // импорт слайсов и редьюсеров Redux toolkit
-import { tabsNavigationSlice } from "../../services/tabs-navigation-slice.js"; // импорт редьюсера для навигации по табам
+import { tabsNavigationSlice } from "../../services/tabs-navigation-slice"; // импорт редьюсера для навигации по табам
 
 
 // импорт функций useSelector
-import { getData } from "../../services/store-selectors.js";
+import { getData } from "../../services/store-selectors";
 
-function BurgerIngredients({ handleIngredientDetails }) {
+// импорт типов
+import { Item } from "../../utils/types";
+
+type BurgerIngredientsProps = {
+  handleIngredientDetails: (item: Item) => void
+}
+
+export default function BurgerIngredients({ handleIngredientDetails }: BurgerIngredientsProps) {
 
   const dispatch = useDispatch(); // диспатч Redux
 
   // установка заглавий Табсов
+
   const tabData = [
     { value: "Булки", label: "Булки" },
     { value: "Соусы", label: "Соусы" },
@@ -37,10 +44,10 @@ function BurgerIngredients({ handleIngredientDetails }) {
 
 
   // рефы для заголовков Табсов и контейнера
-  const containerRef = useRef(null);
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const bunRef = useRef<HTMLHeadingElement | null>(null);
+  const sauceRef = useRef<HTMLHeadingElement | null>(null);
+  const mainRef = useRef<HTMLHeadingElement | null>(null);
 
 
   // обработчик скролла для навигации по табам
@@ -49,12 +56,12 @@ function BurgerIngredients({ handleIngredientDetails }) {
     const headerRefs = [bunRef, sauceRef, mainRef];
 
     const handleScroll = () => {
-      const containerTop = container.getBoundingClientRect().top;
+      const containerTop = container?.getBoundingClientRect().top;
       const scrollPosition = window.scrollY;
 
       const distances = headerRefs.map((ref) => {
         const header = ref.current;
-        if (header) {
+        if (header && containerTop) {
           const headerTop = header.getBoundingClientRect().top;
           const distance = Math.abs(headerTop - containerTop - scrollPosition);
           return distance;
@@ -66,16 +73,16 @@ function BurgerIngredients({ handleIngredientDetails }) {
       dispatch(tabsNavigationSlice.actions.selectTab(tabData[minDistanceIndex].value));
     };
 
-    container.addEventListener("scroll", handleScroll);
+    container && container.addEventListener("scroll", handleScroll);
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container && container.removeEventListener("scroll", handleScroll);
     };
   }, [dispatch, tabData]);
 
 
 
   // скролл к заголовку Табса
-  const scrollToHeader = (tabValue) => {
+  const scrollToHeader = (tabValue: string) => {
     const headerRef = tabValue === "Булки" ? bunRef.current :
       tabValue === "Соусы" ? sauceRef.current :
         tabValue === "Начинки" ? mainRef.current : null;
@@ -106,7 +113,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
             ref={bunRef}
           >Булки</h2>
           <div className={`${styles.ingredientContainer} `}>
-            {data.map((item) => {
+            {data.map((item: Item) => {
               if (item.type === "bun") {
                 return (
                   <Ingredient
@@ -127,7 +134,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
             ref={sauceRef}
           >Соусы</h2>
           <div className={`${styles.ingredientContainer} `}>
-            {data.map((item) => {
+            {data.map((item: Item) => {
               if (item.type === "sauce") {
                 return (
                   <Ingredient
@@ -148,7 +155,7 @@ function BurgerIngredients({ handleIngredientDetails }) {
             ref={mainRef}
           >Начинки</h2>
           <div className={`${styles.ingredientContainer} `}>
-            {data.map((item) => {
+            {data.map((item: Item) => {
               if (item.type === "main") {
                 return (
                   <Ingredient
@@ -167,10 +174,3 @@ function BurgerIngredients({ handleIngredientDetails }) {
   );
 }
 
-
-BurgerIngredients.propTypes = {
-  handleIngredientDetails: func.isRequired,
-};
-
-
-export default BurgerIngredients;

@@ -5,19 +5,26 @@ import PropTypes from "prop-types"; // импорт библиотеки prop-ty
 import { useState } from "react"; // импорт хука useState
 
 // импорт компонентов
-import IngredientCircle from "../ingredient-circle/ingredient-circle.jsx"; // импорт компонента круглого ингредиента
+import IngredientCircle from "../ingredient-circle/ingredient-circle"; // импорт компонента круглого ингредиента
 
 // импорт стилей
 import styles from "./order.module.css"; // импорт стилей
 import othersImage from "../../images/cheese.png"; // импорт изображения
 
 // импорт хуков и функций
-import { formatDate } from "../../utils/format-date.js"; // импорт функции форматирования даты
+import { formatDate } from "../../utils/format-date"; // импорт функции форматирования даты
 import { useMatch } from 'react-router-dom';
 import { useLocation, Link } from 'react-router-dom';
 import { useMemo } from "react";
 
-function Order({ order }) {
+// импорт типов
+import { Item } from "../../utils/types"; // импорт типа Item
+
+type OrderProps = {
+  order: Item;
+}
+
+export default function Order({ order }: OrderProps) {
 
   const { ingredients, name, number, createdAt, _id } = order;
 
@@ -34,15 +41,17 @@ function Order({ order }) {
   const path = location.pathname;
 
   // получение базы ингредиентов из хранилища
-  let ingredientsDatabase;
+  let ingredientsDatabase: Array<Item> | null = null;
   try {
-    ingredientsDatabase = JSON.parse(localStorage.getItem('ingredients'))
+    ingredientsDatabase = JSON.parse(localStorage.getItem('ingredients') as string)
   } catch (e) {
     ingredientsDatabase = null;
   }
 
   // фильрация ингредиентов по id
-  const filteredIngredients = ingredientsDatabase.filter((ingredient) => ingredients.includes(ingredient._id));
+  const filteredIngredients = ingredientsDatabase
+    ? ingredientsDatabase.filter((ingredient: Item) => ingredients.includes(ingredient._id))
+    : [];
 
   // формат даты
   const date = formatDate(createdAt);
@@ -57,8 +66,9 @@ function Order({ order }) {
   // ограничение количества выводимых ингредиентов
   const MAX_INGREDIENTS = 5;
   const [showRemaining, setShowRemaining] = useState(false);
-  let renderedIngredients = filteredIngredients.slice(0, MAX_INGREDIENTS);
+  let renderedIngredients = filteredIngredients.slice(0, MAX_INGREDIENTS);  
   let remainingIngredient;
+
 
   if (filteredIngredients.length > MAX_INGREDIENTS) {
     const remainingIngredientsCount = filteredIngredients.length - MAX_INGREDIENTS;
@@ -66,7 +76,6 @@ function Order({ order }) {
     if (showRemaining) {
       renderedIngredients = filteredIngredients;
     } else {
-      // Add a fake ingredient to represent the remaining count
       remainingIngredient = ({
         _id: 'remaining',
         name: `+${remainingIngredientsCount}`,
@@ -112,7 +121,7 @@ function Order({ order }) {
                 />
               )
             })}
-            {filteredIngredients.length > MAX_INGREDIENTS && (
+            {filteredIngredients.length > MAX_INGREDIENTS && remainingIngredient && (
 
               <IngredientCircle
                 key={remainingIngredient._id}
@@ -134,16 +143,3 @@ function Order({ order }) {
     </Link>
   );
 }
-
-Order.propTypes = {
-  order: PropTypes.shape({
-    ingredients: PropTypes.arrayOf(PropTypes.string),
-    name: PropTypes.string,
-    number: PropTypes.number,
-    createdAt: PropTypes.string,
-    _id: PropTypes.string,
-  }),
-};
-
-
-export default Order;

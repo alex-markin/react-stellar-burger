@@ -3,15 +3,15 @@ import styles from "./order-details.module.css";
 import orderAcceptedImage from "../../images/order-accepted.svg";
 
 // импорт хуков и функций
-import { getCurrentOrder } from "../../services/store-selectors.js";
+import { getCurrentOrder } from "../../services/store-selectors";
 import { useSelector } from "react-redux";
 
 // импорт компонентов
-import LoadingSpinner from "../loading-spinner/loading-spinner.jsx";
+import LoadingSpinner from "../loading-spinner/loading-spinner";
 
-function OrderDetails() {
+export default function OrderDetails() {
   const { order, loading } = useSelector(getCurrentOrder);
-  let orderNumber = null;
+  let orderNumber: number | null;
 
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
@@ -31,5 +31,3 @@ function OrderDetails() {
   );
 }
 
-
-export default OrderDetails;

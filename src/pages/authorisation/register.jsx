@@ -3,10 +3,10 @@ import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-component
 import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-import { register } from "../../services/user-auth-slice.js";
+import { register } from "../../services/user-auth-slice";
 
 // импорт роутов
-import { ROUTES } from "../../components/app/app.jsx";
+import { ROUTES } from "../../components/app/app";
 
 function Register() {
 

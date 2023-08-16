@@ -9,33 +9,36 @@ import { useNavigate } from 'react-router-dom';
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients"; // импорт компонента ингредиентов бургера
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor"; // импорт компонента конструктора бургера
 import Modal from "../../components/modal/modal"; // импорт компонента модального окна
-import OrderDetails from "../../components/order-details/order-details.jsx"; // импорт компонента деталей заказа
+import OrderDetails from "../../components/order-details/order-details"; // импорт компонента деталей заказа
 
 // импорт стилей
 import styles from "./main.module.css";
 
 // импорт хуков
-import { useModal } from "../../hooks/use-modal.js"; // импорт хука модального окна
+import { useModal } from "../../hooks/use-modal"; // импорт хука модального окна
 import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
 
 // импорт слайсов и редьюсеров Redux toolkit
-import { fetchData } from "../../services/data-slice.js"; // импорт редьюсера для получения данных с сервера
-import { selectedIngredientSlice } from "../../services/selected-ingredient-slice.js"; // импорт редьюсера для выбранного ингредиента
-import { orderSlice } from "../../services/order-slice.js"; // импорт редьюсера для заказа
+import { fetchData } from "../../services/data-slice"; // импорт редьюсера для получения данных с сервера
+import { selectedIngredientSlice } from "../../services/selected-ingredient-slice"; // импорт редьюсера для выбранного ингредиента
+import { orderSlice } from "../../services/order-slice"; // импорт редьюсера для заказа
 
 // импорт утилитарных функций
-import { placeOrder } from "../../services/order-slice.js"; // импорт функции для взаимодействия с сервером для размещения заказа
+import { placeOrder } from "../../services/order-slice"; // импорт функции для взаимодействия с сервером для размещения заказа
 
 // импорт функций useSelector
-import { getCurrentIngredients, getCurrentOrder, getData } from "../../services/store-selectors.js";
+import { getCurrentIngredients, getCurrentOrder, getData } from "../../services/store-selectors";
 import { ingredientsSlice } from "../../services/ingredients-slice";
+
+// импорт типов
+import { Item } from "../../utils/types";
 
 
 // адрес сервера
 const url = "https://norma.nomoreparties.space/api";
 
 
-function Main() {
+export default function Main() {
 
   // диспатч Redux
   const dispatch = useDispatch();
@@ -84,7 +87,7 @@ function Main() {
   }
 
   // функция открытия модального окна с деталями ингредиента
-  function handleIngredientDetailsOpen(item) {
+  function handleIngredientDetailsOpen(item: Item) {
     dispatch(selectedIngredientSlice.actions.mountIngredient(item));
     openModal();
   }
@@ -92,7 +95,7 @@ function Main() {
   const modal = orderDetailsOpen ?
     (
       <Modal onClose={handleOrderDetailsClose}>
-          <OrderDetails />
+        <OrderDetails />
       </Modal>
     ) : null;
 
@@ -109,6 +112,3 @@ function Main() {
     </>
   );
 }
-
-
-export default Main;

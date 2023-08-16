@@ -3,7 +3,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
 // импорт роутов
-import { ROUTES } from "../../components/app/app.jsx";
+import { ROUTES } from "../../components/app/app";
 
 
 // импорт стилей
@@ -12,11 +12,11 @@ import styles from "./profile.module.css";
 // импорт хуков и экшенов Redux
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logout } from "../../services/user-auth-slice.js";
+import { logout } from "../../services/user-auth-slice";
 
 // импорт компонентов
-import ProfileEdit from "../../components/profile-edit/profile-edit.jsx";
-import OrdersHistory from "../../components/orders-history/orders-history.jsx";
+import ProfileEdit from "../../components/profile-edit/profile-edit";
+import OrdersHistory from "../../components/orders-history/orders-history";
 
 const Profile = () => {
 

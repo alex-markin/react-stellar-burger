@@ -4,10 +4,10 @@ import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-component
 import styles from "./styles.module.css";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-import { login } from "../../services/user-auth-slice.js";
+import { login } from "../../services/user-auth-slice";
 
 // импорт роутов
-import { ROUTES } from "../../components/app/app.jsx";
+import { ROUTES } from "../../components/app/app";
 
 function LogIn() {
 

@@ -1,4 +1,4 @@
-import { checkResponse } from "../utils/check-response.js";
+import { checkResponse } from "../utils/check-response";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const orderSlice = createSlice({

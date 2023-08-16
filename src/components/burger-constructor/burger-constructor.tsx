@@ -1,7 +1,6 @@
 import {
   Button,
   ConstructorElement,
-  DragIcon,
   CurrencyIcon
 } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
 import { v4 as uuidv4 } from 'uuid'; // импорт библиотеки uuid
@@ -26,7 +25,7 @@ import DraggableIngredient from "../draggable-ingredient/draggable-ingredient";
 
 
 // импорт функций useSelector
-import { getCurrentIngredients, getData } from "../../services/store-selectors.js";
+import { getCurrentIngredients, getData } from "../../services/store-selectors";
 
 // Burger Ingredients component
 
