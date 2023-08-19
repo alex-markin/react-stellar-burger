@@ -20,3 +20,12 @@ export const rootReducer = combineReducers({
   orderDetails: orderDetailsSlice.reducer,
 
 });
+
+type IngredientsState = ReturnType<typeof ingredientsSlice.reducer>;
+type DataState = ReturnType<typeof dataSlice.reducer>;
+type SelectedIngredientState = ReturnType<typeof selectedIngredientSlice.reducer>;
+type OrderState = ReturnType<typeof orderSlice.reducer>;
+type TabsNavigationState = ReturnType<typeof tabsNavigationSlice.reducer>;
+type UserAuthState = ReturnType<typeof userAuthSlice.reducer>;
+type OrdersState = ReturnType<typeof ordersReducer>;
+type OrderDetailsState = ReturnType<typeof orderDetailsSlice.reducer>;

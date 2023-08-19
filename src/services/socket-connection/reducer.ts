@@ -1,14 +1,21 @@
 import { webSocketStatus } from '../../utils/web-socket-status';
-import { createReducer } from '@reduxjs/toolkit';
-import { wsConnecting, wsOpen, wsClose, wsError, wsMessage } from './actions';
+import { createReducer, PayloadAction } from '@reduxjs/toolkit';
+import { wsConnecting, wsOpen, wsClose, wsError, wsMessage, wsMessageType } from './actions';
 
-const initialState = {
+type initialStateType = {
+  status: string,
+  orders: Array<any>,
+  total: number,
+  totalToday: number,
+  connectingError: string,
+}
+
+const initialState: initialStateType = {
   status: webSocketStatus.OFFLINE,
   orders: [],
   total: 0,
   totalToday: 0,
   connectingError: '',
-
 }
 
 export const ordersReducer = createReducer(initialState, (builder) => {
@@ -25,11 +32,11 @@ export const ordersReducer = createReducer(initialState, (builder) => {
       state.total = 0;
       state.totalToday = 0;
     })
-    .addCase(wsError, (state, action) => {
+    .addCase(wsError, (state, action: PayloadAction<string> ) => {
       state.status = webSocketStatus.OFFLINE;
       state.connectingError = action.payload;
     })
-    .addCase(wsMessage, (state, action) => {
+    .addCase(wsMessage, (state, action: wsMessageType) => {
       const data = action.payload;
       state.orders = data.orders;
       state.total = data.total;

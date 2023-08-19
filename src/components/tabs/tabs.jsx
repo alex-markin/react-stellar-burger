@@ -11,7 +11,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from "react-redux";
 
 // импорт функций useSelector
-import { getTabsNavigation } from "../../services/store-selectors.js";
+import { getTabsNavigation } from "../../services/store-selectors";
 
 function Tabs({ tabData, onTabClick }) {
   const { activeTab } = useSelector(getTabsNavigation); // активный таб
@@ -19,7 +19,7 @@ function Tabs({ tabData, onTabClick }) {
   return (
     <div className={styles.tabsContainer}>
       {tabData.map((tab) => (
-        <Tab key={tab.value} value={tab.value} active={activeTab === tab.value}  onClick={() => onTabClick(tab.value)}>
+        <Tab key={tab.value} value={tab.value} active={activeTab === tab.value} onClick={() => onTabClick(tab.value)}>
           {tab.label}
         </Tab>
       ))}

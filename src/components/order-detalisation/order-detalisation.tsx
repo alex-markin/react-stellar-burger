@@ -28,7 +28,7 @@ export default function OrderDetalisation() {
 
   // получение данных с сервера
   useEffect(() => {
-    dispatch(getOrders(orderId));
+    orderId && dispatch(getOrders(orderId));
 
     return () => {
       dispatch(resetOrder());
@@ -46,7 +46,7 @@ export default function OrderDetalisation() {
     const { ingredients, name, number, createdAt, status } = order;
 
     // получение базы ингредиентов из хранилища
-    let ingredientsDatabase;
+    let ingredientsDatabase: Item[] | null;
     try {
       const storedIngredients = localStorage.getItem('ingredients');
       ingredientsDatabase = storedIngredients ? JSON.parse(storedIngredients) : null;
@@ -55,8 +55,8 @@ export default function OrderDetalisation() {
     }
 
     // фильрация ингредиентов по id
-    const filteredIngredients = ingredientsDatabase.filter((ingredient: Item) => ingredients.includes(ingredient._id));
-
+    const filteredIngredients: Item[] | null = ingredientsDatabase ? ingredientsDatabase.filter((ingredient) => ingredients.includes(ingredient._id)) : [];
+    
     // форматирование даты
     const date = formatDate(createdAt);
 

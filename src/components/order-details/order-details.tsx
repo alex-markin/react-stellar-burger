@@ -11,11 +11,12 @@ import LoadingSpinner from "../loading-spinner/loading-spinner";
 
 export default function OrderDetails() {
   const { order, loading } = useSelector(getCurrentOrder);
-  let orderNumber: number | null;
+  let orderNumber: number;
 
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
-      {loading ? (
+    
+      {loading || !order ? (
         <LoadingSpinner loadingText={'Оформляем Ваш заказ...'} />
       ) : (
 

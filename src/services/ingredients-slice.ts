@@ -1,15 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Item } from "../utils/types";
 
-export const ingredientsSlice = createSlice({
-  name: "ingredients",
-  initialState: {
-    ingredients: [],
+type IngredientState = {
+  ingredients: Item[],
+  draggableIngredients: any[],
+  bun: Item | null,
+  count: Record<string, number>,
+}
+
+const initialState: IngredientState = {
+  ingredients: [],
     draggableIngredients: [],
     bun: null,
     count: {},
-  },
+};
+
+type AddIngredientPayload = {
+  item: Item,
+  uuid: string,
+}
+
+type ReorderIngredientsPayload = {
+  sourceIndex: number,
+  hoverIndex: number,
+}
+
+
+export const ingredientsSlice = createSlice({
+  name: "ingredients",
+  initialState,
   reducers: {
-    addIngredient: (state, action) => {
+    addIngredient: (state, action: PayloadAction<AddIngredientPayload>) => {
       const { item, uuid } = action.payload;
       const ingredient = { ...item };
 
@@ -21,7 +42,7 @@ export const ingredientsSlice = createSlice({
 
     },
 
-    removeIngredient: (state, action) => {
+    removeIngredient: (state, action: PayloadAction<Item>) => {
       const ingredient = { ...action.payload };
 
       state.ingredients = state.ingredients.filter(
@@ -37,7 +58,7 @@ export const ingredientsSlice = createSlice({
       }
     },
 
-    changeBun: (state, action) => {
+    changeBun: (state, action: PayloadAction<Item>) => {
       if (state.bun && state.count[state.bun._id]) {
         delete state.count[state.bun._id];
       }
@@ -45,7 +66,7 @@ export const ingredientsSlice = createSlice({
       state.count[action.payload._id] = 2;
     },
 
-    reorderIngredients: (state, action) => {
+    reorderIngredients: (state, action: PayloadAction<ReorderIngredientsPayload>) => {
       const { sourceIndex, hoverIndex } = action.payload;
       const draggedIngredient = state.ingredients[sourceIndex];
 

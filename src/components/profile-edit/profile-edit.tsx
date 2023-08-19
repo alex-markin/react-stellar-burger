@@ -9,9 +9,9 @@ import { useDispatch } from "react-redux";
 import styles from './profile-edit.module.css';
 
 // импорт экшенов и функций получения данных из хранилища
-import { getUser } from "../../services/user-auth-slice.js";
-import { changeUser } from "../../services/user-auth-slice.js";
-import { getUserAuth } from "../../services/store-selectors.js";
+import { getUser } from "../../services/user-auth-slice";
+import { changeUser } from "../../services/user-auth-slice";
+import { getUserAuth } from "../../services/store-selectors";
 
 export default function ProfileEdit() {
 

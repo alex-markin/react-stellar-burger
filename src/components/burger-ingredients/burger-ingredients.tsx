@@ -22,6 +22,7 @@ import { getData } from "../../services/store-selectors";
 
 // импорт типов
 import { Item } from "../../utils/types";
+import { tabs } from '../../services/tabs-navigation-slice'
 
 type BurgerIngredientsProps = {
   handleIngredientDetails: (item: Item) => void
@@ -70,7 +71,8 @@ export default function BurgerIngredients({ handleIngredientDetails }: BurgerIng
       });
 
       const minDistanceIndex = distances.indexOf(Math.min(...distances));
-      dispatch(tabsNavigationSlice.actions.selectTab(tabData[minDistanceIndex].value));
+      const tabValue = tabData[minDistanceIndex].value;
+      dispatch(tabsNavigationSlice.actions.selectTab(tabValue as tabs));
     };
 
     container && container.addEventListener("scroll", handleScroll);

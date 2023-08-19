@@ -2,13 +2,13 @@
 import { useEffect } from "react";
 
 // импорт компонентов
-import OrdersList from "../../components/orders-list/orders-list.jsx"; // импорт компонента списка заказов
-import OrdersSummary from "../../components/orders-summary/orders-summary.jsx"; // импорт компонента суммарной информации о заказах
+import OrdersList from "../../components/orders-list/orders-list"; // импорт компонента списка заказов
+import OrdersSummary from "../../components/orders-summary/orders-summary"; // импорт компонента суммарной информации о заказах
 
 // импорт хуков и экшенов
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrders } from '../../services//store-selectors';
-import { connect, disconnect } from '../../services/socket-connection/actions.js';
+import { getOrders } from '../../services/store-selectors';
+import { connect, disconnect } from '../../services/socket-connection/actions';
 
 // импорт стилей
 import styles from "./order-feed.module.css";
@@ -17,18 +17,14 @@ import styles from "./order-feed.module.css";
 export const ALL_ORDERS_URL = "wss://norma.nomoreparties.space/orders";
 
 function OrderFeed() {
-  const accessToken = localStorage.getItem('accessToken').replace('Bearer ', '');
+  const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
 
   const ordersData = useSelector(getOrders);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Start the socket connection when the component mounts
-    // socket.connect();
-    // console.log(orders)
     dispatch(connect(`${ALL_ORDERS_URL}/all`));
 
-    // Clean up the socket connection when the component unmounts
     return () => {
      dispatch(disconnect());
     };

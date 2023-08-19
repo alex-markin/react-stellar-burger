@@ -56,11 +56,9 @@ export default function BurgerConstructor({ handleOrderDetailsOpen }: BurgerCons
   // перетаскивание ингредиентов
 
   type DragItem = {
-    item: {
-      [key: string]: string | number;
-    };
-    source: string;
     type: string;
+    item: Item;
+    source: string;
   }
 
   type isHover = {
@@ -88,7 +86,7 @@ export default function BurgerConstructor({ handleOrderDetailsOpen }: BurgerCons
 
 
   // обработчик удаления ингредиента
-  const handleClose = (item: Record<string, any>) => {
+  const handleClose = (item: Item) => {
     dispatch(ingredientsSlice.actions.removeIngredient(item));
   };
 

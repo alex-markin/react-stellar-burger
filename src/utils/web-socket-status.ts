@@ -1,5 +1,11 @@
-export const webSocketStatus  = {
-  CONNECTING:  'CONNECTING...',
+type WebSocketStatusType = {
+  CONNECTING: 'CONNECTING...',
+  ONLINE: 'ONLINE',
+  OFFLINE: 'OFFLINE'
+}
+
+export const webSocketStatus: WebSocketStatusType  = {
+  CONNECTING: 'CONNECTING...',
   ONLINE: 'ONLINE',
   OFFLINE: 'OFFLINE'
 }

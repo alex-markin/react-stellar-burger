@@ -14,6 +14,7 @@ type RefreshData = {
   success: boolean;
   accessToken: string;
   refreshToken: string;
+  [key: string]: any;
 };
 
 
@@ -36,7 +37,7 @@ export const fetchWithRefresh = async (url: string, options: RequestInit): Promi
     return await checkResponse(res);
   } catch (err: any) {
     if (err.message === "jwt expired") {
-      const refreshData = await refreshToken(); 
+      const refreshData = await refreshToken();
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
@@ -46,7 +47,7 @@ export const fetchWithRefresh = async (url: string, options: RequestInit): Promi
         ...options.headers,
         authorization: refreshData.accessToken,
       };
-      const res = await fetch(url, options); 
+      const res = await fetch(url, options);
       return await checkResponse(res);
     } else {
       return Promise.reject(err);
@@ -54,7 +55,7 @@ export const fetchWithRefresh = async (url: string, options: RequestInit): Promi
   }
 };
 
-const getUser = async () => {
+const getUser = async (): Promise<RefreshData> => {
   try {
     const response = await fetchWithRefresh(userAuthUrl, {
       method: "GET",
@@ -65,15 +66,15 @@ const getUser = async () => {
     });
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
-    return err;
+    return Promise.reject(err)
   }
 };
 
 
 const changeUser = async (name: string, email: string, password: string) => {
-  const accessToken = localStorage.getItem("accessToken") || ""; 
+  const accessToken = localStorage.getItem("accessToken") || "";
 
   try {
     const response = await fetchWithRefresh(userAuthUrl, {
@@ -92,12 +93,13 @@ const changeUser = async (name: string, email: string, password: string) => {
     return response;
   } catch (err) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 
 
 
-const login = async (email: string, password: string) => {
+const login = async (email: string, password: string): Promise<RefreshData> => {
   try {
     const response = await fetch(loginUrl, {
       method: "POST",
@@ -111,13 +113,14 @@ const login = async (email: string, password: string) => {
     });
 
     return await checkResponse(response);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 
 
-const logout = async () => {
+const logout = async (): Promise<RefreshData> => {
   try {
     const response = await fetch(logoutUrl, {
       method: "POST",
@@ -132,11 +135,12 @@ const logout = async () => {
     return await checkResponse(response);
   } catch (err) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 
 
-const register = async (name: string, email: string, password: string) => {
+const register = async (name: string, email: string, password: string): Promise<RefreshData> => {
   try {
     const response = await fetch(registerUrl, {
       method: "POST",
@@ -153,11 +157,12 @@ const register = async (name: string, email: string, password: string) => {
     return await checkResponse(response);
   } catch (err) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 
 
-const resetPassword = async (password: string, token: string) => {
+const resetPassword = async (password: string, token: string): Promise<RefreshData> => {
   try {
     const response = await fetch(resetPasswordUrl, {
       method: "POST",
@@ -173,11 +178,12 @@ const resetPassword = async (password: string, token: string) => {
     return await checkResponse(response);
   } catch (err) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 
 
-const forgotPassword = async (email: string) => {
+const forgotPassword = async (email: string): Promise<RefreshData> => {
   try {
     const response = await fetch(forgotPasswordUrl, {
       method: "POST",
@@ -192,11 +198,12 @@ const forgotPassword = async (email: string) => {
     return await checkResponse(response);
   } catch (err) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 
 
-const getOrder = async (number: string) => {
+const getOrder = async (number: string): Promise<RefreshData> => {
   try {
     const response = await fetchWithRefresh(`${getOrderUrl}/${number}`, {
       method: "GET",
@@ -209,6 +216,7 @@ const getOrder = async (number: string) => {
     return response;
   } catch (err) {
     console.error(err);
+    return Promise.reject(err)
   }
 };
 

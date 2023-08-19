@@ -1,32 +1,27 @@
-// импорт библиотек
-import React from "react";
+import { FormEvent, useState, useRef } from "react";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
-import { resetPassword } from "../../services/user-auth-slice";
+import { useNavigate } from 'react-router-dom';
+import { forgotPassword } from "../../services/user-auth-slice";
 import { useDispatch } from "react-redux";
 
 // импорт роутов
 import { ROUTES } from "../../components/app/app";
 
-// импорт стилей
-import styles from "./styles.module.css";
+function ForgotPassword() {
 
+  const [value, setValue] = useState('');
+  const inputRef = useRef(null);
 
-
-function ResetPassword() {
-
-  const [password, setPassword] = React.useState('');
-  const [token, setToken] = React.useState('');
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const inputRef = React.useRef(null);
-
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(resetPassword(password, token));
+    dispatch(forgotPassword(value));
+    navigate(ROUTES.RESET_PASSWORD);
   }
-
-
 
 
   return (
@@ -36,25 +31,11 @@ function ResetPassword() {
         <form className={styles.form} onSubmit={onSubmit}>
           <div className={styles.inputContainer}>
             <Input
-              type={'password'}
-              placeholder={'Введите новый пароль'}
-              onChange={e => setPassword(e.target.value)}
-              value={password}
-              name={'new-password'}
-              icon="ShowIcon"
-              error={false}
-              ref={inputRef}
-              // onIconClick={onIconClick}
-              errorText={'Ошибка'}
-              size={'default'}
-            />
-
-            <Input
-              type={'password'}
-              placeholder={'Введите код из письма'}
-              onChange={e => setToken(e.target.value)}
-              value={token}
-              name={'reset-code'}
+              type={'email'}
+              placeholder={'Укажите e-mail'}
+              onChange={e => setValue(e.target.value)}
+              value={value}
+              name={'email'}
               error={false}
               ref={inputRef}
               errorText={'Ошибка'}
@@ -77,4 +58,4 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
+export default ForgotPassword;

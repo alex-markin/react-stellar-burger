@@ -10,7 +10,6 @@ import { ROUTES } from "../../components/app/app";
 import styles from "./profile.module.css";
 
 // импорт хуков и экшенов Redux
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logout } from "../../services/user-auth-slice";
 
@@ -21,7 +20,6 @@ import OrdersHistory from "../../components/orders-history/orders-history";
 const Profile = () => {
 
   // хуки
-  const user = useSelector((state) => state.userAuth.user);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -30,7 +28,7 @@ const Profile = () => {
   const ordersPath = ROUTES.PROFILE_ORDERS;
 
   // функция для определения активного NavLink
-  const isActive = (url) => {
+  const isActive = (url: string) => {
     return location.pathname === url;
   }
 

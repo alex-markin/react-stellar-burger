@@ -10,6 +10,7 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor"; // импорт компонента конструктора бургера
 import Modal from "../../components/modal/modal"; // импорт компонента модального окна
 import OrderDetails from "../../components/order-details/order-details"; // импорт компонента деталей заказа
+import ModalError from "../../components/modal-error/modal-error"; // импорт компонента модального окна с ошибкой
 
 // импорт стилей
 import styles from "./main.module.css";
@@ -64,7 +65,8 @@ export default function Main() {
 
   // функция отправки заказа и получения номера заказа
   function handlePlaceOrder() {
-    dispatch(placeOrder(url, currentIngredients));
+    currentIngredients.bun && currentIngredients.ingredients.length > 0 &&
+      dispatch(placeOrder(url, currentIngredients));
   };
 
   // функция открытия модального окна с деталями заказа
@@ -95,7 +97,9 @@ export default function Main() {
   const modal = orderDetailsOpen ?
     (
       <Modal onClose={handleOrderDetailsClose}>
-        <OrderDetails />
+        {(!currentIngredients.bun && currentIngredients.ingredients.length == 0) ? (
+          <ModalError errorMessage={'Вы не добавили ни одного ингредиента. Пожалуйста, вернитесь в конструктор и выберите ингредиенты.'} />) : (
+          <OrderDetails />)}
       </Modal>
     ) : null;
 
