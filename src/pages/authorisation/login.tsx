@@ -9,10 +9,14 @@ import { login } from "../../services/user-auth-slice";
 // импорт роутов
 import { ROUTES } from "../../components/app/app";
 
+// импорт обработчика отображения пароля
+import { showPasswordHandler } from "../../utils/show-password-handler";
+
 function LogIn() {
 
   const [mailValue, setMail] = useState('');
   const [passwordValue, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const inputRef = useRef(null);
   const dispatch = useDispatch();
@@ -21,6 +25,7 @@ function LogIn() {
     e.preventDefault();
     dispatch(login(mailValue, passwordValue));
   }
+
 
 
 
@@ -43,7 +48,7 @@ function LogIn() {
               size={'default'}
             />
             <Input
-              type={'password'}
+              type={!showPassword ? 'password' : 'text'}
               placeholder={'Пароль'}
               onChange={e => setPassword(e.target.value)}
               icon={'ShowIcon'}
@@ -51,7 +56,7 @@ function LogIn() {
               name={'password'}
               error={false}
               ref={inputRef}
-              // onIconClick={onIconClick}
+              onIconClick={() => showPasswordHandler(setShowPassword, showPassword)}
               errorText={'Ошибка'}
               size={'default'}
             />

@@ -1,11 +1,12 @@
 .header {
   width: 100%;
   max-width: 1920px;
-  height: 80px;
+  height: 88px;
   background-color: rgba(255, 255, 255, 0.13);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  padding: 16px 16.6%;
+  padding-right: 16.6%;
+  padding-left: 16.6%;
   box-sizing: border-box;
   margin: 0 auto;
 }
@@ -26,7 +27,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100%;
   margin: 0;
   padding: 0;
   gap: 8px;
@@ -42,6 +42,7 @@
   max-width: 197px;
   font-size: 16px;
   cursor: pointer;
+  max-height: 24px;
 }
 
 .iconContainer {
@@ -71,4 +72,18 @@
 
 .activeLink {
   color: inherit;
+}
+
+@media screen and (max-width: 1500px) {
+  .header {
+    padding-right: 8.3%;
+    padding-left: 8.3%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .header {
+    padding-right: 4.1%;
+    padding-left: 4.1%;
+  }
 }

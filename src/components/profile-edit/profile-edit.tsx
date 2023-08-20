@@ -13,6 +13,9 @@ import { getUser } from "../../services/user-auth-slice";
 import { changeUser } from "../../services/user-auth-slice";
 import { getUserAuth } from "../../services/store-selectors";
 
+import { showPasswordHandler } from "../../utils/show-password-handler";
+// импорт обработчика отображения пароля
+
 export default function ProfileEdit() {
 
   // стейты инпутов
@@ -28,6 +31,7 @@ export default function ProfileEdit() {
   const user = useSelector(getUserAuth).user;
   const password = useSelector(getUserAuth).password;
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   // эффект для получения данных юзера
   useEffect(() => {
@@ -89,7 +93,7 @@ export default function ProfileEdit() {
           onFocus={onFocus}
         />
         <Input
-          type={'password'}
+          type={!showPassword ? 'password' : 'text'}
           onChange={e => setPassword(e.target.value)}
           value={passwordValue}
           name={'name'}
@@ -98,6 +102,7 @@ export default function ProfileEdit() {
           errorText={'Ошибка'}
           size={'default'}
           icon="EditIcon"
+          onIconClick={() => showPasswordHandler(setShowPassword, showPassword)}
           onFocus={onFocus}
         />
 

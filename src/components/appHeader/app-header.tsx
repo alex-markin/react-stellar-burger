@@ -20,7 +20,7 @@ export default function AppHeader() {
 
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} pt-4 pb-4`}>
       <nav className={styles.nav}>
         <ul className={styles.list}>
           <li className={`${styles.item} pl-5 pt-4 pr-5 pb-4`}>

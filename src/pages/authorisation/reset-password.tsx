@@ -11,6 +11,9 @@ import { ROUTES } from "../../components/app/app";
 // импорт стилей
 import styles from "./styles.module.css";
 
+// импорт обработчика отображения пароля
+import { showPasswordHandler } from "../../utils/show-password-handler";
+
 
 
 function ResetPassword() {
@@ -18,6 +21,7 @@ function ResetPassword() {
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -50,9 +54,10 @@ function ResetPassword() {
             />
 
             <Input
-              type={'password'}
+              type={!showPassword ? 'password' : 'text'}
               placeholder={'Введите код из письма'}
               onChange={e => setToken(e.target.value)}
+              onIconClick={() => showPasswordHandler(setShowPassword, showPassword)}
               value={token}
               name={'reset-code'}
               error={false}
