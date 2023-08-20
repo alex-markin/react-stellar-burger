@@ -4,7 +4,7 @@ import { wsConnecting, wsOpen, wsClose, wsError, wsMessage, wsMessageType } from
 
 type initialStateType = {
   status: string,
-  orders: Array<any>,
+  orders: Record<string, any>,
   total: number,
   totalToday: number,
   connectingError: string,
@@ -20,13 +20,13 @@ const initialState: initialStateType = {
 
 export const ordersReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(wsConnecting, (state, action) => {
+    .addCase(wsConnecting, (state) => {
       state.status = webSocketStatus.CONNECTING;
     })
-    .addCase(wsOpen, (state, action) => {
+    .addCase(wsOpen, (state) => {
       state.status = webSocketStatus.ONLINE;
     })
-    .addCase(wsClose, (state, action) => {
+    .addCase(wsClose, (state) => {
       state.status = webSocketStatus.OFFLINE;
       state.orders = [];
       state.total = 0;

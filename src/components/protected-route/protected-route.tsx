@@ -1,9 +1,10 @@
 
-
+import { FC } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import LoadingPage from "../../pages/loading-page/loading-page"
-import PropTypes from 'prop-types';
+
+import { getUserAuth } from "../../services/store-selectors";
 
 
 // type ProtectedRouteProps = {
@@ -11,13 +12,18 @@ import PropTypes from 'prop-types';
 //   component: JSX.Element,
 // }
 
+type ProtectedRouteProps = {
+  onlyUnAuth?: boolean,
+  component: JSX.Element,
+}
 
-const ProtectedRoute = ({ onlyUnAuth = false, component }) => {
+
+const ProtectedRoute = ({ onlyUnAuth = false, component }: ProtectedRouteProps) => {
   // isAuthChecked это флаг, показывающий что проверка токена произведена
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
-  const isAuthChecked = useSelector((store) => store.userAuth.isAuthChecked);
-  const isAuthenticated = useSelector((store) => store.userAuth.isAuthenticated);
+  const isAuthChecked = useSelector(getUserAuth).isAuthChecked;
+  const isAuthenticated = useSelector(getUserAuth).isAuthenticated;
   const location = useLocation();
 
   if (!isAuthChecked) {
@@ -43,15 +49,14 @@ const ProtectedRoute = ({ onlyUnAuth = false, component }) => {
   return component;
 };
 
-ProtectedRoute.propTypes = {
-  onlyUnAuth: PropTypes.bool,
-  component: PropTypes.element.isRequired,
-};
-
 export default ProtectedRoute;
 
+type OnlyAuthProps = {
+  component: JSX.Element,
+}
+
 export const OnlyAuth = ProtectedRoute;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyUnAuth = ({ component }: OnlyAuthProps) => (
   <ProtectedRoute onlyUnAuth={true} component={component} />
 );
 

@@ -2,6 +2,7 @@ import { checkResponse } from "../utils/check-response";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Order, CurrentIngredients } from "../utils/types";
 import { AppThunk } from "./store";
+import { Item } from "../utils/types";
 
 export type OrderState = {
   order: Order | null;
@@ -54,7 +55,7 @@ export const { fetchOrder, fetchOrderSuccess, fetchOrderFailure } =
   ): AppThunk => async (dispatch) => {
     if (currentIngredients.bun && currentIngredients.ingredients.length > 0) {
       const ingredients = currentIngredients.ingredients.map(
-        (item: any) => item._id
+        (item: Item) => item._id
       );
       const body = {
         ingredients: [...ingredients, currentIngredients.bun._id],

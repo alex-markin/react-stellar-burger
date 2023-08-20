@@ -1,6 +1,3 @@
-// импорт библиотек
-import PropTypes from 'prop-types';
-
 // импорт стилей
 import styles from './tabs.module.css';
 
@@ -13,7 +10,15 @@ import { useSelector } from "react-redux";
 // импорт функций useSelector
 import { getTabsNavigation } from "../../services/store-selectors";
 
-function Tabs({ tabData, onTabClick }) {
+type TabDataProps = {
+  tabData: {
+    label: string;
+    value: string;
+  }[];
+  onTabClick: (value: string) => void;
+}
+
+function Tabs({ tabData, onTabClick }: TabDataProps) {
   const { activeTab } = useSelector(getTabsNavigation); // активный таб
 
   return (
@@ -26,15 +31,5 @@ function Tabs({ tabData, onTabClick }) {
     </div>
   );
 }
-
-Tabs.propTypes = {
-  tabData: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onTabClick: PropTypes.func.isRequired,
-};
 
 export default Tabs;

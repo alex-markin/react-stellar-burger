@@ -1,6 +1,5 @@
 // импорт библиотек
 import ReactDOM from "react-dom";
-import PropTypes from 'prop-types';
 
 // импорт стилей
 import styles from "./modal.module.css";

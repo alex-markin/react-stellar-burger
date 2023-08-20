@@ -1,7 +1,6 @@
 
 // импорт библиотек
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
-import PropTypes from "prop-types"; // импорт библиотеки prop-types
 import { useState } from "react"; // импорт хука useState
 
 // импорт компонентов

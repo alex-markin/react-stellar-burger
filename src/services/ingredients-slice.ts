@@ -3,7 +3,7 @@ import { Item } from "../utils/types";
 
 type IngredientState = {
   ingredients: Item[],
-  draggableIngredients: any[],
+  draggableIngredients: Item[],
   bun: Item | null,
   count: Record<string, number>,
 }

@@ -1,6 +1,5 @@
 // импорт библиотек
 import React, { useEffect, KeyboardEvent, MouseEvent } from "react";
-import PropTypes from 'prop-types';
 
 // импорт стилей
 import styles from "./modal-overlay.module.css";
