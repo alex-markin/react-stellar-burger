@@ -4,7 +4,7 @@ import orderAcceptedImage from "../../images/order-accepted.svg";
 
 // импорт хуков и функций
 import { getCurrentOrder } from "../../services/store-selectors";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/redux-hooks";
 
 // импорт компонентов
 import LoadingSpinner from "../loading-spinner/loading-spinner";

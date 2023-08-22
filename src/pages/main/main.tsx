@@ -17,7 +17,7 @@ import styles from "./main.module.css";
 
 // импорт хуков
 import { useModal } from "../../hooks/use-modal"; // импорт хука модального окна
-import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { useSelector, useDispatch } from "../../hooks/redux-hooks"; // импорт хука редакса
 
 // импорт слайсов и редьюсеров Redux toolkit
 import { fetchData } from "../../services/data-slice"; // импорт редьюсера для получения данных с сервера
@@ -30,6 +30,7 @@ import { placeOrder } from "../../services/order-slice"; // импорт фун�
 // импорт функций useSelector
 import { getCurrentIngredients, getCurrentOrder, getData } from "../../services/store-selectors";
 import { ingredientsSlice } from "../../services/ingredients-slice";
+import { getUserAuth } from "../../services/store-selectors";
 
 // импорт типов
 import { Item } from "../../utils/types";
@@ -52,7 +53,7 @@ export default function Main() {
   // получение данных из хранилища Redux
   const data = useSelector(getData); // данные с сервера
   const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
-  const { order, loading } = useSelector(getCurrentOrder); // заказ
+  const { isAuthenticated } = useSelector(getUserAuth); // пользователь
 
   // получаем данные с сервера
   React.useEffect(() => {
@@ -71,6 +72,10 @@ export default function Main() {
 
   // функция открытия модального окна с деталями заказа
   async function handleOrderDetailsOpen() {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
     try {
       setOrderDetailsOpen(true);
       openModal();

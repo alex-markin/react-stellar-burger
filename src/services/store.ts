@@ -2,7 +2,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import { socketMiddleware } from './socket-connection/middleware/socket-middleware';
 import { rootReducer } from './root-reducer';
 import { ThunkAction } from "redux-thunk";
-import { Action } from "redux";
+
+import { Action, Dispatch } from "redux";
 import {
   connect as ordersSocketConnect,
   disconnect as ordersSocketDisconnect,
@@ -40,3 +41,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >
+
+export type AppDispatch = typeof store.dispatch

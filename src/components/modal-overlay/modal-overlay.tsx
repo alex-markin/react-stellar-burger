@@ -1,5 +1,6 @@
 // импорт библиотек
-import React, { useEffect, KeyboardEvent, MouseEvent } from "react";
+import { useEffect } from "react";
+
 
 // импорт стилей
 import styles from "./modal-overlay.module.css";
@@ -10,6 +11,9 @@ type ModalOverlayProps = {
 }
 
 
+type KeyboardEvent = {
+  key: string;
+}
 
 export default function ModalOverlay({ onClose }: ModalOverlayProps) {
 
@@ -17,7 +21,7 @@ export default function ModalOverlay({ onClose }: ModalOverlayProps) {
 
   useEffect(() => {
 
-    const handleEsc = (event: KeyboardEvent<Window>) => {
+    const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }
@@ -32,11 +36,11 @@ export default function ModalOverlay({ onClose }: ModalOverlayProps) {
 
 
 
-    window.addEventListener('keydown', handleEsc as any);
+    window.addEventListener('keydown', handleEsc);
     window.addEventListener('click', handleOverlayClick);
 
     return () => {
-      window.removeEventListener('keydown', handleEsc as any);
+      window.removeEventListener('keydown', handleEsc);
       window.removeEventListener('click', handleOverlayClick);
     };
   }, [onClose]);

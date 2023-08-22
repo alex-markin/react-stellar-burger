@@ -21,7 +21,7 @@ import OrderDetalisation from "../order-detalisation/order-detalisation"; // и�
 
 // импорт хуков
 import { checkUserAuth } from "../../services/user-auth-slice"; // импорт функции проверки авторизации пользователя
-import { useSelector, useDispatch } from 'react-redux'; // импорт хука редакса
+import { useSelector, useDispatch } from "../../hooks/redux-hooks"; // импорт хука редакса
 import { getSelectedIngredient } from "../../services/store-selectors"; // импорт функций useSelector
 
 
@@ -38,6 +38,7 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password',
   NOT_FOUND: '/*',
   INGREDIENT_DETAILS: '/ingredients/:ingredientId',
+  INGREDIENT_MODAL: '/:ingredientId',
 };
 
 function App() {
@@ -63,7 +64,7 @@ function App() {
       <AppHeader />
       <Routes>
         <Route path={ROUTES.MAIN} element={<Main />} />
-        <Route path={ROUTES.ORDER_FEED} element={<OnlyAuth component={<OrderFeed />} />} />
+        <Route path={ROUTES.ORDER_FEED} element={<OrderFeed />} />
 
         <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} >
           <Route path={ROUTES.PROFILE_ORDERS} element={<OnlyAuth component={<Profile />} />} />
@@ -73,6 +74,7 @@ function App() {
         <Route path={ROUTES.FORGOT_PASSWORD} element={<OnlyUnAuth component={<ForgotPassword />} />} />
         <Route path={ROUTES.RESET_PASSWORD} element={<OnlyUnAuth component={<ResetPassword />} />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFound404 />} />
+
         <Route
           path={ROUTES.INGREDIENT_DETAILS}
           element={
@@ -81,7 +83,7 @@ function App() {
                 <IngredientDetails ingredient={selectedIngredient} />
               </Modal>
             ) : (
-              < IngredientDetails isIndependent={true} />
+              < OnlyAuth component={<IngredientDetails isIndependent={true} />} />
             )
           }
         />
@@ -94,7 +96,7 @@ function App() {
                 <OrderDetalisation />
               </Modal>
             ) : (
-              < OrderDetalisation />
+              <OnlyAuth component={< OrderDetalisation />} />
             )} />
 
         <Route
@@ -105,7 +107,7 @@ function App() {
                 <OrderDetalisation />
               </Modal>
             ) : (
-              < OrderDetalisation />
+              <OnlyAuth component={< OrderDetalisation />} />
             )} />
 
       </Routes>
@@ -115,3 +117,7 @@ function App() {
 
 
 export default App;
+
+// Для ревьюера
+// Добрый день. Не совсем понял историю с модальным окном. В задании она должна вести на роут
+//  : ingredientID. Следовательно, на этом пути и нет страницы main. Или я как-то неправильно трактую?

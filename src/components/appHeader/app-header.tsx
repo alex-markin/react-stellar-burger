@@ -45,9 +45,11 @@ export default function AppHeader() {
         </ul>
       </nav>
 
-      <div className={styles.logo}>
+      <NavLink
+        to={ROUTES.MAIN}
+        className={styles.logo}>
         <Logo />
-      </div>
+      </NavLink>
 
       <nav className={styles.account}>
         <ul className={styles.list}>

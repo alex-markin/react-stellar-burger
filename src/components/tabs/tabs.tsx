@@ -5,7 +5,7 @@ import styles from './tabs.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 // импорт хуков
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/redux-hooks";
 
 // импорт функций useSelector
 import { getTabsNavigation } from "../../services/store-selectors";

@@ -11,7 +11,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useParams } from 'react-router-dom';
 import { formatDate } from '../../utils/format-date';
 import { getOrders, resetOrder } from '../../services/order-details-slice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks/redux-hooks';
 import { getOrderDetails } from '../../services/store-selectors';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';

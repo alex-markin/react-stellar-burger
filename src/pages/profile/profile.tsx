@@ -10,7 +10,7 @@ import { ROUTES } from "../../components/app/app";
 import styles from "./profile.module.css";
 
 // импорт хуков и экшенов Redux
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/redux-hooks";
 import { logout } from "../../services/user-auth-slice";
 
 // импорт компонентов

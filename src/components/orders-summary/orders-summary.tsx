@@ -3,9 +3,14 @@ import styles from './orders-summary.module.css';
 
 // импорт хуков и функций
 import { getOrders } from '../../services/store-selectors';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/redux-hooks';
 import { webSocketStatus } from '../../utils/web-socket-status';
 
+
+type OrderType = {
+  number: number;
+  status: string;
+}
 
 function OrdersSummary() {
 
@@ -23,10 +28,10 @@ function OrdersSummary() {
               <span className={`${styles.order} text text_type_main-default`}>Подключение...</span>
             ) : (
 
-              !orders || (orders.filter((order) => order.status === 'done').length === 0) ? (
+              !orders || (orders.filter((order: OrderType) => order.status === 'done').length === 0) ? (
                 <span className={`${styles.order} text text_type_main-default`}>Пока нет заказов</span>
               ) : (
-                orders.map((order) => {
+                orders.map((order: OrderType) => {
                   if (order.status === 'done') {
                     return (
                       <span className={`${styles.order} text text_type_digits-default`} key={order.number}>
@@ -49,10 +54,10 @@ function OrdersSummary() {
               <span className={`${styles.order} text text_type_main-default`}>Подключение...</span>
             ) : (
 
-              !orders || (orders.filter((order) => order.status === 'pending').length === 0) ? (
+              !orders || (orders.filter((order: OrderType) => order.status === 'pending').length === 0) ? (
                 <span className={`${styles.order}  text text_type_main-default`}>Пока нет заказов</span>
               ) : (
-                orders.map((order) => {
+                orders.map((order: OrderType) => {
                   if (order.status === 'pending') {
                     return (
                       <span className={`${styles.order} text text_type_digits-default`} key={order.number}>

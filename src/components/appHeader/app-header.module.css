@@ -63,6 +63,7 @@
   display: flex;
   justify-content: center;
   justify-self: center;
+  text-decoration: none;
 }
 
 .link {

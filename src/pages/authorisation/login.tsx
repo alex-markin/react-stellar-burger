@@ -3,14 +3,16 @@ import { FormEvent, useState, useRef } from "react";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./styles.module.css";
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/redux-hooks";
 import { login } from "../../services/user-auth-slice";
 
 // импорт роутов
 import { ROUTES } from "../../components/app/app";
 
-// импорт обработчика отображения пароля
+
+// импорт хуков и функций
 import { showPasswordHandler } from "../../utils/show-password-handler";
+
 
 function LogIn() {
 

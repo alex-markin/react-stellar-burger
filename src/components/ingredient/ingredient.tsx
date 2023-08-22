@@ -10,7 +10,7 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import styles from './ingredient.module.css';
 
 // импорт хуков
-import { useSelector } from 'react-redux';
+import { useSelector } from "../../hooks/redux-hooks";
 
 // импорт функций useSelector
 import { getCurrentIngredients } from "../../services/store-selectors";

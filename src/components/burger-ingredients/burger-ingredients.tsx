@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 // импорт хуков
 import { useRef } from "react";
-import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { useSelector, useDispatch } from "../../hooks/redux-hooks"; // импорт хука редакса
 
 // импорт компонентов
 import Tabs from "../tabs/tabs"; // импорт компонента Табс

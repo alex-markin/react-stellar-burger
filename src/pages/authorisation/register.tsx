@@ -2,7 +2,7 @@ import { FormEvent, useState, useRef } from "react";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/redux-hooks";
 import { register } from "../../services/user-auth-slice";
 
 // импорт роутов

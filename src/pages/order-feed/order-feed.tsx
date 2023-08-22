@@ -6,7 +6,7 @@ import OrdersList from "../../components/orders-list/orders-list"; // импор
 import OrdersSummary from "../../components/orders-summary/orders-summary"; // импорт компонента суммарной информации о заказах
 
 // импорт хуков и экшенов
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks/redux-hooks';
 import { getOrders } from '../../services/store-selectors';
 import { connect, disconnect } from '../../services/socket-connection/actions';
 

@@ -1,10 +1,12 @@
 
 import { wsActionsType } from '../actions';
 import { Middleware } from 'redux';
+import { MiddlewareAPI } from 'redux';
+import { AppDispatch, RootState } from '../../store';
 
 
 export const socketMiddleware = (wsActions: wsActionsType): Middleware => {
-  return (store) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     return (next) => (action) => {

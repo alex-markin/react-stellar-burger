@@ -1,16 +1,9 @@
 
-import { FC } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/redux-hooks";
 import { Navigate, useLocation } from "react-router-dom";
 import LoadingPage from "../../pages/loading-page/loading-page"
 
 import { getUserAuth } from "../../services/store-selectors";
-
-
-// type ProtectedRouteProps = {
-//   onlyUnAuth?: boolean,
-//   component: JSX.Element,
-// }
 
 type ProtectedRouteProps = {
   onlyUnAuth?: boolean,

@@ -2,8 +2,7 @@
 // импорт библиотек и хуков
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useState, useRef, FormEvent } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../hooks/redux-hooks";
 
 // импорт стилей
 import styles from './profile-edit.module.css';
@@ -36,8 +35,8 @@ export default function ProfileEdit() {
   // эффект для получения данных юзера
   useEffect(() => {
     dispatch(getUser());
-    setName(user.name);
-    setMail(user.email);
+    user ? setName(user.name) : setName('');
+    user ? setMail(user.email) : setMail('');
   }, []);
 
   // функция для определения видимости кнопок
@@ -48,9 +47,9 @@ export default function ProfileEdit() {
   // функция для скрытия кнопок
   const onClick = () => {
     setVisible(false);
-    setName(user.name);
-    setMail(user.email);
-    setPassword(password);
+    user ? setName(user.name) : setName('');
+    user ? setMail(user.email) : setMail('');
+    user ? setPassword(password) : setPassword('');
   }
 
   // функция для отправки данных на сервер

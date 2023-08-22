@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { forgotPassword } from "../../services/user-auth-slice";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/redux-hooks";
 
 // импорт роутов
 import { ROUTES } from "../../components/app/app";

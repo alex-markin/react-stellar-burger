@@ -16,7 +16,7 @@ import styles from "./burger-constructor-styles.module.css";
 import { ingredientsSlice } from "../../services/ingredients-slice";
 
 // импорт хуков
-import { useSelector, useDispatch } from "react-redux"; // импорт хука редакса
+import { useSelector, useDispatch } from "../../hooks/redux-hooks"; // импорт хука редакса
 import { useCallback } from "react";
 import { useDrop } from 'react-dnd'; // импорт хука для перетаскивания
 

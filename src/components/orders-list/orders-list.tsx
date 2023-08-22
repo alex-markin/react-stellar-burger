@@ -8,7 +8,7 @@ import Order from '../order/order';
 import styles from './orders-list.module.css';
 
 // импорт хуков и функций
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks/redux-hooks';
 import { getOrders } from '../../services/store-selectors';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { connect, disconnect } from '../../services/socket-connection/actions';
@@ -16,6 +16,9 @@ import { webSocketStatus } from '../../utils/web-socket-status';
 
 // импорт url адресов
 import { ALL_ORDERS_URL } from '../../pages/order-feed/order-feed';
+
+// импорт типов
+import { Item } from '../../utils/types';
 
 function OrdersList() {
 
@@ -31,7 +34,7 @@ function OrdersList() {
   useEffect(() => {
 
     if(match) {
-      const accessToken = localStorage.getItem('accessToken').replace('Bearer ', '');
+      const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
       if (accessToken) {
         dispatch(connect(`${ALL_ORDERS_URL}?token=${accessToken}`));
       } else {
@@ -55,12 +58,12 @@ function OrdersList() {
         <span className={`${styles.order} text text_type_main-default`}>Подключение...</span>
       ) : (
         orders && match ?
-          reverseOrders.map((order) => {
+          reverseOrders.map((order: Item) => {
           return (
             <Order order={order} key={order._id} />
           )
         })
-        : orders && orders.map((order) => {
+        : orders && orders.map((order: Item) => {
           return (
             <Order order={order} key={order._id} />
           )

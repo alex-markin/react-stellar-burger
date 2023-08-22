@@ -4,7 +4,7 @@ import { AppThunk } from "./store";
 import { User } from "../utils/types";
 
 type UserState = {
-  user: User | Record<string, "name" | "email">,
+  user: User | null,
   password: string,
   isAuthenticated: boolean,
   loading: boolean,
@@ -13,7 +13,7 @@ type UserState = {
 }
 
 const initialState: UserState = {
-  user: {},
+  user: null,
   password: "",
   isAuthenticated: false,
   loading: false,
@@ -38,7 +38,7 @@ export const userAuthSlice = createSlice({
       state.isAuthChecked = true;
     },
 
-    setUser: (state, action: PayloadAction<User | {}>) => {
+    setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
       state.loading = false;
       state.error = null;
@@ -51,7 +51,7 @@ export const userAuthSlice = createSlice({
     },
 
     setLogout: (state) => {
-      state.user = {};
+      state.user = null;
       state.password = "";
       state.loading = false;
       state.error = null;
@@ -82,17 +82,6 @@ export const {
   setPassword
 } = userAuthSlice.actions;
 
-// export const getUser = (): AppThunk => async (dispatch) => {
-//   return api.getUser()
-//     .then((res) => {
-//       dispatch(setUser(res.user));
-//       return res;
-//     })
-//     .catch((err) => {
-//       dispatch(fetchUserFailure(err));
-//       return err;
-//     });
-// };
 
 export const getUser = (): AppThunk => async (dispatch) => {
   return api.getUser()
@@ -166,7 +155,7 @@ export const checkUserAuth = (): AppThunk => async (dispatch) => {
     } catch (error) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      dispatch(setUser({}));
+      dispatch(setUser(null));
     } finally {
       dispatch(setAuthChecked(true));
     }
