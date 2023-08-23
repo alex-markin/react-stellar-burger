@@ -62,10 +62,9 @@ function App() {
   return (
     <>
       <AppHeader />
-      <Routes>
+      <Routes location={background}>
         <Route path={ROUTES.MAIN} element={<Main />} />
         <Route path={ROUTES.ORDER_FEED} element={<OrderFeed />} />
-
         <Route path={ROUTES.PROFILE} element={<OnlyAuth component={<Profile />} />} >
           <Route path={ROUTES.PROFILE_ORDERS} element={<OnlyAuth component={<Profile />} />} />
         </Route>
@@ -74,50 +73,36 @@ function App() {
         <Route path={ROUTES.FORGOT_PASSWORD} element={<OnlyUnAuth component={<ForgotPassword />} />} />
         <Route path={ROUTES.RESET_PASSWORD} element={<OnlyUnAuth component={<ResetPassword />} />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFound404 />} />
+        <Route path={ROUTES.INGREDIENT_DETAILS} element={< OnlyAuth component={<IngredientDetails isIndependent={true} />} />} />
+        <Route path={ROUTES.FEED_ORDER_DETAILS} element={< OnlyAuth component={<OrderDetalisation />} />} />
+        <Route path={ROUTES.PROFILE_ORDER_DETAILS} element={< OnlyAuth component={<OrderDetalisation />} />} />
+      </Routes>
 
-        <Route
-          path={ROUTES.INGREDIENT_DETAILS}
-          element={
-            background ? (
-              <Modal onClose={handleModalClose}>
-                <IngredientDetails ingredient={selectedIngredient} />
-              </Modal>
-            ) : (
-              < OnlyAuth component={<IngredientDetails isIndependent={true} />} />
-            )
-          }
-        />
 
-        <Route
-          path={ROUTES.FEED_ORDER_DETAILS}
-          element={
-            background ? (
-              <Modal onClose={handleModalClose}>
-                <OrderDetalisation />
-              </Modal>
-            ) : (
-              <OnlyAuth component={< OrderDetalisation />} />
-            )} />
+      <Routes> {/* Модальные окна */}
+        {background &&
+          <Route path={ROUTES.INGREDIENT_DETAILS} element={
+            <Modal onClose={handleModalClose}>
+              <IngredientDetails ingredient={selectedIngredient} />
+            </Modal>} />}
 
-        <Route
-          path={ROUTES.PROFILE_ORDER_DETAILS}
-          element={
-            background ? (
-              <Modal onClose={handleModalClose}>
-                <OrderDetalisation />
-              </Modal>
-            ) : (
-              <OnlyAuth component={< OrderDetalisation />} />
-            )} />
+        {background &&
+          <Route path={ROUTES.FEED_ORDER_DETAILS} element={
+            <Modal onClose={handleModalClose}>
+              <OrderDetalisation />
+            </Modal>} />}
+
+        {background &&
+          <Route path={ROUTES.PROFILE_ORDER_DETAILS} element={
+            <Modal onClose={handleModalClose}>
+              <OrderDetalisation />
+            </Modal>} />}
 
       </Routes>
+
     </>
   );
 }
 
 
 export default App;
-
-// Для ревьюера
-// Добрый день. Не совсем понял историю с модальным окном. В задании она должна вести на роут
-//  : ingredientID. Следовательно, на этом пути и нет страницы main. Или я как-то неправильно трактую?

@@ -33,7 +33,7 @@ function OrdersList() {
 
   useEffect(() => {
 
-    if(match) {
+    if (match) {
       const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
       if (accessToken) {
         dispatch(connect(`${ALL_ORDERS_URL}?token=${accessToken}`));
@@ -59,15 +59,15 @@ function OrdersList() {
       ) : (
         orders && match ?
           reverseOrders.map((order: Item) => {
-          return (
-            <Order order={order} key={order._id} />
-          )
-        })
-        : orders && orders.map((order: Item) => {
-          return (
-            <Order order={order} key={order._id} />
-          )
-        })
+            return (
+              <Order order={order} key={order._id} />
+            )
+          })
+          : orders && orders.map((order: Item) => {
+            return (
+              <Order order={order} key={order._id} />
+            )
+          })
       )}
     </section>
   )

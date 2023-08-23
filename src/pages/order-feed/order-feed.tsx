@@ -26,7 +26,7 @@ function OrderFeed() {
     dispatch(connect(`${ALL_ORDERS_URL}/all`));
 
     return () => {
-     dispatch(disconnect());
+      dispatch(disconnect());
     };
 
   }, [dispatch]);
