@@ -20,15 +20,15 @@ import { useModal } from "../../hooks/use-modal"; // импорт хука мо�
 import { useSelector, useDispatch } from "../../hooks/redux-hooks"; // импорт хука редакса
 
 // импорт слайсов и редьюсеров Redux toolkit
-import { fetchData } from "../../services/data-slice"; // импорт редьюсера для получения данных с сервера
 import { selectedIngredientSlice } from "../../services/selected-ingredient-slice"; // импорт редьюсера для выбранного ингредиента
 import { orderSlice } from "../../services/order-slice"; // импорт редьюсера для заказа
 
 // импорт утилитарных функций
 import { placeOrder } from "../../services/order-slice"; // импорт функции для взаимодействия с сервером для размещения заказа
+import { dataUrl as url } from "../../utils/urls"; // импорт url адресов
 
 // импорт функций useSelector
-import { getCurrentIngredients, getCurrentOrder, getData } from "../../services/store-selectors";
+import { getCurrentIngredients } from "../../services/store-selectors";
 import { ingredientsSlice } from "../../services/ingredients-slice";
 import { getUserAuth } from "../../services/store-selectors";
 
@@ -36,8 +36,6 @@ import { getUserAuth } from "../../services/store-selectors";
 import { Item } from "../../utils/types";
 
 
-// адрес сервера
-const url = "https://norma.nomoreparties.space/api";
 
 
 export default function Main() {
@@ -51,18 +49,8 @@ export default function Main() {
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false); // открытие модального окна с деталями заказа
 
   // получение данных из хранилища Redux
-  const data = useSelector(getData); // данные с сервера
   const currentIngredients = useSelector(getCurrentIngredients); // выбранные ингредиенты для конструктора
-  const { isAuthenticated } = useSelector(getUserAuth); // пользователь
-
-  // получаем данные с сервера
-  React.useEffect(() => {
-    // проверка наличия данных в хранилище
-    if (data.data.length === 0) {
-      dispatch(fetchData(url));
-      localStorage.setItem('ingredients', JSON.stringify(data.data));
-    }
-  }, [url]);
+  const { isAuthenticated } = useSelector(getUserAuth); // пользователь авторизован
 
   // функция отправки заказа и получения номера заказа
   function handlePlaceOrder() {

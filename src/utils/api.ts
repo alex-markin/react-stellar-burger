@@ -1,14 +1,16 @@
 import { checkResponse } from "./check-response";
+import {
+  registerUrl,
+  forgotPasswordUrl,
+  resetPasswordUrl,
+  loginUrl,
+  userAuthUrl,
+  refreshTokenUrl,
+  logoutUrl,
+  getOrderUrl,
+} from "./urls";
 
 
-const registerUrl = 'https://norma.nomoreparties.space/api/auth/register'
-const forgotPasswordUrl = 'https://norma.nomoreparties.space/api/password-reset'
-const resetPasswordUrl = 'https://norma.nomoreparties.space/api/password-reset/reset';
-const loginUrl = 'https://norma.nomoreparties.space/api/auth/login';
-const userAuthUrl = 'https://norma.nomoreparties.space/api/auth/user';
-const refreshTokenUrl = 'https://norma.nomoreparties.space/api/auth/token';
-const logoutUrl = 'https://norma.nomoreparties.space/api/auth/logout';
-const getOrderUrl = 'https://norma.nomoreparties.space/api/orders';
 
 type RefreshData = {
   success: boolean;

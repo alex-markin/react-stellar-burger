@@ -23,6 +23,10 @@ import OrderDetalisation from "../order-detalisation/order-detalisation"; // и�
 import { checkUserAuth } from "../../services/user-auth-slice"; // импорт функции проверки авторизации пользователя
 import { useSelector, useDispatch } from "../../hooks/redux-hooks"; // импорт хука редакса
 import { getSelectedIngredient } from "../../services/store-selectors"; // импорт функций useSelector
+import { fetchData } from "../../services/data-slice"; // импорт редьюсера для получения данных с сервера
+
+// импорт url адресов
+import { dataUrl } from "../../utils/urls"; // импорт url адресов
 
 
 export const ROUTES = {
@@ -47,15 +51,22 @@ function App() {
   const location = useLocation();
   const background = location.state && location.state.background;
 
+  // получаем данные с сервера
+  useEffect(() => {
+    dispatch(fetchData(dataUrl));
+  }, [dispatch, dataUrl]);
+
+  // проверка авторизации пользователя
   useEffect(() => {
     dispatch(checkUserAuth());
   }, []);
 
   const { selectedIngredient } = useSelector(getSelectedIngredient);
-
   const handleModalClose = () => {
     navigate(-1);
   };
+
+
 
 
   return (

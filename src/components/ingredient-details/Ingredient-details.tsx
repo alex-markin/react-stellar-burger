@@ -3,10 +3,8 @@ import styles from "./ingredient-details.module.css";
 
 // импорт библиотек и хуков
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from "../../hooks/redux-hooks";
+import { useSelector } from "../../hooks/redux-hooks";
 import { getData } from "../../services/store-selectors";
-import { useEffect } from "react";
-import { fetchData } from "../../services/data-slice";
 
 // ипорт путей
 import { ROUTES } from "../app/app";
@@ -14,8 +12,6 @@ import { ROUTES } from "../app/app";
 // импорт типов
 import { Item } from "../../utils/types";
 
-// адрес сервера
-const url = "https://norma.nomoreparties.space/api";
 
 type IngredientDetailsProps = {
   ingredient?: Item | null;
@@ -27,19 +23,11 @@ export default function IngredientDetails({ ingredient, isIndependent }: Ingredi
 
   const { ingredientId } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   // получение базы ингредиентов из хранилища
   const data = useSelector(getData); // данные с сервера
   let ingredients: Item[] = data.data;
 
-  useEffect(() => {
-    // проверка наличия данных в хранилище
-    if (ingredients.length === 0) {
-      dispatch(fetchData(url));
-      localStorage.setItem('ingredients', JSON.stringify(data.data));
-    }
-  }, [dispatch, url]);
 
   if (!ingredient && ingredients) {
     ingredient = ingredients.find((item) => item._id === ingredientId) || null;
