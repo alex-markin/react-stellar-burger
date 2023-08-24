@@ -6,8 +6,7 @@ import OrdersList from "../../components/orders-list/orders-list"; // импор
 import OrdersSummary from "../../components/orders-summary/orders-summary"; // импорт компонента суммарной информации о заказах
 
 // импорт хуков и экшенов
-import { useSelector, useDispatch } from '../../hooks/redux-hooks';
-import { getOrders } from '../../services/store-selectors';
+import { useDispatch } from '../../hooks/redux-hooks';
 import { connect, disconnect } from '../../services/socket-connection/actions';
 
 // импорт стилей
@@ -17,9 +16,6 @@ import styles from "./order-feed.module.css";
 export const ALL_ORDERS_URL = "wss://norma.nomoreparties.space/orders";
 
 function OrderFeed() {
-  const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
-
-  const ordersData = useSelector(getOrders);
   const dispatch = useDispatch();
 
   useEffect(() => {

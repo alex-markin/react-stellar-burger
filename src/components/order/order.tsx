@@ -16,7 +16,7 @@ import { formatDate } from "../../utils/format-date"; // импорт функц
 import { useMatch } from 'react-router-dom';
 import { useLocation, Link } from 'react-router-dom';
 import { useMemo } from "react";
-import { useSelector, useDispatch } from "../../hooks/redux-hooks";
+import { useSelector } from "../../hooks/redux-hooks";
 import { getData } from "../../services/store-selectors";
 
 // импорт типов
