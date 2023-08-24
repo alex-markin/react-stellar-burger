@@ -38,7 +38,6 @@ export const ROUTES = {
   RESET_PASSWORD: '/reset-password',
   NOT_FOUND: '/*',
   INGREDIENT_DETAILS: '/ingredients/:ingredientId',
-  INGREDIENT_MODAL: '/:ingredientId',
 };
 
 function App() {
@@ -73,8 +72,8 @@ function App() {
         <Route path={ROUTES.FORGOT_PASSWORD} element={<OnlyUnAuth component={<ForgotPassword />} />} />
         <Route path={ROUTES.RESET_PASSWORD} element={<OnlyUnAuth component={<ResetPassword />} />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFound404 />} />
-        <Route path={ROUTES.INGREDIENT_DETAILS} element={< OnlyAuth component={<IngredientDetails isIndependent={true} />} />} />
-        <Route path={ROUTES.FEED_ORDER_DETAILS} element={< OnlyAuth component={<OrderDetalisation />} />} />
+        <Route path={ROUTES.INGREDIENT_DETAILS} element={<IngredientDetails isIndependent={true} />} />
+        <Route path={ROUTES.FEED_ORDER_DETAILS} element={<OrderDetalisation />} />
         <Route path={ROUTES.PROFILE_ORDER_DETAILS} element={< OnlyAuth component={<OrderDetalisation />} />} />
       </Routes>
 
@@ -98,7 +97,9 @@ function App() {
               <OrderDetalisation />
             </Modal>} />}
 
-      </Routes>
+        <Route path={ROUTES.NOT_FOUND} element={<NotFound404 />} />
+
+      </Routes >
 
     </>
   );

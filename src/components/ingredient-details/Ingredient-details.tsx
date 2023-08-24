@@ -1,8 +1,12 @@
 // импорт стилей
 import styles from "./ingredient-details.module.css";
 
-// импорт библиотек
+// импорт библиотек и хуков
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "../../hooks/redux-hooks";
+import { getData } from "../../services/store-selectors";
+import { useEffect } from "react";
+import { fetchData } from "../../services/data-slice";
 
 // ипорт путей
 import { ROUTES } from "../app/app";
@@ -10,24 +14,32 @@ import { ROUTES } from "../app/app";
 // импорт типов
 import { Item } from "../../utils/types";
 
+// адрес сервера
+const url = "https://norma.nomoreparties.space/api";
+
 type IngredientDetailsProps = {
   ingredient?: Item | null;
   isIndependent?: boolean;
 }
 
+
 export default function IngredientDetails({ ingredient, isIndependent }: IngredientDetailsProps) {
 
   const { ingredientId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  let ingredients: Array<Item> | null = null;
+  // получение базы ингредиентов из хранилища
+  const data = useSelector(getData); // данные с сервера
+  let ingredients: Item[] = data.data;
 
-  try {
-    const storedIngredients = localStorage.getItem('ingredients');
-    ingredients = storedIngredients ? JSON.parse(storedIngredients) : null;
-  } catch (e) {
-    ingredients = null;
-  }
+  useEffect(() => {
+    // проверка наличия данных в хранилище
+    if (ingredients.length === 0) {
+      dispatch(fetchData(url));
+      localStorage.setItem('ingredients', JSON.stringify(data.data));
+    }
+  }, [dispatch, url]);
 
   if (!ingredient && ingredients) {
     ingredient = ingredients.find((item) => item._id === ingredientId) || null;

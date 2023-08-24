@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 6;
 }
 
 .modal {
@@ -22,7 +23,7 @@
     z-index: 2;
 }
 
- .close {
+.close {
     width: 24px;
     height: 24px;
     padding: 6px;
@@ -37,6 +38,3 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-
-
-

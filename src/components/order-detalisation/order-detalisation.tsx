@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from '../../hooks/redux-hooks';
 import { getOrderDetails } from '../../services/store-selectors';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { getData } from '../../services/store-selectors';
 
 // импорт типов
 import { Item } from '../../utils/types';
@@ -29,15 +30,17 @@ export default function OrderDetalisation() {
   // получение данных с сервера
   useEffect(() => {
     orderId && dispatch(getOrders(orderId));
-
     return () => {
       dispatch(resetOrder());
     }
-
   }, [orderId]);
 
   // получение данных из хранилища Redux
   const { order, loading } = useSelector(getOrderDetails);
+
+  // получение базы ингредиентов из хранилища
+  const data = useSelector(getData); // данные с сервера
+  let ingredientsDatabase: Item[] = data.data;
 
   if (!order || loading) {
     return <LoadingSpinner loadingText={'Загрузка...'} />
@@ -45,18 +48,9 @@ export default function OrderDetalisation() {
 
     const { ingredients, name, number, createdAt, status } = order;
 
-    // получение базы ингредиентов из хранилища
-    let ingredientsDatabase: Item[] | null;
-    try {
-      const storedIngredients = localStorage.getItem('ingredients');
-      ingredientsDatabase = storedIngredients ? JSON.parse(storedIngredients) : null;
-    } catch (e) {
-      ingredientsDatabase = null;
-    }
-
     // фильрация ингредиентов по id
     const filteredIngredients: Item[] | null = ingredientsDatabase ? ingredientsDatabase.filter((ingredient) => ingredients.includes(ingredient._id)) : [];
-    
+
     // форматирование даты
     const date = formatDate(createdAt);
 

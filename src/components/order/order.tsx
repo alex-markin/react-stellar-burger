@@ -1,7 +1,8 @@
 
 // импорт библиотек
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components"; // импорт компонентов из библиотеки Яндекс.Практикум
-import { useState } from "react"; // импорт хука useState
+import { useState, useEffect } from "react"; // импорт хука useState
+
 
 // импорт компонентов
 import IngredientCircle from "../ingredient-circle/ingredient-circle"; // импорт компонента круглого ингредиента
@@ -15,9 +16,13 @@ import { formatDate } from "../../utils/format-date"; // импорт функц
 import { useMatch } from 'react-router-dom';
 import { useLocation, Link } from 'react-router-dom';
 import { useMemo } from "react";
+import { useSelector, useDispatch } from "../../hooks/redux-hooks";
+import { getData } from "../../services/store-selectors";
 
 // импорт типов
 import { Item } from "../../utils/types"; // импорт типа Item
+
+
 
 type OrderProps = {
   order: Item;
@@ -25,7 +30,9 @@ type OrderProps = {
 
 export default function Order({ order }: OrderProps) {
 
-  const { ingredients, name, number, createdAt, _id } = order;
+  const { ingredients, name, number, createdAt } = order;
+
+  const data = useSelector(getData); // данные с сервера
 
   // определение маршрута
   const match = useMatch({
@@ -40,12 +47,7 @@ export default function Order({ order }: OrderProps) {
   const path = location.pathname;
 
   // получение базы ингредиентов из хранилища
-  let ingredientsDatabase: Array<Item> | null = null;
-  try {
-    ingredientsDatabase = JSON.parse(localStorage.getItem('ingredients') as string)
-  } catch (e) {
-    ingredientsDatabase = null;
-  }
+  let ingredientsDatabase: Item[] = data.data;
 
   // фильрация ингредиентов по id
   const filteredIngredients = ingredientsDatabase
@@ -65,7 +67,7 @@ export default function Order({ order }: OrderProps) {
   // ограничение количества выводимых ингредиентов
   const MAX_INGREDIENTS = 5;
   const [showRemaining, setShowRemaining] = useState(false);
-  let renderedIngredients = filteredIngredients.slice(0, MAX_INGREDIENTS);  
+  let renderedIngredients = filteredIngredients.slice(0, MAX_INGREDIENTS);
   let remainingIngredient;
 
 

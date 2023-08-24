@@ -13,12 +13,17 @@ import { getOrders } from '../../services/store-selectors';
 import { useMatch, useNavigate } from 'react-router-dom';
 import { connect, disconnect } from '../../services/socket-connection/actions';
 import { webSocketStatus } from '../../utils/web-socket-status';
+import { fetchData } from '../../services/data-slice';
+import { getData } from '../../services/store-selectors';
 
 // импорт url адресов
 import { ALL_ORDERS_URL } from '../../pages/order-feed/order-feed';
 
 // импорт типов
 import { Item } from '../../utils/types';
+
+// адрес сервера
+const url = "https://norma.nomoreparties.space/api";
 
 function OrdersList() {
 
@@ -45,6 +50,18 @@ function OrdersList() {
       dispatch(disconnect());
     }
   }, [dispatch]);
+
+   // получение базы ингредиентов из хранилища
+   const data = useSelector(getData); // данные с сервера
+   let ingredientsDatabase: Array<Item> = data.data;
+
+   useEffect(() => {
+     // проверка наличия данных в хранилище
+     if (ingredientsDatabase.length === 0) {
+       dispatch(fetchData(url));
+       localStorage.setItem('ingredients', JSON.stringify(data.data));
+     }
+   }, [dispatch, url]);
 
   const ordersData = useSelector(getOrders);
   const { orders, status } = ordersData;
