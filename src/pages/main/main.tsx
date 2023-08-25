@@ -25,7 +25,7 @@ import { orderSlice } from "../../services/order-slice"; // импорт ред�
 
 // импорт утилитарных функций
 import { placeOrder } from "../../services/order-slice"; // импорт функции для взаимодействия с сервером для размещения заказа
-import { dataUrl as url } from "../../utils/urls"; // импорт url адресов
+import { dataUrl as url } from "../../utils/api-urls"; // импорт url адресов
 
 // импорт функций useSelector
 import { getCurrentIngredients } from "../../services/store-selectors";

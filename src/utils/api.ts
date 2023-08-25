@@ -8,7 +8,7 @@ import {
   refreshTokenUrl,
   logoutUrl,
   getOrderUrl,
-} from "./urls";
+} from "./api-urls";
 
 
 

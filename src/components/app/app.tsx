@@ -26,7 +26,7 @@ import { getSelectedIngredient } from "../../services/store-selectors"; // им�
 import { fetchData } from "../../services/data-slice"; // импорт редьюсера для получения данных с сервера
 
 // импорт url адресов
-import { dataUrl } from "../../utils/urls"; // импорт url адресов
+import { dataUrl } from "../../utils/api-urls"; // импорт url адресов
 
 
 export const ROUTES = {
